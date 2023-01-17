@@ -20,7 +20,7 @@ export RESOURCE_GROUP_LOCATION=westeurope
 
 az group create -n $RESOURCE_GROUP_NAME -l $RESOURCE_GROUP_LOCATION
 
-# Navigate to the root templates dir (repo_dir/IaC/root)
+# Navigate to the root templates dir (repo_dir/IaC/terraform/root)
 
 # Initialize terraform config
 export TF_RG_NAME=rg-tfstate
@@ -47,7 +47,7 @@ terraform apply
 
 ```bash
 
-# Navigate to the root templates dir (repo_dir/IaC/root)
+# Navigate to the root templates dir (repo_dir/IaC/terraform/root)
 
 # Tear down deployment
 terraform destroy
