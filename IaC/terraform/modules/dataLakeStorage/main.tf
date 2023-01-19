@@ -21,13 +21,13 @@ locals {
 
   # 1st for loop takes storage accounts
   # 2nd for loop takes containers from the storage account selected in first for loop and prepares a map of
-  # key -> storage account name - environment tag - storage account replication type - container name
+  # key -> storage account name : storage account replication type : container name
   # value -> container name
 
   container_config = merge([
     for storage_account, containers in var.storage_account_container_config : {
       for containername, container_lifecycle_config in containers :
-      join("-", [split(":", "${storage_account}")[0], "${var.tags.environment}", split(":", "${storage_account}")[1], "${containername}"]) => containername
+        "${storage_account}:${containername}" => containername
     }
   ]...)
 
@@ -77,7 +77,7 @@ resource "azurerm_storage_account" "storage_account" {
 
 resource "azurerm_resource_group_template_deployment" "storage-containers" {
   for_each            = local.container_config
-  name                = each.value
+  name                = "${each.value}-deploy"
   resource_group_name = var.resource_group_name
   deployment_mode     = "Incremental"
 
@@ -87,9 +87,9 @@ resource "azurerm_resource_group_template_deployment" "storage-containers" {
 
   parameters_content = jsonencode({
     "location"             = { value = var.location }
-    "storageAccountName"   = { value = join("", slice(split("-", "${each.key}"), 0, 2)) }
+    "storageAccountName"   = { value = join("", [split(":", "${each.key}")[0], var.adls_suffix, var.tags.environment]) }
     "defaultContainerName" = { value = "${each.value}" }
-    "storageAccountSku"    = { value = join("_", [var.account_tier, split("-", "${each.key}")[2]]) }
+    "storageAccountSku"    = { value = join("_", [var.account_tier, split(":", "${each.key}")[1]]) }
   })
 
   template_content = file("${path.module}/storage-container.json")
