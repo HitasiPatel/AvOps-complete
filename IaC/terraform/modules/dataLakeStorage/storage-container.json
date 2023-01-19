@@ -10,6 +10,9 @@
         },
         "location": {
             "type": "String"
+        },
+        "storageAccountSku": {
+            "type": "String"
         }
     },
     "resources": [
@@ -18,6 +21,9 @@
             "type": "Microsoft.Storage/storageAccounts",
             "apiVersion": "2021-09-01",
             "location": "[parameters('location')]",
+            "sku": {
+              "name": "[parameters('storageAccountSku')]"
+            },
             "resources": [
                 {
                     "name": "[concat('default/', parameters('defaultContainerName'))]",

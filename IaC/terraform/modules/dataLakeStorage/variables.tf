@@ -18,11 +18,6 @@ variable "storage_account_container_config" {
   type = map(map(map(string)))
 }
 
-variable "account_replication_type" {
-  description = "Defines the type of replication to use for this storage account. "
-  type        = string
-}
-
 variable "account_kind" {
   description = "Defines the Kind of account. "
   type        = string

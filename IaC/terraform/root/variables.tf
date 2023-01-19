@@ -68,7 +68,7 @@ variable "appservice_subnet_address_prefix" {
 variable "appservice_subnet_service_endpoints" {
   description = "Service Endpoints for the app service subnet"
   type        = list(string)
-  default     = ["Microsoft.AppService"]
+  default     = ["Microsoft.Web"]
 }
 
 # ------------------------------------------------------------------------------------------------------
@@ -146,12 +146,6 @@ variable "kv_name" {
 variable "adls_storage_account_container_config" {
   description = "A nested map of storage accounts to containers to lifecycle policies"
   type = map(map(map(string)))
-}
-
-variable "adls_account_replication_type" {
-  description = "Defines the type of replication to use for this storage account. "
-  type        = string
-  default     = "ZRS"
 }
 
 variable "adls_account_kind" {

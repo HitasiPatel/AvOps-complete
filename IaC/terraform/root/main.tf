@@ -107,7 +107,6 @@ module "adls" {
   location                         = var.location
   adls_suffix                      = random_string.common_suffix.id
   storage_account_container_config = var.adls_storage_account_container_config
-  account_replication_type         = var.adls_account_replication_type
   account_kind                     = var.adls_account_kind
   account_tier                     = var.adls_account_tier
   is_hns_enabled                   = var.adls_is_hns_enabled
@@ -173,7 +172,7 @@ module "container_registry" {
 # ------------------------------------------------------------------------------------------------------
 
 module "batch" {
-  source                              = "../modules/azureBatch"
+  source                              = "../modules/batch"
   resource_group_name                 = var.resource_group_name
   location                            = var.location
   tags                                = var.tags

@@ -25,7 +25,7 @@ privatelink_subnet_service_endpoints = ["Microsoft.KeyVault", "Microsoft.Storage
 
 appservice_subnet_name              = "appservice"
 appservice_subnet_address_prefix    = "10.0.2.0/24"
-appservice_subnet_service_endpoints = ["Microsoft.AppService"]
+appservice_subnet_service_endpoints = ["Microsoft.Web"]
 
 # ------------------------------------------------------------------------------------------------------
 # Cosmos DB values
@@ -69,7 +69,6 @@ adls_storage_account_container_config = {
     "annotated"    = {}
   }
 }
-adls_account_replication_type  = "ZRS"
 adls_account_kind              = "StorageV2"
 adls_account_tier              = "Standard"
 adls_is_hns_enabled            = true

@@ -13,7 +13,7 @@ resource "azurerm_batch_account" "batch_account" {
 }
 
 resource "azurerm_private_endpoint" "batch-private-endpoint" {
-  name                = "${var.batch_account_name}-private-endpoint"
+  name                = "${var.batch_account_name}-batch-private-endpoint"
   resource_group_name = var.resource_group_name
   location            = var.location
   tags                = var.tags
@@ -22,7 +22,7 @@ resource "azurerm_private_endpoint" "batch-private-endpoint" {
   private_service_connection {
     name                           = "${var.batch_account_name}-private-service-connection"
     private_connection_resource_id = azurerm_batch_account.batch_account.id
-    subresource_names              = ["batch"]
+    subresource_names              = ["batchAccount"]
     is_manual_connection           = false
   }
 
