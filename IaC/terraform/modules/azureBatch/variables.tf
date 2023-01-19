@@ -1,5 +1,5 @@
 variable "resource_group_name" {
-  description = "Resource Group name to host keyvault"
+  description = "Resource Group name to host Azure Batch"
   type        = string
 }
 
@@ -16,7 +16,6 @@ variable "tags" {
 variable "batch_account_name" {
   description = "Name of the Azure Batch Account"
   type        = string
-  default     = "batch"
 }
 
 variable "batch_account_suffix" {
@@ -24,25 +23,23 @@ variable "batch_account_suffix" {
   type        = string
 }
 
-variable "adls_account_name" {
-  description = "Name of the storage accpunt"
-  type        = string
-}
-
 variable "account_tier" {
   description = "Defines the Tier to use for this storage account."
   type        = string
-  default     = "Standard"
 }
 
 variable "account_replication_type" {
   description = "Defines the type of replication to use for this storage account. "
   type        = string
-  default     = "LRS"
 }
 
 variable "batch_subnet_id" {
   description = "Virtual Network Subnet ID"
+}
+
+variable "batch_dns_zone_id" {
+  description = "Batch DNS zone ID"
+  type        = string
 }
 
 variable "storage_account_id" {
@@ -53,127 +50,86 @@ variable "storage_account_id" {
 variable "pool_allocation_mode" {
   description = "Specifies the mode to use for pool allocation."
   type        = string
-  default     = "BatchService"
 }
 
 variable "storage_account_authentication_mode" {
   description = "Specifies the storage account authentication mode."
   type        = string
-  default     = "BatchAccountManagedIdentity"
 }
 
 variable "identity_type" {
   description = "Specifies the type of Managed Service Identity that should be configured on this Batch Account."
   type        = string
-  default     = "SystemAssigned"
 }
 
 variable "orch_pool_name" {
   description = "Specifies the name of the Batch pool."
   type        = string
-  default     = "orchestratorpool"
 }
 
 variable "vm_size_orch_pool" {
   description = "Specifies the size of the VM created in the Batch pool."
   type        = string
-  default     = "standard_a4_v2"
 }
 
 variable "node_agent_sku_id_orch_pool" {
   description = "Specifies the SKU of the node agents that will be created in the Batch pool."
   type        = string
-  default     = "batch.node.ubuntu 20.04"
 }
 
 variable "storage_image_reference_orch_pool" {
   description = "A storage_image_reference for the virtual machines that will compose the Batch pool."
   type        = map(string)
-  default = {
-    publisher = "canonical"
-    offer     = "0001-com-ubuntu-server-focal"
-    sku       = "20_04-lts"
-    version   = "latest"
-  }
 }
 
 variable "exec_pool_name" {
   description = "Specifies the name of the Batch pool."
   type        = string
-  default     = "executionpool"
 }
 
 variable "vm_size_exec_pool" {
   description = "Specifies the size of the VM created in the Batch pool."
   type        = string
-  default     = "standard_d8_v3"
 }
 
 variable "node_agent_sku_id_exec_pool" {
   description = "Specifies the SKU of the node agents that will be created in the Batch pool."
   type        = string
-  default     = "batch.node.ubuntu 20.04"
 }
 
 variable "storage_image_reference_exec_pool" {
   description = "A storage_image_reference for the virtual machines that will compose the Batch pool."
   type        = map(string)
-  default = {
-    publisher = "microsoft-azure-batch"
-    offer     = "ubuntu-server-container"
-    sku       = "20-04-lts"
-    version   = "latest"
-  }
 }
 
-variable "storage_account_name" {
-  description = "Name of the storage account"
-  type        = string
-}
-
-variable "container_name" {
-  description = "Name of the storage container"
-  type        = string
+variable "storage_account_container_map" {
+  description = "Storage account names and containers"
+  type        = map(list(string))
 }
 
 variable "batch_uami_id" {
-  type        = string
   description = "Managed identity ID"
+  type        = string
 }
 
 variable "batch_uami_principal_id" {
-  type        = string
   description = "Managed identity prinicipal ID"
+  type        = string
 }
 
 variable "endpoint_configuration" {
-  type = map(string)
-  default = {
-    backend_port          = 22
-    frontend_port_range   = "1-49999"
-    protocol              = "TCP"
-    access                = "Deny"
-    priority              = "150"
-    source_address_prefix = "*"
-  }
-}
-
-variable "ip_sku" {
-  type        = string
-  description = "SKU for the public IP"
-  default     = "Standard"
+  description = "Endpoint configuration."
+  type        = map(string)
 }
 
 variable "container_configuration_exec_pool" {
-  type        = string
   description = "The type of container configuration."
-  default     = "DockerCompatible"
+  type        = string
 }
 
 variable "node_placement_exec_pool" {
-  type        = string
   description = "The placement policy for allocating nodes in the pool."
-  default     = "Regional"
+  type        = string
 }
 
 variable "registry_server" {

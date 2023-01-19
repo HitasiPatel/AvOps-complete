@@ -8,14 +8,16 @@ locals {
 
 # In all storage accounts add Batch User Assigned MI as Blob Storage Data Contributor
 resource "azurerm_role_assignment" "batch_adls_data_contributor_role" {
-  scope                = var.adls_id
+  for_each             = var.adls_storage_accounts
+  scope                = each.value.id
   role_definition_name = "Storage Blob Data Contributor"
   principal_id         = var.batch_uami_principal_id
 }
 
 # In all storage accounts add ADF MI as Blob Storage Data Contributor"
 resource "azurerm_role_assignment" "adf_adls_data_contributor_role" {
-  scope                = var.adls_id
+  for_each             = var.adls_storage_accounts
+  scope                = each.value.id
   role_definition_name = "Storage Blob Data Contributor"
   principal_id         = var.adf_sami_principal_id
 }

@@ -16,7 +16,6 @@ variable "tags" {
 variable "managed_identity_name" {
   description = "Name of the Managed Identity"
   type        = string
-  default     = "batch-mi"
 }
 
 variable "managed_identity_suffix" {

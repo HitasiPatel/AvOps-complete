@@ -20,7 +20,7 @@ variable "virtual_network_name" {
 
 variable "address_prefix" {
   description = "Address Prefix for the subnet"
-  default     = "10.0.1.0/24"
+  type        = string
 }
 
 variable "service_endpoints" {

@@ -1,4 +1,4 @@
-# Setup Infrastructure using Terraform
+# Infrastructure Setup via Terraform
 
 Setup the infrastructure for AVOps using Terraform scripts. Each resource/service is setup with a respective Terraform module in the `./modules` directory. The main calling Terraform script can be found at `./root/main.tf`. 
 

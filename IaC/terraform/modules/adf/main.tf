@@ -1,4 +1,8 @@
 locals {
+  environment                        = var.tags["environment"]
+  keyvault_link_service_name         = "LS_KeyVault"
+  storage_account_prefix             = "av"
+  adls_linked_service_prefix         = "LS"
   adf_integration_runtime_azure_name = "IntegrationRuntime"
 }
 
@@ -13,12 +17,44 @@ resource "azurerm_data_factory" "data_factory" {
   }
 }
 
+resource "azurerm_private_endpoint" "adf-private-endpoint" {
+  name                = "${var.adf_name}-private-endpoint"
+  resource_group_name = var.resource_group_name
+  location            = var.location
+  tags                = var.tags
+  subnet_id           = var.subnet_id
+
+  private_service_connection {
+    name                           = "${var.adf_name}-private-service-connection"
+    private_connection_resource_id = azurerm_data_factory.data_factory.id
+    subresource_names              = ["dataFactory"]
+    is_manual_connection           = false
+  }
+
+  private_dns_zone_group {
+    name = "default"
+    private_dns_zone_ids = [var.adf_dns_zone_id]
+  }
+}
+
 resource "azurerm_data_factory_linked_service_data_lake_storage_gen2" "linked_service_storage" {
-  name                     = "${var.storage_linked_service}_LS"
+  for_each                 = var.adls_storage_accounts
+  name                     = "${local.adls_linked_service_prefix}_${title(split(local.storage_account_prefix, split(local.environment, each.value.name)[0])[1])}"
   data_factory_id          = azurerm_data_factory.data_factory.id
   integration_runtime_name = azurerm_data_factory_integration_runtime_azure.managed_integeration_runtime.name
-  url                      = var.storage_account_primary_dfs_url
+  url                      = each.value.primary_dfs_endpoint
   use_managed_identity     = true
+}
+
+resource "azurerm_data_factory_linked_service_key_vault" "key_vault_linked_service" {
+  name                     = local.keyvault_link_service_name
+  data_factory_id          = azurerm_data_factory.data_factory.id
+  key_vault_id             = var.key_vault_id
+  integration_runtime_name = azurerm_data_factory_integration_runtime_azure.managed_integeration_runtime.name
+
+  depends_on = [
+    azurerm_data_factory_managed_private_endpoint.keyvault_managed_private_endpoint
+  ]
 }
 
 resource "azurerm_data_factory_integration_runtime_azure" "managed_integeration_runtime" {
@@ -31,4 +67,11 @@ resource "azurerm_data_factory_integration_runtime_azure" "managed_integeration_
   time_to_live_min        = 10
   cleanup_enabled         = false
   virtual_network_enabled = true
+}
+
+resource "azurerm_data_factory_managed_private_endpoint" "keyvault_managed_private_endpoint" {
+  name               = "${var.key_vault_name}-managed-pvt-endpoint"
+  data_factory_id    = azurerm_data_factory.data_factory.id
+  target_resource_id = var.key_vault_id
+  subresource_name   = "vault"
 }

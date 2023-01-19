@@ -4,14 +4,13 @@ variable "resource_group_name" {
 }
 
 variable "location" {
-  description = "Locationtion where the resources are to be deployed"
+  description = "Location where the resources are to be deployed"
   type        = string
 }
 
 variable "storage_account_name" {
   description = "Storage account names and containers"
   type        = string
-  default     = "batchstore"
 }
 
 variable "storage_suffix" {
@@ -22,19 +21,16 @@ variable "storage_suffix" {
 variable "account_replication_type" {
   description = "Defines the type of replication to use for this storage account. "
   type        = string
-  default     = "LRS"
 }
 
 variable "account_kind" {
   description = "Defines the Kind of account. "
   type        = string
-  default     = "StorageV2"
 }
 
 variable "account_tier" {
   description = "Defines the Tier to use for this storage account."
   type        = string
-  default     = "Standard"
 }
 
 variable "tags" {
@@ -47,5 +43,6 @@ variable "subnet_id" {
 }
 
 variable "default_action" {
-  default = "Allow"
+  description = "Specifies the default action of allow or deny when no other rules match."
+  type        = string
 }

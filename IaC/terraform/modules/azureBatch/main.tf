@@ -1,5 +1,5 @@
 resource "azurerm_batch_account" "batch_account" {
-  name                                = "${var.batch_account_name}${var.batch_account_suffix}${var.tags.environment}"
+  name                                = "${var.batch_account_name}batch${var.batch_account_suffix}${var.tags.environment}"
   resource_group_name                 = var.resource_group_name
   location                            = var.location
   pool_allocation_mode                = var.pool_allocation_mode
@@ -12,21 +12,31 @@ resource "azurerm_batch_account" "batch_account" {
   tags = var.tags
 }
 
-resource "azurerm_public_ip" "orch_pool_ip" {
-  name                = "${var.orch_pool_name}-ip"
+resource "azurerm_private_endpoint" "batch-private-endpoint" {
+  name                = "${var.batch_account_name}-private-endpoint"
   resource_group_name = var.resource_group_name
   location            = var.location
-  allocation_method   = "Static"
-  sku                 = var.ip_sku
-  domain_name_label   = "${var.resource_group_name}-${var.orch_pool_name}-ip"
   tags                = var.tags
+  subnet_id           = var.batch_subnet_id
+
+  private_service_connection {
+    name                           = "${var.batch_account_name}-private-service-connection"
+    private_connection_resource_id = azurerm_batch_account.batch_account.id
+    subresource_names              = ["batch"]
+    is_manual_connection           = false
+  }
+
+  private_dns_zone_group {
+    name = "default"
+    private_dns_zone_ids = [var.batch_dns_zone_id]
+  }
 }
 
 resource "azurerm_batch_pool" "orch_pool" {
   depends_on = [
     azurerm_batch_account.batch_account
   ]
-  name                = var.orch_pool_name
+  name                = "${var.batch_account_name}-${var.orch_pool_name}"
   resource_group_name = var.resource_group_name
   account_name        = azurerm_batch_account.batch_account.name
   display_name        = var.orch_pool_name
@@ -50,10 +60,10 @@ resource "azurerm_batch_pool" "orch_pool" {
     task_retry_maximum = 1
     wait_for_success   = true
     common_environment_properties = {
-      storage_account_name        = var.adls_account_name
-      container_name              = var.container_name
-      BATCH_INSIGHTS_DOWNLOAD_URL = "https://github.com/Azure/batch-insights/releases/download/v1.3.0/batch-insights"
-      AZCOPY_CONCURRENCY_VALUE    = "AUTO"
+      storage_account_container_map = jsonencode(var.storage_account_container_map)
+      env                           = var.tags.environment
+      BATCH_INSIGHTS_DOWNLOAD_URL   = "https://github.com/Azure/batch-insights/releases/download/v1.3.0/batch-insights"
+      AZCOPY_CONCURRENCY_VALUE      = "AUTO"
     }
     user_identity {
       auto_user {
@@ -81,26 +91,14 @@ resource "azurerm_batch_pool" "orch_pool" {
         source_address_prefix = var.endpoint_configuration.source_address_prefix
       }
     }
-    public_address_provisioning_type = "UserManaged"
-    public_ips                       = [azurerm_public_ip.orch_pool_ip.id]
   }
-}
-
-resource "azurerm_public_ip" "exec_pool_ip" {
-  name                = "${var.exec_pool_name}-ip"
-  resource_group_name = var.resource_group_name
-  location            = var.location
-  allocation_method   = "Static"
-  sku                 = var.ip_sku
-  domain_name_label   = "${var.resource_group_name}-${var.exec_pool_name}-ip"
-  tags                = var.tags
 }
 
 resource "azurerm_batch_pool" "exec_pool" {
   depends_on = [
     azurerm_batch_account.batch_account
   ]
-  name                = "${var.exec_pool_name}"
+  name                = "${var.batch_account_name}-${var.exec_pool_name}"
   resource_group_name = var.resource_group_name
   account_name        = azurerm_batch_account.batch_account.name
   display_name        = var.exec_pool_name
@@ -132,10 +130,10 @@ resource "azurerm_batch_pool" "exec_pool" {
     task_retry_maximum = 1
     wait_for_success   = true
     common_environment_properties = {
-      storage_account_name        = var.adls_account_name
-      container_name              = var.container_name
-      BATCH_INSIGHTS_DOWNLOAD_URL = "https://github.com/Azure/batch-insights/releases/download/v1.3.0/batch-insights"
-      AZCOPY_CONCURRENCY_VALUE    = "AUTO"
+      storage_account_container_map = jsonencode(var.storage_account_container_map)
+      env                           = var.tags.environment
+      BATCH_INSIGHTS_DOWNLOAD_URL   = "https://github.com/Azure/batch-insights/releases/download/v1.3.0/batch-insights"
+      AZCOPY_CONCURRENCY_VALUE      = "AUTO"
     }
     user_identity {
       auto_user {
@@ -181,7 +179,5 @@ resource "azurerm_batch_pool" "exec_pool" {
         source_address_prefix = var.endpoint_configuration.source_address_prefix
       }
     }
-    public_address_provisioning_type = "UserManaged"
-    public_ips                       = [azurerm_public_ip.exec_pool_ip.id]
   }
 }

@@ -1,0 +1,1 @@
+This module is for creating the private dns zones used by Azure resources.

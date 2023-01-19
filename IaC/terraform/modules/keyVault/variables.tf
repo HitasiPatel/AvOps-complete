@@ -11,13 +11,11 @@ variable "location" {
 variable "kv_sku_name" {
   description = "keyvault sku - potential values Standard and Premium"
   type        = string
-  default     = "standard"
 }
 
 variable "key_vault_name" {
   description = "Key vault name"
   type        = string
-  default     = "kv"
 }
 
 variable "kv_suffix" {
@@ -32,4 +30,9 @@ variable "subnet_id" {
 variable "tags" {
   description = "Tags to associate with the key vault resource"
   type        = map(string)
+}
+
+variable "vault_core_dns_zone_id" {
+  description = "vault core dns zone id"
+  type = string
 }

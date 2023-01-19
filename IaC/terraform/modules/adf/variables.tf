@@ -11,7 +11,6 @@ variable "location" {
 variable "adf_name" {
   description = "Name of the Azure Data Factory"
   type        = string
-  default     = "adf"
 }
 
 variable "adf_suffix" {
@@ -27,12 +26,16 @@ variable "tags" {
 variable "managed_virtual_network_enabled" {
   description = "Is Managed Virtual Network enabled?"
   type        = bool
-  default     = true
 }
 
 variable "subnet_id" {
   description = "Virtual network subnet ID"
   type        = string
+}
+
+variable "adf_dns_zone_id" {
+  description = "Data Factory DNS zone ID"
+  type = string
 }
 
 variable "virtual_network_id" {
@@ -45,8 +48,8 @@ variable "key_vault_name" {
   type        = string
 }
 
-variable "storage_account_primary_dfs_url" {
-  description = "Storage account primary dfs url"
+variable "adls_storage_accounts" {
+  description = "Storage account primary dfs urls"
 }
 
 variable "key_vault_id" {
@@ -56,11 +59,5 @@ variable "key_vault_id" {
 
 variable "node_size" {
   description = "The size of the nodes on which the Managed Integration Runtime runs."
-  type        = string
-  default     = "Standard_D8_v3"
-}
-
-variable "storage_linked_service" {
-  description = "Name of the storage account linked service"
   type        = string
 }
