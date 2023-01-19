@@ -1,5 +1,9 @@
+locals {
+  resource_type = "batch"
+}
+
 resource "azurerm_storage_account" "batch_storage" {
-  name                     = "${var.storage_account_name}${var.storage_suffix}${var.tags.environment}"
+  name                     = "${local.resource_type}${var.storage_account_name}${var.storage_suffix}${var.tags.environment}"
   resource_group_name      = var.resource_group_name
   location                 = var.location
   account_tier             = var.account_tier

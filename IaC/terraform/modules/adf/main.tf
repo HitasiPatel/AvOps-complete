@@ -1,5 +1,6 @@
 locals {
   environment                        = var.tags["environment"]
+  resource_type                      = "adf"
   keyvault_link_service_name         = "LS_KeyVault"
   storage_account_prefix             = "av"
   adls_linked_service_prefix         = "LS"
@@ -7,7 +8,7 @@ locals {
 }
 
 resource "azurerm_data_factory" "data_factory" {
-  name                            = "${var.adf_name}-${var.adf_suffix}-${var.tags.environment}"
+  name                            = "${local.resource_type}-${var.adf_name}-${var.adf_suffix}"
   location                        = var.location
   resource_group_name             = var.resource_group_name
   managed_virtual_network_enabled = var.managed_virtual_network_enabled
@@ -18,14 +19,14 @@ resource "azurerm_data_factory" "data_factory" {
 }
 
 resource "azurerm_private_endpoint" "adf-private-endpoint" {
-  name                = "${var.adf_name}-private-endpoint"
+  name                = "${local.resource_type}-${var.adf_name}-private-endpoint"
   resource_group_name = var.resource_group_name
   location            = var.location
   tags                = var.tags
   subnet_id           = var.subnet_id
 
   private_service_connection {
-    name                           = "${var.adf_name}-private-service-connection"
+    name                           = "${local.resource_type}-${var.adf_name}-private-service-connection"
     private_connection_resource_id = azurerm_data_factory.data_factory.id
     subresource_names              = ["dataFactory"]
     is_manual_connection           = false
@@ -70,7 +71,7 @@ resource "azurerm_data_factory_integration_runtime_azure" "managed_integeration_
 }
 
 resource "azurerm_data_factory_managed_private_endpoint" "keyvault_managed_private_endpoint" {
-  name               = "${var.key_vault_name}-managed-pvt-endpoint"
+  name               = "${var.key_vault_name}-managed-private-endpoint"
   data_factory_id    = azurerm_data_factory.data_factory.id
   target_resource_id = var.key_vault_id
   subresource_name   = "vault"

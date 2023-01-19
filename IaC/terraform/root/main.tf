@@ -6,7 +6,7 @@ resource "random_string" "common_suffix" {
   keepers = {
     "resource_group_name" = var.resource_group_name
   }
-  length  = 8
+  length  = 5
   numeric = false
   upper   = false
   special = false

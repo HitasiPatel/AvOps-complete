@@ -1,5 +1,9 @@
+locals {
+  resource_type = "batch"
+}
+
 resource "azurerm_batch_account" "batch_account" {
-  name                                = "${var.batch_account_name}batch${var.batch_account_suffix}${var.tags.environment}"
+  name                                = "${local.resource_type}${var.batch_account_name}${var.batch_account_suffix}${var.tags.environment}"
   resource_group_name                 = var.resource_group_name
   location                            = var.location
   pool_allocation_mode                = var.pool_allocation_mode
@@ -13,14 +17,14 @@ resource "azurerm_batch_account" "batch_account" {
 }
 
 resource "azurerm_private_endpoint" "batch-private-endpoint" {
-  name                = "${var.batch_account_name}-batch-private-endpoint"
+  name                = "${local.resource_type}-${var.batch_account_name}-${var.tags.environment}-private-endpoint"
   resource_group_name = var.resource_group_name
   location            = var.location
   tags                = var.tags
   subnet_id           = var.batch_subnet_id
 
   private_service_connection {
-    name                           = "${var.batch_account_name}-private-service-connection"
+    name                           = "${local.resource_type}-${var.batch_account_name}-${var.tags.environment}-private-service-connection"
     private_connection_resource_id = azurerm_batch_account.batch_account.id
     subresource_names              = ["batchAccount"]
     is_manual_connection           = false

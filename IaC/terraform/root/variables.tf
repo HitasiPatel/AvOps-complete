@@ -46,6 +46,7 @@ variable "privatelink_subnet_name" {
 variable "privatelink_subnet_address_prefix" {
   description = "Address Prefix for the private link subnet"
   type        = string
+  default     = "10.0.1.0/24"
 }
 
 variable "privatelink_subnet_service_endpoints" {
@@ -63,6 +64,7 @@ variable "appservice_subnet_name" {
 variable "appservice_subnet_address_prefix" {
   description = "Address Prefix for the app service subnet"
   type        = string
+  default     = "10.0.2.0/24"
 }
 
 variable "appservice_subnet_service_endpoints" {
@@ -78,7 +80,7 @@ variable "appservice_subnet_service_endpoints" {
 variable "cosmosdb_name" {
   description = "Name of the CosmosDB account"
   type        = string
-  default     = "av-dataops-cosmosdb"
+  default     = "av-dataops"
 }
 
 variable "cosmosdb_offer_type" {
@@ -102,6 +104,7 @@ variable "cosmosdb_consistency_level" {
 variable "cosmosdb_replication_location" {
   description = "The name of the Azure region to host replicated data."
   type        = string
+  default     = "northeurope"
 }
 
 variable "cosmosdb_capabilities" {
@@ -128,7 +131,7 @@ variable "cosmosdb_total_throughput_limit" {
 # ------------------------------------------------------------------------------------------------------
 
 variable "kv_sku_name" {
-  description = "keyvault sku - potential values Standard and Premium"
+  description = "keyvault sku - potential values standard and premium"
   type        = string
   default     = "standard"
 }
@@ -145,7 +148,25 @@ variable "kv_name" {
 
 variable "adls_storage_account_container_config" {
   description = "A nested map of storage accounts to containers to lifecycle policies"
-  type = map(map(map(string)))
+  type        = map(map(map(string)))
+  default     = {
+    "avlanding:LRS" = {
+      "landing"       = {}
+      "archive"       = { "archive" : "1" }
+      "error-landing" = { "delete" : "7" }
+    }
+    "avraw:ZRS" = {
+      "raw"       = { "cool" : "7" }
+      "error-raw" = { "delete" : "7" }
+    }
+    "avderived:ZRS" = {
+      "extracted"    = { "cool" : "30" }
+      "synchronized" = { "cool" : "30" }
+      "derived"      = { "cool" : "30" }
+      "curated"      = { "cool" : "90" }
+      "annotated"    = {}
+    }
+  }
 }
 
 variable "adls_account_kind" {
@@ -208,7 +229,7 @@ variable "adls_blob_storage_cors_origins" {
 variable "batch_storage_account_name" {
   description = "Storage account names and containers"
   type        = string
-  default     = "avdopsbatch"
+  default     = "avdops"
 }
 
 variable "batch_storage_account_replication_type" {
@@ -242,7 +263,7 @@ variable "batch_storage_default_action" {
 variable "batch_managed_identity_name" {
   description = "Name of the Managed Identity for Batch"
   type        = string
-  default     = "batch-mi"
+  default     = "av-dataops-batch"
 }
 
 # ------------------------------------------------------------------------------------------------------
@@ -252,7 +273,7 @@ variable "batch_managed_identity_name" {
 variable "acr_name" {
   description = "Name of the Azure Container Registry"
   type        = string
-  default     = "avdataopsacr"
+  default     = "avdataops"
 }
 
 variable "acr_sku" {
@@ -268,7 +289,7 @@ variable "acr_sku" {
 variable "batch_account_name" {
   description = "Name of the Azure Batch Account"
   type        = string
-  default     = "avdataopsbatch"
+  default     = "avdataops"
 }
 
 variable "batch_account_tier" {
@@ -362,10 +383,16 @@ variable "batch_storage_image_reference_exec_pool" {
 variable "batch_storage_account_container_map" {
   description = "Storage account names and containers"
   type        = map(list(string))
+  default     = {
+    "avlanding" = ["landing", "archive", "error-landing"],
+    "avraw"     = ["raw", "error-raw"],
+    "avderived" = ["extracted", "derived", "synchronized", "curated", "annotated"]
+  }
 }
 
 variable "batch_endpoint_configuration" {
-  type = map(string)
+  description = "Endpoint configuration for batch"
+  type    = map(string)
   default = {
     backend_port          = 22
     frontend_port_range   = "1-49999"
@@ -377,14 +404,14 @@ variable "batch_endpoint_configuration" {
 }
 
 variable "batch_container_configuration_exec_pool" {
-  type        = string
   description = "The type of container configuration."
+  type        = string
   default     = "DockerCompatible"
 }
 
 variable "batch_node_placement_exec_pool" {
-  type        = string
   description = "The placement policy for allocating nodes in the pool."
+  type        = string
   default     = "Regional"
 }
 
@@ -395,7 +422,7 @@ variable "batch_node_placement_exec_pool" {
 variable "adf_name" {
   description = "Name of the Azure Data Factory"
   type        = string
-  default     = "av-dataops-adf"
+  default     = "av-dataops"
 }
 
 variable "adf_managed_virtual_network_enabled" {
