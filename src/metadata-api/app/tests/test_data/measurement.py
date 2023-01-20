@@ -7,7 +7,7 @@ measurementPostValidPayloadData = {
     },
     "vehicle": {
         "id": "KA01LB1234",
-        "name": "Duster",
+        "name": "SampleCar",
         "platform": "SUV",
         "transmission": "MANUAL",
         "fuel": "PETROL",
@@ -53,7 +53,7 @@ measurementPostValidPayloadData = {
         {
             "id": "123e4567-e89b-12d3-a456-426614174000",
             "filePath": "/ssd_a/<measurementId>/",
-            "fileName": "Duster__2022-07-20-16-23-28_0.bag",
+            "fileName": "SampleCar__2022-07-20-16-23-28_0.bag",
             "checksum": "abcd",
             "createdAt": 1698989898,
         }
@@ -87,7 +87,7 @@ measurementPostInValidPayloadMissingIdData = {
         {
             "id": "123e4567-e89b-12d3-a456-426614174000",
             "filePath": "/ssd_a/<measurementId>/",
-            "fileName": "Duster__2022-07-20-16-23-28_0.bag",
+            "fileName": "SampleCar__2022-07-20-16-23-28_0.bag",
             "checksum": "abcd",
             "createdAt": 1698989898,
         }
@@ -121,7 +121,7 @@ measurementPostInValidPayloadMissingVehicleIdData = {
         {
             "id": "123e4567-e89b-12d3-a456-426614174000",
             "filePath": "/ssd_a/<measurementId>/",
-            "fileName": "Duster__2022-07-20-16-23-28_0.bag",
+            "fileName": "SampleCar__2022-07-20-16-23-28_0.bag",
             "checksum": "abcd",
             "createdAt": 1698989898,
         }
@@ -160,7 +160,7 @@ measurementPostValidPayloadBaseData = {
         {
             "id": "123e4567-e89b-12d3-a456-426614174000",
             "filePath": "/ssd_a/<measurementId>/",
-            "fileName": "Duster__2022-07-20-16-23-28_0.bag",
+            "fileName": "SampleCar__2022-07-20-16-23-28_0.bag",
             "checksum": "abcd",
             "createdAt": 1698989898,
         }
