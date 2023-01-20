@@ -233,7 +233,7 @@ module "role_assignments" {
     module.batch,
     module.data_factory
   ]
-  source                   = "../modules/role_assignments"
+  source                   = "../modules/roleAssignments"
   adls_storage_accounts    = module.adls.storage_accounts
   batch_storage_account_id = module.batch_storage_account.storage_account_id
   adf_sami_principal_id    = module.data_factory.adf_principal_id
