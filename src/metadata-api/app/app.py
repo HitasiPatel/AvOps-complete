@@ -1,24 +1,21 @@
-import os
-from fastapi.encoders import jsonable_encoder
-from app.api.api import api_router
-from starlette.requests import Request
-from fastapi.middleware.cors import CORSMiddleware
 import logging.config
-from logging import getLogger
 from os import path
+from logging import getLogger
+
+from app.api.api import api_router
 
 from app.utils.exceptions import addExceptionHandler
-
-from app.api.api import api_router
-import certifi
 from app.core.models.models import __beanie_models__
 from app.core.config import getSettings
+from app.utils.constants import *
+from app.avcloudapicommons.instrumentation.fastapi import FastapiInstrumetator
+
 import motor
 from beanie import init_beanie
 from fastapi import FastAPI
-from azure.storage.blob import BlobServiceClient
-from app.utils.constants import *
-from app.avcloudapicommons.instrumentation.fastapi import FastapiInstrumetator
+from fastapi.middleware.cors import CORSMiddleware
+
+
 
 log_file_path = path.join(path.dirname(path.abspath(__file__)), LOGGING_CONF)
 logging.config.fileConfig(log_file_path, disable_existing_loggers=False)

@@ -1,19 +1,16 @@
-from app.core.models.measurements import Measurement
-from app.core.schemas.measurements import (
-    MeasurementListResponse,
-    MeasurementResponse,
-    MeasurementRequest,
-    MeasurementPatchRequest,
-)
-from starlette.requests import Request
-from fastapi import APIRouter, HTTPException, Response, status
-from app.core.services.common import *
+import json
 from logging import getLogger
+
+from app.core.models.measurements import Measurement
+from app.core.schemas.measurements import (MeasurementListResponse,
+                                           MeasurementPatchRequest,
+                                           MeasurementRequest,
+                                           MeasurementResponse)
+from app.core.services.common import *
 from app.utils.constants import *
 from app.utils.dateUtils import getNowAsIntWithTZ
-import json
-import math
-
+from fastapi import APIRouter, HTTPException, Response, status
+from starlette.requests import Request
 
 router = APIRouter()
 
