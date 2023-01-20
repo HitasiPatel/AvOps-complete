@@ -243,7 +243,6 @@ module "role_assignments" {
   key_vault_id             = module.key_vault.key_vault_id
   acr_id                   = module.container_registry.acr_id
   tenant_id                = module.key_vault.tenant_id
-  object_id                = module.key_vault.object_id
 }
 
 module "kv_secrets" {
