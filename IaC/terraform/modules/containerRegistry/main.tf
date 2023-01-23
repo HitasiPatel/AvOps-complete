@@ -10,7 +10,6 @@ resource "azurerm_container_registry" "acr" {
   admin_enabled       = false
   tags                = var.tags
   identity {
-    type = "UserAssigned"
-    identity_ids = [var.batch_uami_id]
+    type = "SystemAssigned"
   }
 }

@@ -35,7 +35,7 @@ variable "subnet_id" {
 
 variable "adf_dns_zone_id" {
   description = "Data Factory DNS zone ID"
-  type = string
+  type        = string
 }
 
 variable "virtual_network_id" {
@@ -59,5 +59,15 @@ variable "key_vault_id" {
 
 variable "node_size" {
   description = "The size of the nodes on which the Managed Integration Runtime runs."
+  type        = string
+}
+
+variable "app_service_id" {
+  description = "App Service Linked Service ID"
+  type        = string
+}
+
+variable "app_service_name" {
+  description = "App Service Linked Service Name"
   type        = string
 }

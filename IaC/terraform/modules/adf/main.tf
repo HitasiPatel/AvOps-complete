@@ -5,6 +5,7 @@ locals {
   storage_account_prefix             = "av"
   adls_linked_service_prefix         = "LS"
   adf_integration_runtime_azure_name = "IntegrationRuntime"
+  approve_managed_ep_script_path     = "../modules/adf/approve_managed_endpoints.sh"
 }
 
 resource "azurerm_data_factory" "data_factory" {
@@ -33,7 +34,7 @@ resource "azurerm_private_endpoint" "adf-private-endpoint" {
   }
 
   private_dns_zone_group {
-    name = "default"
+    name                 = "default"
     private_dns_zone_ids = [var.adf_dns_zone_id]
   }
 }
@@ -75,4 +76,22 @@ resource "azurerm_data_factory_managed_private_endpoint" "keyvault_managed_priva
   data_factory_id    = azurerm_data_factory.data_factory.id
   target_resource_id = var.key_vault_id
   subresource_name   = "vault"
+}
+
+resource "azurerm_data_factory_managed_private_endpoint" "app_service_managed_private_endpoint" {
+  name               = "${var.app_service_name}-managed-private-endpoint"
+  data_factory_id    = azurerm_data_factory.data_factory.id
+  target_resource_id = var.app_service_id
+  subresource_name   = "sites"
+}
+
+
+resource "null_resource" "approve_managed_endpoint" {
+  depends_on = [
+    azurerm_data_factory_managed_private_endpoint.app_service_managed_private_endpoint,
+    azurerm_data_factory_managed_private_endpoint.keyvault_managed_private_endpoint
+  ]
+  provisioner "local-exec" {
+    command = "chmod +x ${local.approve_managed_ep_script_path};  ${local.approve_managed_ep_script_path} ${var.resource_group_name} ${var.key_vault_name} ${var.app_service_name} ${azurerm_data_factory_managed_private_endpoint.keyvault_managed_private_endpoint.name} ${azurerm_data_factory_managed_private_endpoint.app_service_managed_private_endpoint.name}"
+  }
 }

@@ -26,3 +26,7 @@ variable "address_prefix" {
 variable "service_endpoints" {
   description = "Service Endpoints associated with the subnet"
 }
+
+variable "subnet_delegation" {
+  description = "Delegation used for the subnet"
+}

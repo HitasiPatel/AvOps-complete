@@ -17,3 +17,7 @@ output "batch_dns_zone_id" {
 output "mongo_cosmos_dns_zone_id" {
   value = azurerm_private_dns_zone.mongo_cosmos_private_link.id
 }
+
+output "app_service_dns_zone_id" {
+  value = azurerm_private_dns_zone.app_service_private_link.id
+}

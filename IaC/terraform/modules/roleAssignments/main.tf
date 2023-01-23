@@ -1,7 +1,8 @@
 locals {
   kv_access_policies = [
     { object_id = var.batch_uami_principal_id, key_permissions = [], secret_permissions = ["Get", "List"], certificate_permissions = [] },
-    { object_id = var.adf_sami_principal_id, key_permissions = [], secret_permissions = ["Get", "List"], certificate_permissions = [] }
+    { object_id = var.adf_sami_principal_id, key_permissions = [], secret_permissions = ["Get", "List"], certificate_permissions = [] },
+    { object_id = var.app_service_sami_principal_id, key_permissions = [], secret_permissions = ["Get", "List"], certificate_permissions = [] }
   ]
 }
 
@@ -62,6 +63,14 @@ resource "azurerm_key_vault_access_policy" "kv_access_policy_batch" {
 # Give Batch access to ACR
 resource "azurerm_role_assignment" "batch_uami_acrpull_role" {
   principal_id                     = var.batch_uami_principal_id
+  role_definition_name             = "AcrPull"
+  scope                            = var.acr_id
+  skip_service_principal_aad_check = true
+}
+
+# Give Linux Web app (App service) access to ACR
+resource "azurerm_role_assignment" "app_service_acrpull_role" {
+  principal_id                     = var.app_service_sami_principal_id
   role_definition_name             = "AcrPull"
   scope                            = var.acr_id
   skip_service_principal_aad_check = true

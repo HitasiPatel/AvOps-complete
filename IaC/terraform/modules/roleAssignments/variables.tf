@@ -33,3 +33,7 @@ variable "key_vault_id" {
 variable "tenant_id" {
   description = "tenant id"
 }
+
+variable "app_service_sami_principal_id" {
+  description = "App service System assigned managed identity"
+}

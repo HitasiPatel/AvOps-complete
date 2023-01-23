@@ -37,3 +37,11 @@ output "batch_account_name" {
 output "data_factory_name" {
   value = module.data_factory.adf_name
 }
+
+output "app_svc_name" {
+  value = module.app_service.app_service_name
+}
+
+output "metadata_api_url" {
+  value = "https://${module.app_service.app_service_default_host_name}"
+}

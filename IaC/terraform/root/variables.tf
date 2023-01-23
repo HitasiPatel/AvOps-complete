@@ -149,7 +149,7 @@ variable "kv_name" {
 variable "adls_storage_account_container_config" {
   description = "A nested map of storage accounts to containers to lifecycle policies"
   type        = map(map(map(string)))
-  default     = {
+  default = {
     "avlanding:LRS" = {
       "landing"       = {}
       "archive"       = { "archive" : "1" }
@@ -383,7 +383,7 @@ variable "batch_storage_image_reference_exec_pool" {
 variable "batch_storage_account_container_map" {
   description = "Storage account names and containers"
   type        = map(list(string))
-  default     = {
+  default = {
     "avlanding" = ["landing", "archive", "error-landing"],
     "avraw"     = ["raw", "error-raw"],
     "avderived" = ["extracted", "derived", "synchronized", "curated", "annotated"]
@@ -392,7 +392,7 @@ variable "batch_storage_account_container_map" {
 
 variable "batch_endpoint_configuration" {
   description = "Endpoint configuration for batch"
-  type    = map(string)
+  type        = map(string)
   default = {
     backend_port          = 22
     frontend_port_range   = "1-49999"

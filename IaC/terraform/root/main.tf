@@ -37,6 +37,7 @@ module "privatelink_subnet" {
   subnet_name          = var.privatelink_subnet_name
   address_prefix       = var.privatelink_subnet_address_prefix
   service_endpoints    = var.privatelink_subnet_service_endpoints
+  subnet_delegation    = {}
 }
 
 module "appservice_subnet" {
@@ -47,6 +48,14 @@ module "appservice_subnet" {
   subnet_name          = var.appservice_subnet_name
   address_prefix       = var.appservice_subnet_address_prefix
   service_endpoints    = var.appservice_subnet_service_endpoints
+  subnet_delegation = {
+    app-service-plan = [
+      {
+        name    = "Microsoft.Web/serverFarms"
+        actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
+      }
+    ]
+  }
 }
 
 # ------------------------------------------------------------------------------------------------------
@@ -54,8 +63,8 @@ module "appservice_subnet" {
 # ------------------------------------------------------------------------------------------------------
 
 module "dns_zones" {
-  source               = "../modules/dnsZones"
-  resource_group_name  = var.resource_group_name
+  source              = "../modules/dnsZones"
+  resource_group_name = var.resource_group_name
 }
 
 # ------------------------------------------------------------------------------------------------------
@@ -81,8 +90,27 @@ module "cosmosdb" {
 }
 
 # ------------------------------------------------------------------------------------------------------
-# Deploy key vault
+# Deploy App Service 
 # ------------------------------------------------------------------------------------------------------
+
+module "app_service" {
+  source                  = "../modules/appSvc"
+  resource_group_name     = var.resource_group_name
+  location                = var.location
+  tags                    = var.tags
+  app_service_subnet_id   = module.appservice_subnet.subnet_id
+  private_link_subnet_id  = module.privatelink_subnet.subnet_id
+  virtual_network_name    = module.virtual_network.virtual_network_name
+  virtual_network_id      = module.virtual_network.virtual_network_id
+  app_service_dns_zone_id = module.dns_zones.app_service_dns_zone_id
+  app_svc_suffix          = random_string.common_suffix.id
+  acr_login_server        = module.container_registry.login_server
+  acr_sami_principal_id   = module.container_registry.acr_sami_principal_id
+}
+
+#------------------------------------------------------------------------------------------------------
+# Deploy key vault
+#------------------------------------------------------------------------------------------------------
 
 module "key_vault" {
   source                 = "../modules/keyVault"
@@ -126,17 +154,17 @@ module "adls" {
 # ------------------------------------------------------------------------------------------------------
 
 module "batch_storage_account" {
-  source                    = "../modules/storage"
-  resource_group_name       = var.resource_group_name
-  tags                      = var.tags
-  location                  = var.location
-  storage_account_name      = var.batch_storage_account_name
-  storage_suffix            = random_string.common_suffix.id
-  account_replication_type  = var.batch_storage_account_replication_type
-  account_kind              = var.batch_storage_account_kind
-  account_tier              = var.batch_storage_account_tier
-  default_action            = var.batch_storage_default_action  
-  subnet_id                 = module.privatelink_subnet.subnet_id
+  source                   = "../modules/storage"
+  resource_group_name      = var.resource_group_name
+  tags                     = var.tags
+  location                 = var.location
+  storage_account_name     = var.batch_storage_account_name
+  storage_suffix           = random_string.common_suffix.id
+  account_replication_type = var.batch_storage_account_replication_type
+  account_kind             = var.batch_storage_account_kind
+  account_tier             = var.batch_storage_account_tier
+  default_action           = var.batch_storage_default_action
+  subnet_id                = module.privatelink_subnet.subnet_id
 }
 
 # ------------------------------------------------------------------------------------------------------
@@ -208,20 +236,22 @@ module "batch" {
 # ------------------------------------------------------------------------------------------------------
 
 module "data_factory" {
-  source                           = "../modules/adf"
-  resource_group_name              = var.resource_group_name
-  location                         = var.location
-  tags                             = var.tags
-  adf_name                         = var.adf_name
-  adf_suffix                       = random_string.common_suffix.id
-  managed_virtual_network_enabled  = var.adf_managed_virtual_network_enabled
-  node_size                        = var.adf_node_size
-  virtual_network_id               = module.virtual_network.virtual_network_id
-  subnet_id                        = module.privatelink_subnet.subnet_id
-  adls_storage_accounts            = module.adls.storage_accounts
-  key_vault_id                     = module.key_vault.key_vault_id
-  key_vault_name                   = module.key_vault.key_vault_name
-  adf_dns_zone_id                  = module.dns_zones.adf_dns_zone_id
+  source                          = "../modules/adf"
+  resource_group_name             = var.resource_group_name
+  location                        = var.location
+  tags                            = var.tags
+  adf_name                        = var.adf_name
+  adf_suffix                      = random_string.common_suffix.id
+  managed_virtual_network_enabled = var.adf_managed_virtual_network_enabled
+  node_size                       = var.adf_node_size
+  virtual_network_id              = module.virtual_network.virtual_network_id
+  subnet_id                       = module.privatelink_subnet.subnet_id
+  adls_storage_accounts           = module.adls.storage_accounts
+  key_vault_id                    = module.key_vault.key_vault_id
+  key_vault_name                  = module.key_vault.key_vault_name
+  app_service_id                  = module.app_service.app_service_id
+  app_service_name                = module.app_service.app_service_name
+  adf_dns_zone_id                 = module.dns_zones.adf_dns_zone_id
 }
 
 # ------------------------------------------------------------------------------------------------------
@@ -233,16 +263,17 @@ module "role_assignments" {
     module.batch,
     module.data_factory
   ]
-  source                   = "../modules/roleAssignments"
-  adls_storage_accounts    = module.adls.storage_accounts
-  batch_storage_account_id = module.batch_storage_account.storage_account_id
-  adf_sami_principal_id    = module.data_factory.adf_principal_id
-  batch_sami_principal_id  = module.batch.batch_sami_principal_id
-  batch_uami_principal_id  = module.batch_managed_identity.managed_identity_principal_id
-  batch_account_id         = module.batch.batch_account_id
-  key_vault_id             = module.key_vault.key_vault_id
-  acr_id                   = module.container_registry.acr_id
-  tenant_id                = module.key_vault.tenant_id
+  source                        = "../modules/roleAssignments"
+  adls_storage_accounts         = module.adls.storage_accounts
+  batch_storage_account_id      = module.batch_storage_account.storage_account_id
+  adf_sami_principal_id         = module.data_factory.adf_principal_id
+  batch_sami_principal_id       = module.batch.batch_sami_principal_id
+  batch_uami_principal_id       = module.batch_managed_identity.managed_identity_principal_id
+  app_service_sami_principal_id = module.app_service.app_service_sami_principal_id
+  batch_account_id              = module.batch.batch_account_id
+  key_vault_id                  = module.key_vault.key_vault_id
+  acr_id                        = module.container_registry.acr_id
+  tenant_id                     = module.key_vault.tenant_id
 }
 
 module "kv_secrets" {
