@@ -1,32 +1,3 @@
-# class FilterConstants:
-#     ADMIN: str = "admin"
-#     ASCENDING: str = "asc"
-#     CREATED_AT: str = "createdAt"
-#     DESCENDING: str = "desc"
-#     FILTER_CONDITION_COLUMN_SPLIT = "."
-#     FILTER_CONDITION_DELIMITER = ":"
-#     FILTER_SEARCH_DELIMITER = ";"
-#     FLOAT: str = "float"
-#     ID: str = "id"
-#     ID_PREFIX: str = "_"
-#     INT: str = "int"
-#     IS_DELETED: str = "isDeleted"
-#     ITEMS: str = "items"
-#     MONGODB_AND_CONDITION: str = "$and"
-#     MONGODB_FILTER_EQUAL: str = "eq"
-#     MONGODB_FILTER_EXISTS: str = "exists"
-#     MONGODB_FILTER_IN: str = "in"
-#     MONGODB_FILTER_NOT_IN: str = "nin"
-#     MONGODB_FILTER_PREFIX: str = "$"
-#     MULTI_VALUE_SPLIT: str = ","
-#     UTILS_TEST_INPUT: str = "input"
-#     UTILS_TEST_OUTPUT: str = "output"
-#     UTILS_TEST_PAGE_INPUT: str = "page"
-#     UTILS_TEST_SIZE_INPUT: str = "size"
-#     DEFAULT_PAGE_SIZE: int = 50
-#     DEFAULT_PAGE_NUMBER: int = 1
-#     ERR_CONDITION_FILTER: str = "Filters format is not valid"
-
 class AggregatorsConstants:
     AGGREGATE_CONDITION_DELIMITER: str = ":"
     AGGREGATE_SEARCH_DELIMITER: str = ";"
