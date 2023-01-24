@@ -15,3 +15,19 @@ repos:
         args: ['--baseline', '.secrets.baseline']
         exclude: package.lock.json
         additional_dependencies: ['gibberish-detector']
+
+-   repo: local
+    hooks:
+    -   id: validate-commit-msg
+        name: Check for either an Azure Devops Issue ('ADA-123') or 'Merge' in commit message
+        language: pygrep
+        entry: ^(ADA-[0-9]+|Merge)
+        args: [--multiline, --negate]
+        stages: [commit-msg]
+
+-   repo: local
+    hooks:
+    -   id: branch-name
+        name: Branch name check
+        language: script
+        entry: ./.githooks/branch-name
