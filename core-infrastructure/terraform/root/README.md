@@ -1,45 +1,63 @@
 # Root Template
 
-This folder contains the main terraform script used to call the component modules to create the necessary infrastructure. 
+This folder contains the main Terraform script used to call the component modules to create the necessary infrastructure. 
 
 ### Prerequisites
-- Azure subscription and permissions to create: 
-  Storage Account, Subnets, VNet, Azure Batch, Data Factory (ADF), Key Vault, Cosmos DB, App Service
+- Azure subscription with Owner role
+- Bash/Z shell (tested on Codespaces, Mac, Ubuntu, Windows with WSL2)
 - Terraform v1.3.5+ ([download](https://developer.hashicorp.com/terraform/downloads))
 - AZ CLI ([download](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest))
 
 ### Deployment
 
-Prior running the deployment, it is recommended to initialize a remote storage location for storing the terraform backend state. Refer to the [setup steps](#setup-remote-terraform-backend-storage) to do so.
+Prior to running the deployment, the pre-deployment step initializes the following resources necessary to run the main Terraform script:
+- Service Principal with Owner role to authenticate Terraform
+- Azure Storage Account and Blob Container to store the Terraform backend state
+- Resource Group to store the Storage Account
+
+Then, the main Terraform script sets up the AV DataOps components, all within a resource group of location and environment tag specified in the `terraform.tfvars` configuration file.
+
+Prepare for the main deployment by running the pre-deploy steps.
 
 ```bash
 
-export ENV_NAME=dev
-export RESOURCE_GROUP_NAME=rg-avdataops-$ENV_NAME
-export RESOURCE_GROUP_LOCATION=westeurope
+# Navigate to the root templates dir (repo_dir/core-infrastructure/terraform/root)
 
-az group create -n $RESOURCE_GROUP_NAME -l $RESOURCE_GROUP_LOCATION
+# Connecting to Azure with specific tenant (e.g. microsoft.onmicrosoft.com)
+az login --tenant '{Tenant Id}'
 
-# Navigate to the root templates dir (repo_dir/IaC/terraform/root)
+# change the active subscription using the subscription name
+az account set --subscription "{Subscription Id or Name}"
+
+# Run pre-deployment step
+# OPTIONAL args: ./pre-deploy.sh -l westeurope -e dev -h
+./pre-deploy.sh
+
+```
+
+Run the main deployment script. Repeat these steps to rerun the terraform deployment.
+
+```bash
+
+# if your terminal environment gets cleared, you can source the file to reload the environment variables
+source .avdataops-tf.env
 
 # Initialize terraform config
-export TF_RG_NAME=rg-tfstate
-export TF_STORAGE_ACCOUNT=<TF storage account>
-export TF_CONTAINER_NAME=tfstate-$ENV_NAME
-export TF_STORAGE_ACCOUNT_KEY="az storage account keys list --resource-group $TF_RG_NAME --account-name $TF_STORAGE_ACCOUNT --query '[0].value' -o tsv"
-
 terraform init \
-  -backend-config="resource_group_name=$TF_RG_NAME" \
-  -backend-config="storage_account_name=$TF_STORAGE_ACCOUNT" \
-  -backend-config="container_name=$TF_CONTAINER_NAME" \
-  -backend-config="access_key=$(eval $TF_STORAGE_ACCOUNT_KEY)"
+  -backend-config="resource_group_name=$AVOPS_TF_RG_NAME" \
+  -backend-config="storage_account_name=$AVOPS_STORAGE_ACCOUNT_NAME" \
+  -backend-config="container_name=$AVOPS_CONTAINER_NAME"
 
+# Verify deployment config values in terraform.tfvars file
 
-# Plan terraform deployment, per values in terraform.tfvars file
+# Plan terraform deployment
 terraform plan
 
 # Execute terraform deployment
-terraform apply
+terraform apply -auto-approve
+
+# Clear env vars
+unset `env | grep -E 'AVOPS_|ARM_' | egrep -o '^[^=]+'`
 
 ```
 
@@ -47,32 +65,47 @@ terraform apply
 
 ```bash
 
-# Navigate to the root templates dir (repo_dir/IaC/terraform/root)
+# Navigate to the root templates dir (repo_dir/core-infrastructure/terraform/root)
+
+source .avdataops-tf.env
 
 # Tear down deployment
 terraform destroy
 
+# Clear env vars
+unset `env | grep -E 'AVOPS_|ARM_' | egrep -o '^[^=]+'`
+
 ```
 
-### Setup Remote Terraform Backend Storage
+### Accessing resources within private network 
 
-It is recommended to configure an Azure storage account to use as a remote backend for your terraform state files. Otherwise, terraform will create and use a locally saved state files. The local approach is not ideal when multiple users and/or systems are running the terraform scripts.
+By design, the components will be deployed within a virtual network and interact with one another using private endpoints. To connect to any of these resources within the private network for debugging or any additional configuration, you will require a Bastion host attached to the same network.
+
+By default, the Terraform script does **not** create a Bastion host in the main deployment. Deploy a Bastion host by enabling the `bastion_host_enabled` parameter in the `terraform.tfvars` file and rerun the deploy.
+
+Once the Bastion host is ready, access the Bastion VM password from Key Vault and connect to the Bastion instance as follows.
 
 ```bash
 
-export TF_RG_NAME=rg-tfstate
-export TF_RG_LOCATION=westeurope
-export ENV_NAME=dev
-export STORAGE_ACCOUNT_NAME=avopstfstate$RANDOM
-export CONTAINER_NAME=tfstate-$ENV_NAME
+source .avdataops-tf.env
 
-# Create resource group
-az group create -n $TF_RG_NAME -l $TF_RG_LOCATION
+# Assign key vault access policy to view secrets
+AVOPS_KV_RG_NAME=`az group list --tag environment=$AVOPS_ENV_NAME --query '[].name' -o tsv`
+AVOPS_KV_NAME=`az keyvault list -g $AVOPS_KV_RG_NAME --query '[].name' -o tsv`
+AVOPS_OBJECT_ID=`az account show --query id`
 
-# Create storage account
-az storage account create -g $TF_RG_NAME -n $STORAGE_ACCOUNT_NAME --sku Standard_LRS --encryption-services blob
+az keyvault set-policy -n $AVOPS_KV_NAME --object-id $AVOPS_OBJECT_ID --secret-permissions get list
 
-# Create blob container
-az storage container create -n $CONTAINER_NAME --account-name $STORAGE_ACCOUNT_NAME
+# Access Bastion password in Azure portal by navigating to specific key vault resource
+# https://learn.microsoft.com/en-us/azure/key-vault/secrets/quick-create-portal#retrieve-a-secret-from-key-vault
+
+# Connect to the Bastion instance using the password
+# https://learn.microsoft.com/en-us/azure/bastion/bastion-connect-vm-rdp-windows
+
+# Delete key vault access policy when done 
+az keyvault delete-policy -n $AVOPS_KV_NAME --object-id $AVOPS_OBJECT_ID
+
+# Clear env vars
+unset `env | grep -E 'AVOPS_|ARM_' | egrep -o '^[^=]+'`
 
 ```

@@ -1,5 +1,5 @@
 # ------------------------------------------------------------------------------------------------------
-# Generate a random suffix
+# General Variables
 # ------------------------------------------------------------------------------------------------------
 
 resource "random_string" "common_suffix" {
@@ -13,12 +13,22 @@ resource "random_string" "common_suffix" {
 }
 
 # ------------------------------------------------------------------------------------------------------
+# Create Deployment Resource Group
+# ------------------------------------------------------------------------------------------------------
+
+resource "azurerm_resource_group" "deployment_rg" {
+  name     = "rg-${var.resource_group_name}-${var.tags.environment}"
+  location = var.location
+  tags     = var.tags
+}
+
+# ------------------------------------------------------------------------------------------------------
 # Deploy Virtual Network
 # ------------------------------------------------------------------------------------------------------
 
 module "virtual_network" {
   source              = "../modules/virtualNetwork"
-  resource_group_name = var.resource_group_name
+  resource_group_name = azurerm_resource_group.deployment_rg.name
   location            = var.location
   tags                = var.tags
   vnet_name           = var.vnet_name
@@ -31,7 +41,7 @@ module "virtual_network" {
 
 module "privatelink_subnet" {
   source               = "../modules/subnet"
-  resource_group_name  = var.resource_group_name
+  resource_group_name  = azurerm_resource_group.deployment_rg.name
   location             = var.location
   virtual_network_name = module.virtual_network.virtual_network_name
   subnet_name          = var.privatelink_subnet_name
@@ -42,7 +52,7 @@ module "privatelink_subnet" {
 
 module "appservice_subnet" {
   source               = "../modules/subnet"
-  resource_group_name  = var.resource_group_name
+  resource_group_name  = azurerm_resource_group.deployment_rg.name
   location             = var.location
   virtual_network_name = module.virtual_network.virtual_network_name
   subnet_name          = var.appservice_subnet_name
@@ -64,7 +74,7 @@ module "appservice_subnet" {
 
 module "dns_zones" {
   source              = "../modules/dnsZones"
-  resource_group_name = var.resource_group_name
+  resource_group_name = azurerm_resource_group.deployment_rg.name
 }
 
 # ------------------------------------------------------------------------------------------------------
@@ -73,7 +83,7 @@ module "dns_zones" {
 
 module "cosmosdb" {
   source                   = "../modules/cosmosdb"
-  resource_group_name      = var.resource_group_name
+  resource_group_name      = azurerm_resource_group.deployment_rg.name
   location                 = var.location
   tags                     = var.tags
   cosmosdb_name            = var.cosmosdb_name
@@ -96,7 +106,7 @@ module "cosmosdb" {
 
 module "app_service" {
   source                         = "../modules/appSvc"
-  resource_group_name            = var.resource_group_name
+  resource_group_name            = azurerm_resource_group.deployment_rg.name
   location                       = var.location
   tags                           = var.tags
   app_service_subnet_id          = module.appservice_subnet.subnet_id
@@ -117,7 +127,7 @@ module "app_service" {
 
 module "key_vault" {
   source                 = "../modules/keyVault"
-  resource_group_name    = var.resource_group_name
+  resource_group_name    = azurerm_resource_group.deployment_rg.name
   location               = var.location
   tags                   = var.tags
   key_vault_name         = var.kv_name
@@ -128,12 +138,41 @@ module "key_vault" {
 }
 
 # ------------------------------------------------------------------------------------------------------
+# Deploy Bastion Host
+# ------------------------------------------------------------------------------------------------------
+
+module "bastion_host" {
+  source                               = "../modules/bastionHost"
+  count                                = var.bastion_host_enabled ? 1 : 0
+  resource_group_name                  = azurerm_resource_group.deployment_rg.name
+  location                             = var.location
+  tags                                 = var.tags
+  bastion_host_name                    = var.bastion_host_name
+  bastion_host_suffix                  = random_string.common_suffix.id
+  bastion_subnet_address_prefix        = var.bastion_subnet_address_prefix
+  bastion_ip_allocation                = var.bastion_ip_allocation
+  bastion_ip_sku                       = var.bastion_ip_sku
+  bastion_vm_nic_private_ip_allocation = var.bastion_vm_nic_private_ip_allocation
+  bastion_vm_size                      = var.bastion_vm_size
+  bastion_vm_username                  = var.bastion_vm_username
+  bastion_vm_caching                   = var.bastion_vm_caching
+  bastion_vm_storage_account_type      = var.bastion_vm_storage_account_type
+  bastion_vm_image_publisher           = var.bastion_vm_image_publisher
+  bastion_vm_image_offer               = var.bastion_vm_image_offer
+  bastion_vm_image_sku                 = var.bastion_vm_image_sku
+  bastion_vm_image_version             = var.bastion_vm_image_version
+  virtual_network_name                 = module.virtual_network.virtual_network_name
+  bastion_vm_subnet_id                 = module.privatelink_subnet.subnet_id
+  key_vault_id                         = module.key_vault.key_vault_id
+}
+
+# ------------------------------------------------------------------------------------------------------
 # Deploy Data Lake Storage
 # ------------------------------------------------------------------------------------------------------
 
 module "adls" {
   source                           = "../modules/dataLakeStorage"
-  resource_group_name              = var.resource_group_name
+  resource_group_name              = azurerm_resource_group.deployment_rg.name
   tags                             = var.tags
   location                         = var.location
   adls_suffix                      = random_string.common_suffix.id
@@ -147,7 +186,7 @@ module "adls" {
   is_manual_connection             = var.adls_is_manual_connection
   last_access_time_enabled         = var.adls_last_access_time_enabled
   blob_storage_cors_origins        = var.adls_blob_storage_cors_origins
-  network_rules_subnet_ids         = [module.privatelink_subnet.subnet_id, module.appservice_subnet.subnet_id]
+  network_rules_subnet_ids         = [module.privatelink_subnet.subnet_id]
   private_link_subnet_id           = module.privatelink_subnet.subnet_id
   blob_storage_dns_zone_id         = module.dns_zones.blob_storage_dns_zone_id
 }
@@ -158,7 +197,7 @@ module "adls" {
 
 module "batch_storage_account" {
   source                   = "../modules/storage"
-  resource_group_name      = var.resource_group_name
+  resource_group_name      = azurerm_resource_group.deployment_rg.name
   tags                     = var.tags
   location                 = var.location
   storage_account_name     = var.batch_storage_account_name
@@ -176,7 +215,7 @@ module "batch_storage_account" {
 
 module "batch_managed_identity" {
   source                  = "../modules/managedIdentity"
-  resource_group_name     = var.resource_group_name
+  resource_group_name     = azurerm_resource_group.deployment_rg.name
   location                = var.location
   managed_identity_name   = var.batch_managed_identity_name
   managed_identity_suffix = random_string.common_suffix.id
@@ -189,7 +228,7 @@ module "batch_managed_identity" {
 
 module "container_registry" {
   source              = "../modules/containerRegistry"
-  resource_group_name = var.resource_group_name
+  resource_group_name = azurerm_resource_group.deployment_rg.name
   location            = var.location
   tags                = var.tags
   acr_name            = var.acr_name
@@ -204,7 +243,7 @@ module "container_registry" {
 
 module "batch" {
   source                              = "../modules/batch"
-  resource_group_name                 = var.resource_group_name
+  resource_group_name                 = azurerm_resource_group.deployment_rg.name
   location                            = var.location
   tags                                = var.tags
   batch_account_name                  = var.batch_account_name
@@ -241,7 +280,7 @@ module "batch" {
 
 module "data_factory" {
   source                                  = "../modules/adf"
-  resource_group_name                     = var.resource_group_name
+  resource_group_name                     = azurerm_resource_group.deployment_rg.name
   location                                = var.location
   tags                                    = var.tags
   adf_name                                = var.adf_name
@@ -284,12 +323,12 @@ module "role_assignments" {
   tenant_id                     = module.key_vault.tenant_id
 }
 
-# module "kv_secrets" {
-#   depends_on = [
-#     module.role_assignments
-#   ]
-#   source                   = "../modules/kvSecrets"
-#   key_vault_id             = module.key_vault.key_vault_id
-#   batch_key_secret         = module.batch.batch_account_primary_access_key
-#   batch_storage_key_secret = module.batch_storage_account.storage_account_primary_access_key
-# }
+module "kv_secrets" {
+  depends_on = [
+    module.role_assignments
+  ]
+  source                   = "../modules/kvSecrets"
+  key_vault_id             = module.key_vault.key_vault_id
+  batch_key_secret         = module.batch.batch_account_primary_access_key
+  batch_storage_key_secret = module.batch_storage_account.storage_account_primary_access_key
+}
