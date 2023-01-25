@@ -23,6 +23,9 @@ resource "azurerm_linux_web_app" "linux_web_app" {
   identity {
     type = "SystemAssigned"
   }
+  app_settings = {
+    WEBSITE_PORT = var.app_service_expose_port
+  }
 
   site_config {
     container_registry_use_managed_identity = true

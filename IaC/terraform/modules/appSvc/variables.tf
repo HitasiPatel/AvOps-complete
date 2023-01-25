@@ -52,3 +52,9 @@ variable "acr_sami_principal_id" {
   type        = string
   description = "ACR System Assigned Managed identity principal ID"
 }
+
+variable "app_service_expose_port" {
+  type = number
+  description = "Container port that will be exposed to access the app service"
+  default = 3100
+}
