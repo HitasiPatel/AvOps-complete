@@ -1,0 +1,1 @@
+This module is for creating new Azure CosmosDB with a private endpoint.

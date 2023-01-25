@@ -1,0 +1,33 @@
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.2.0
+    hooks:
+    # -   id: trailing-whitespace
+    -   id: check-yaml
+    -   id: check-added-large-files
+    -   id: end-of-file-fixer
+    -   id: check-merge-conflict
+
+-   repo: https://github.com/Yelp/detect-secrets
+    rev: v1.4.0
+    hooks:
+    -   id: detect-secrets
+        args: ['--baseline', '.secrets.baseline']
+        exclude: package.lock.json
+        additional_dependencies: ['gibberish-detector']
+
+-   repo: local
+    hooks:
+    -   id: validate-commit-msg
+        name: Check for either an Azure Devops Issue ('ADA-123') or 'Merge' in commit message
+        language: pygrep
+        entry: ^(ADA-[0-9]+|Merge)
+        args: [--multiline, --negate]
+        stages: [commit-msg]
+
+-   repo: local
+    hooks:
+    -   id: branch-name
+        name: Branch name check
+        language: script
+        entry: ./.githooks/branch-name
