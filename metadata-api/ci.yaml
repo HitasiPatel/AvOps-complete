@@ -1,0 +1,122 @@
+# CI - Metedata API
+
+trigger:
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - metadata-api/*
+
+variables:
+  - name: src_dir
+    value: "metadata-api/"
+  - name: test_dir
+    value: "metadata-api/app/tests/"
+  - name: appname
+    value: "metadata-api"
+
+stages:
+  - stage: "code_quality_checks"
+    jobs:
+      - job: detect_secrets
+        displayName: "detect-secrets"
+        pool:
+          vmImage: ubuntu-latest
+        steps:
+          - task: UsePythonVersion@0
+            displayName: "Set Python 3 as default"
+            inputs:
+              versionSpec: "3"
+              addToPath: true
+              architecture: "x64"
+
+          - script: pip install detect-secrets
+            displayName: "Install detect-secrets using pip"
+
+          - script: |
+              detect-secrets --version
+              detect-secrets scan --all-files --disable-plugin KeywordDetector --disable-plugin AWSKeyDetector --exclude-files FETCH_HEAD --exclude-files .secrets.baseline  > $(Pipeline.Workspace)/detect-secrets.json
+            displayName: "Run detect-secrets tool"
+
+          - task: PublishPipelineArtifact@1
+            displayName: "Publish results in the Pipeline Artifact"
+            inputs:
+              targetPath: "$(Pipeline.Workspace)/detect-secrets.json"
+              artifact: "detect-secrets"
+              publishLocation: "pipeline"
+
+          - script: |
+              dsjson=$(cat $(Pipeline.Workspace)/detect-secrets.json)
+              echo "${dsjson}"
+
+              count=$(echo "${dsjson}" | jq -c -r '.results | length')
+
+              if [ $count -gt 0 ]; then
+                msg="Secrets were detected in code. ${count} file(s) affected."
+                echo "##vso[task.logissue type=error]${msg}"
+                echo "##vso[task.complete result=Failed;]${msg}."
+              else
+                echo "##vso[task.complete result=Succeeded;]No secrets detected."
+              fi
+            displayName: "Analyzing detect-secrets results"
+
+      - job: "lint_and_unit_tests"
+        displayName: "lint-and-unit-tests"
+        pool:
+          vmImage: "Ubuntu-latest"
+        strategy:
+          matrix:
+            Python310:
+              python.version: "3.10"
+        steps:
+          - task: UsePythonVersion@0
+            inputs:
+              versionSpec: "$(python.version)"
+            displayName: "Use Python $(python.version)"
+          - script: |
+              cd $(src_dir)
+              python -m pip install --upgrade pip
+              pip install pylint
+              pip install pytest mock codecov pydocstyle pytest-cov
+              pip install -r requirements.txt
+            displayName: "Install code style dependencies"
+          - script: |
+              cd $(src_dir)
+              python -m pylint app --output-format=parseable --output=pylint.log --fail-under=1
+              python -m pytest --cov-report xml --cov=app app/tests/ --junit-xml unit_tests.xml
+            displayName: "Run code quality tests (pylint, pytest)"
+          - task: PublishTestResults@2
+            inputs:
+              testResultsFormat: "JUnit"
+              testResultsFiles: "**/unit_tests.xml"
+              testRunTitle: "$(Agent.OS) - $(Build.BuildNumber)[$(Agent.JobName)] - Python $(python.version) - Linting and Unit Test results"
+            condition: succeededOrFailed()
+            displayName: "Publish unit test results"
+          - task: PublishCodeCoverageResults@1
+            inputs:
+              codeCoverageTool: Cobertura
+              summaryFileLocation: "$(System.DefaultWorkingDirectory)/**/coverage.xml"
+              reportDirectory: "htmlcov"
+            displayName: "Publish Coverage Results"
+
+  - stage: "Push_image_to_ACR"
+    jobs:
+      - job: "Build_and_push_to_ACR"
+        displayName: "build-and-push-to-acr"
+        pool:
+          vmImage: "Ubuntu-latest"
+        steps:
+          - task: Docker@2
+            displayName: Login to ACR
+            inputs:
+              command: "login"
+              containerRegistry: "acr_service_connection"
+          - task: Docker@2
+            displayName: Build and Push to ACR
+            inputs:
+              containerRegistry: "acr_service_connection"
+              repository: "metadata-api"
+              command: "buildAndPush"
+              tags: $(Build.BuildId)
+              Dockerfile: "**/Dockerfile"
