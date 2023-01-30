@@ -1,0 +1,76 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "adf-av-dataops-opxgy"
+		},
+		"LS_Derivedopxgy_properties_typeProperties_url": {
+			"value": "https://avderivedopxgytest.dfs.core.windows.net/"
+		},
+		"LS_Derivedtlsit_properties_typeProperties_url": {
+			"value": "https://avderivedtlsitdev.dfs.core.windows.net/"
+		},
+		"LS_KeyVault_properties_typeProperties_baseUrl": {
+			"value": "https://kv-avdops-opxgy.vault.azure.net/"
+		},
+		"LS_Landingopxgy_properties_typeProperties_url": {
+			"value": "https://avlandingopxgytest.dfs.core.windows.net/"
+		},
+		"LS_Landingtlsit_properties_typeProperties_url": {
+			"value": "https://avlandingtlsitdev.dfs.core.windows.net/"
+		},
+		"LS_Rawopxgy_properties_typeProperties_url": {
+			"value": "https://avrawopxgytest.dfs.core.windows.net/"
+		},
+		"LS_Rawtlsit_properties_typeProperties_url": {
+			"value": "https://avrawtlsitdev.dfs.core.windows.net/"
+		},
+		"kv-avdops-opxgy-managed-private-endpoint_properties_privateLinkResourceId": {
+			"value": "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-dev-cd/providers/Microsoft.KeyVault/vaults/kv-avdops-opxgy"
+		},
+		"kv-avdops-opxgy-managed-private-endpoint_properties_groupId": {
+			"value": "vault"
+		},
+		"kv-avdops-opxgy-managed-private-endpoint_properties_fqdns": {
+			"value": [
+				"kv-avdops-opxgy.vault.azure.net"
+			]
+		},
+		"kv-avdops-tlsit-managed-private-endpoint_properties_privateLinkResourceId": {
+			"value": "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-dev/providers/Microsoft.KeyVault/vaults/kv-avdops-tlsit"
+		},
+		"kv-avdops-tlsit-managed-private-endpoint_properties_groupId": {
+			"value": "vault"
+		},
+		"kv-avdops-tlsit-managed-private-endpoint_properties_fqdns": {
+			"value": [
+				"kv-avdops-tlsit.vault.azure.net"
+			]
+		},
+		"web-app-linuxopxgy-managed-private-endpoint_properties_privateLinkResourceId": {
+			"value": "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-dev-cd/providers/Microsoft.Web/sites/web-app-linuxopxgy"
+		},
+		"web-app-linuxopxgy-managed-private-endpoint_properties_groupId": {
+			"value": "sites"
+		},
+		"web-app-linuxopxgy-managed-private-endpoint_properties_fqdns": {
+			"value": [
+				"web-app-linuxopxgy.azurewebsites.net",
+				"web-app-linuxopxgy.scm.azurewebsites.net"
+			]
+		},
+		"web-app-linuxtlsit-managed-private-endpoint_properties_privateLinkResourceId": {
+			"value": "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-dev/providers/Microsoft.Web/sites/web-app-linuxtlsit"
+		},
+		"web-app-linuxtlsit-managed-private-endpoint_properties_groupId": {
+			"value": "sites"
+		},
+		"web-app-linuxtlsit-managed-private-endpoint_properties_fqdns": {
+			"value": [
+				"web-app-linuxtlsit.azurewebsites.net",
+				"web-app-linuxtlsit.scm.azurewebsites.net"
+			]
+		}
+	}
+}
