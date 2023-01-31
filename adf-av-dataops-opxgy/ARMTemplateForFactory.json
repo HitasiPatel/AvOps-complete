@@ -11,10 +11,6 @@
 			"type": "string",
 			"defaultValue": "https://avderivedopxgytest.dfs.core.windows.net/"
 		},
-		"LS_Derivedtlsit_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://avderivedtlsitdev.dfs.core.windows.net/"
-		},
 		"LS_KeyVault_properties_typeProperties_baseUrl": {
 			"type": "string",
 			"defaultValue": "https://kv-avdops-opxgy.vault.azure.net/"
@@ -23,17 +19,9 @@
 			"type": "string",
 			"defaultValue": "https://avlandingopxgytest.dfs.core.windows.net/"
 		},
-		"LS_Landingtlsit_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://avlandingtlsitdev.dfs.core.windows.net/"
-		},
 		"LS_Rawopxgy_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://avrawopxgytest.dfs.core.windows.net/"
-		},
-		"LS_Rawtlsit_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://avrawtlsitdev.dfs.core.windows.net/"
 		},
 		"kv-avdops-opxgy-managed-private-endpoint_properties_privateLinkResourceId": {
 			"type": "string",
@@ -98,6 +86,404 @@
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/Pipeline_LandingToRaw')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Get Measurement Folders",
+						"type": "GetMetadata",
+						"dependsOn": [
+							{
+								"activity": "traceparent",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 2,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "DS_SourceMeasurements",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"fieldList": [
+								"childItems"
+							],
+							"storeSettings": {
+								"type": "AzureBlobFSReadSettings",
+								"recursive": true,
+								"enablePartitionDiscovery": false
+							},
+							"formatSettings": {
+								"type": "BinaryReadSettings"
+							}
+						}
+					},
+					{
+						"name": "Iterate Measurements",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Get Measurement Folders",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Get Measurement Folders').output.childItems",
+								"type": "Expression"
+							},
+							"isSequential": false,
+							"activities": [
+								{
+									"name": "If Valid Measurement",
+									"type": "IfCondition",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"expression": {
+											"value": "@equals(true,true)",
+											"type": "Expression"
+										},
+										"ifFalseActivities": [
+											{
+												"name": "Validation Failed",
+												"type": "Fail",
+												"dependsOn": [],
+												"userProperties": [],
+												"typeProperties": {
+													"message": "Measurement doesn't have all the required files.",
+													"errorCode": "500"
+												}
+											}
+										],
+										"ifTrueActivities": [
+											{
+												"name": "Lookup  Manifest",
+												"type": "Lookup",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 2,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"source": {
+														"type": "JsonSource",
+														"storeSettings": {
+															"type": "AzureBlobFSReadSettings",
+															"recursive": true,
+															"enablePartitionDiscovery": false
+														},
+														"formatSettings": {
+															"type": "JsonReadSettings"
+														}
+													},
+													"dataset": {
+														"referenceName": "DS_Manifest",
+														"type": "DatasetReference",
+														"parameters": {
+															"containerName": {
+																"value": "@pipeline().parameters.landingZoneContainer",
+																"type": "Expression"
+															},
+															"folderName": {
+																"value": "@activity('Get Measurement Folders').output.childItems",
+																"type": "Expression"
+															},
+															"fileName": {
+																"value": "@pipeline().parameters.fileManifestName",
+																"type": "Expression"
+															}
+														}
+													},
+													"firstRowOnly": false
+												}
+											},
+											{
+												"name": "Call CreateMeasurement API",
+												"type": "WebActivity",
+												"dependsOn": [
+													{
+														"activity": "Lookup  Manifest",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 2,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"url": {
+														"value": "@concat(pipeline().parameters.apiBaseUrl,pipeline().parameters.apiVersion,'/measurements')",
+														"type": "Expression"
+													},
+													"connectVia": {
+														"referenceName": "IntegrationRuntime",
+														"type": "IntegrationRuntimeReference"
+													},
+													"method": "POST",
+													"headers": {
+														"traceparent": {
+															"value": "@variables('traceparent')",
+															"type": "Expression"
+														}
+													},
+													"body": {
+														"value": "@activity('Lookup  Manifest').output.value[0]",
+														"type": "Expression"
+													}
+												}
+											},
+											{
+												"name": "Call CreateDatastream API",
+												"type": "WebActivity",
+												"dependsOn": [
+													{
+														"activity": "Call CreateMeasurement API",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 2,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"url": {
+														"value": "@concat(pipeline().parameters.apiBaseUrl,pipeline().parameters.apiVersion,'/measurements/',activity('Call CreateMeasurement API').output.id,'/datastreams')",
+														"type": "Expression"
+													},
+													"connectVia": {
+														"referenceName": "IntegrationRuntime",
+														"type": "IntegrationRuntimeReference"
+													},
+													"method": "POST",
+													"headers": {
+														"traceparent": {
+															"value": "@variables('traceparent')",
+															"type": "Expression"
+														}
+													},
+													"body": {
+														"value": "@json(concat('{\n  \"name\": \"rawstream\",\n  \"type\": \"RAW\",\n  \"lineage\": {\n    \"producerMetadata\": {\n      \"name\": \"adflandingtorawcopy\",\n      \"type\": \"system\",\n      \"version\": \"',pipeline().parameters.batchVersion,'\",\n      \"additionalProperties\": {\n        \"pipeLineRunID\" : \"',pipeline().RunId ,'\",\n        \"apiVersion\" : \"',pipeline().parameters.apiVersion,'\"\n      }\n    },\n    \"sources\": []\n  },\n  \"tags\": ',activity('Call CreateMeasurement API').output.tags,'\n}'))",
+														"type": "Expression"
+													}
+												}
+											},
+											{
+												"name": "Update DataStream Status To Processing",
+												"type": "WebActivity",
+												"dependsOn": [
+													{
+														"activity": "Call CreateFileMetadata API",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 2,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"url": {
+														"value": "@concat(pipeline().parameters.apiBaseUrl,pipeline().parameters.apiVersion,'/measurements/',activity('Call CreateMeasurement API').output.id,'/datastreams/',activity('Call CreateDatastream API').output.id)",
+														"type": "Expression"
+													},
+													"connectVia": {
+														"referenceName": "IntegrationRuntime",
+														"type": "IntegrationRuntimeReference"
+													},
+													"method": "PATCH",
+													"headers": {
+														"traceparent": {
+															"value": "@variables('traceparent')",
+															"type": "Expression"
+														}
+													},
+													"body": {
+														"value": "@json(concat('\n{\n  \"status\": \"PROCESSING\"\n}'))",
+														"type": "Expression"
+													}
+												}
+											},
+											{
+												"name": "Set BatchParams",
+												"type": "SetVariable",
+												"dependsOn": [
+													{
+														"activity": "Update DataStream Status To Processing",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"userProperties": [],
+												"typeProperties": {
+													"variableName": "batchParams",
+													"value": {
+														"value": "@concat(' --measurementId=',activity('Call CreateMeasurement API').output.id,' --rawDataStreamPath=',activity('Call CreateDatastream API').output.relativeUriPath,' --landingPath=',pipeline().parameters.landingZoneContainer,'/',item().name,' --archivePath=',pipeline().parameters.archiveZoneContainer,' --rawDataStreamId=',activity('Call CreateDatastream API').output.id)",
+														"type": "Expression"
+													}
+												}
+											},
+											{
+												"name": "Call CreateFileMetadata API",
+												"description": "Store Files collection",
+												"type": "WebActivity",
+												"dependsOn": [
+													{
+														"activity": "Call CreateDatastream API",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"url": {
+														"value": "@concat(pipeline().parameters.apiBaseUrl,pipeline().parameters.apiVersion,'/files/batch')",
+														"type": "Expression"
+													},
+													"connectVia": {
+														"referenceName": "IntegrationRuntime",
+														"type": "IntegrationRuntimeReference"
+													},
+													"method": "POST",
+													"headers": {
+														"traceparent": {
+															"value": "@variables('traceparent')",
+															"type": "Expression"
+														}
+													},
+													"body": {
+														"value": "@json(concat('{\n    \"measurementId\": \"',activity('Call CreateMeasurement API').output.id,'\",\n    \"baseUriPath\": \"',activity('Call CreateDatastream API').output.baseUriPath,'\",\n    \"relativeUriPath\": \"',activity('Call CreateDatastream API').output.relativeUriPath,'\",\n    \"items\": ',activity('Call CreateMeasurement API').output.files,'\n}'))",
+														"type": "Expression"
+													}
+												}
+											}
+										]
+									}
+								}
+							]
+						}
+					},
+					{
+						"name": "traceparent",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "traceparent",
+							"value": {
+								"value": "@concat('00-',replace(pipeline().RunId,'-',''),'-0000000000000001-00')",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"concurrency": 1,
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"landingZoneContainer": {
+						"type": "string",
+						"defaultValue": "landing"
+					},
+					"rawZoneContainer": {
+						"type": "string",
+						"defaultValue": "raw"
+					},
+					"apiBaseUrl": {
+						"type": "string",
+						"defaultValue": "http://api-stage.av.contoso.internal/"
+					},
+					"fileManifestName": {
+						"type": "string",
+						"defaultValue": "manifest.json"
+					},
+					"validationManifestName": {
+						"type": "string",
+						"defaultValue": "manifest_validation.json"
+					},
+					"archiveZoneContainer": {
+						"type": "string",
+						"defaultValue": "archive"
+					},
+					"apiVersion": {
+						"type": "string",
+						"defaultValue": "v1"
+					},
+					"batchVersion": {
+						"type": "string",
+						"defaultValue": "1.0"
+					}
+				},
+				"variables": {
+					"isValidMeasurement": {
+						"type": "Boolean"
+					},
+					"validationManifestMissing": {
+						"type": "String"
+					},
+					"batchParams": {
+						"type": "String"
+					},
+					"traceparent": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-11-23T10:57:33Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_SourceMeasurements')]",
+				"[concat(variables('factoryId'), '/datasets/DS_Manifest')]",
+				"[concat(variables('factoryId'), '/integrationRuntimes/IntegrationRuntime')]"
+			]
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
@@ -510,25 +896,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/LS_Derivedtlsit')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobFS",
-				"typeProperties": {
-					"url": "[parameters('LS_Derivedtlsit_properties_typeProperties_url')]"
-				},
-				"connectVia": {
-					"referenceName": "IntegrationRuntime",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/IntegrationRuntime')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/LS_KeyVault')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -567,25 +934,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/LS_Landingtlsit')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobFS",
-				"typeProperties": {
-					"url": "[parameters('LS_Landingtlsit_properties_typeProperties_url')]"
-				},
-				"connectVia": {
-					"referenceName": "IntegrationRuntime",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/IntegrationRuntime')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/LS_Rawopxgy')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -594,25 +942,6 @@
 				"type": "AzureBlobFS",
 				"typeProperties": {
 					"url": "[parameters('LS_Rawopxgy_properties_typeProperties_url')]"
-				},
-				"connectVia": {
-					"referenceName": "IntegrationRuntime",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/IntegrationRuntime')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/LS_Rawtlsit')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobFS",
-				"typeProperties": {
-					"url": "[parameters('LS_Rawtlsit_properties_typeProperties_url')]"
 				},
 				"connectVia": {
 					"referenceName": "IntegrationRuntime",
@@ -707,916 +1036,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Pipeline_Child_MeasurementValidation')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"description": "This pipeline validates if the files mentioned in the manifest are same as uploaded in the measurement folder.",
-				"activities": [
-					{
-						"name": "GetFileManifest",
-						"type": "Lookup",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 2,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "JsonSource",
-								"storeSettings": {
-									"type": "AzureBlobFSReadSettings",
-									"recursive": true,
-									"wildcardFolderPath": {
-										"value": "@pipeline().parameters.folderName",
-										"type": "Expression"
-									},
-									"wildcardFileName": "*.json",
-									"enablePartitionDiscovery": false
-								},
-								"formatSettings": {
-									"type": "JsonReadSettings"
-								}
-							},
-							"dataset": {
-								"referenceName": "DS_Manifest",
-								"type": "DatasetReference",
-								"parameters": {
-									"containerName": {
-										"value": "@pipeline().parameters.landingZoneContainer",
-										"type": "Expression"
-									},
-									"folderName": {
-										"value": "@pipeline().parameters.folderName",
-										"type": "Expression"
-									},
-									"fileName": "manifest.json"
-								}
-							},
-							"firstRowOnly": false
-						}
-					},
-					{
-						"name": "Get Data Files",
-						"type": "GetMetadata",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 2,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataset": {
-								"referenceName": "DS_SourceDataFiles",
-								"type": "DatasetReference",
-								"parameters": {}
-							},
-							"fieldList": [
-								"childItems"
-							],
-							"storeSettings": {
-								"type": "AzureBlobFSReadSettings",
-								"recursive": true,
-								"enablePartitionDiscovery": false
-							},
-							"formatSettings": {
-								"type": "BinaryReadSettings"
-							}
-						}
-					},
-					{
-						"name": "IterateActualFiles",
-						"type": "ForEach",
-						"dependsOn": [
-							{
-								"activity": "Get Data Files",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('Get Data Files').output.childItems",
-								"type": "Expression"
-							},
-							"isSequential": false,
-							"activities": [
-								{
-									"name": "Append ExistingFiles",
-									"type": "AppendVariable",
-									"dependsOn": [],
-									"userProperties": [],
-									"typeProperties": {
-										"variableName": "existingFileList",
-										"value": {
-											"value": "@item().name",
-											"type": "Expression"
-										}
-									}
-								}
-							]
-						}
-					},
-					{
-						"name": "IterateManifestFiles",
-						"type": "ForEach",
-						"dependsOn": [
-							{
-								"activity": "GetFileManifest",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('GetFileManifest').output.value[0].files",
-								"type": "Expression"
-							},
-							"isSequential": false,
-							"activities": [
-								{
-									"name": "Append ExpectedFileList",
-									"type": "AppendVariable",
-									"dependsOn": [],
-									"userProperties": [],
-									"typeProperties": {
-										"variableName": "expectedFileList",
-										"value": {
-											"value": "@item().fileName",
-											"type": "Expression"
-										}
-									}
-								}
-							]
-						}
-					},
-					{
-						"name": "Set CommonFiles",
-						"type": "SetVariable",
-						"dependsOn": [
-							{
-								"activity": "IterateManifestFiles",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							},
-							{
-								"activity": "IterateActualFiles",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "commonFileList",
-							"value": {
-								"value": "@intersection(variables('existingFileList'),variables('expectedFileList'))",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "Set IsMatch",
-						"type": "SetVariable",
-						"dependsOn": [
-							{
-								"activity": "Set CommonFiles",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "isFileMatch",
-							"value": {
-								"value": "@and(equals(length(variables('commonFileList')),length(variables('existingFileList'))),equals(length(variables('commonFileList')),length(variables('expectedFileList'))))",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "Update Manifest File",
-						"description": "This activity updates the manifest file with validation flag",
-						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "Set IsMatch",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 2,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "JsonSource",
-								"additionalColumns": [
-									{
-										"name": "isValid",
-										"value": {
-											"value": "@variables('isFileMatch')",
-											"type": "Expression"
-										}
-									}
-								],
-								"storeSettings": {
-									"type": "AzureBlobFSReadSettings",
-									"recursive": true,
-									"wildcardFolderPath": {
-										"value": "@pipeline().parameters.folderName",
-										"type": "Expression"
-									},
-									"wildcardFileName": "*.json",
-									"enablePartitionDiscovery": false
-								},
-								"formatSettings": {
-									"type": "JsonReadSettings"
-								}
-							},
-							"sink": {
-								"type": "JsonSink",
-								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings"
-								},
-								"formatSettings": {
-									"type": "JsonWriteSettings"
-								}
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "DS_Manifest",
-								"type": "DatasetReference",
-								"parameters": {
-									"containerName": {
-										"value": "@pipeline().parameters.landingZoneContainer",
-										"type": "Expression"
-									},
-									"folderName": {
-										"value": "@pipeline().parameters.folderName",
-										"type": "Expression"
-									},
-									"fileName": {
-										"value": "@pipeline().parameters.validationManifestName",
-										"type": "Expression"
-									}
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "DS_Manifest",
-								"type": "DatasetReference",
-								"parameters": {
-									"containerName": {
-										"value": "@pipeline().parameters.landingZoneContainer",
-										"type": "Expression"
-									},
-									"folderName": {
-										"value": "@pipeline().parameters.folderName",
-										"type": "Expression"
-									},
-									"fileName": {
-										"value": "@pipeline().parameters.fileManifestName",
-										"type": "Expression"
-									}
-								}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"parameters": {
-					"folderName": {
-						"type": "string",
-						"defaultValue": "abcd"
-					},
-					"fileManifestName": {
-						"type": "string",
-						"defaultValue": "manifest.json"
-					},
-					"dataFilesExtension": {
-						"type": "string",
-						"defaultValue": "*.bag"
-					},
-					"landingZoneContainer": {
-						"type": "string",
-						"defaultValue": "landing"
-					},
-					"validationManifestName": {
-						"type": "string",
-						"defaultValue": "manifest_validation.json"
-					}
-				},
-				"variables": {
-					"expectedFileList": {
-						"type": "Array"
-					},
-					"existingFileList": {
-						"type": "Array"
-					},
-					"isFileMatch": {
-						"type": "Boolean"
-					},
-					"commonFileList": {
-						"type": "Array"
-					}
-				},
-				"annotations": [],
-				"lastPublishTime": "2022-11-03T11:17:13Z"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DS_Manifest')]",
-				"[concat(variables('factoryId'), '/datasets/DS_SourceDataFiles')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Pipeline_LandingToRaw')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Get Measurement Folders",
-						"type": "GetMetadata",
-						"dependsOn": [
-							{
-								"activity": "traceparent",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 2,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataset": {
-								"referenceName": "DS_SourceMeasurements",
-								"type": "DatasetReference",
-								"parameters": {}
-							},
-							"fieldList": [
-								"childItems"
-							],
-							"storeSettings": {
-								"type": "AzureBlobFSReadSettings",
-								"recursive": true,
-								"enablePartitionDiscovery": false
-							},
-							"formatSettings": {
-								"type": "BinaryReadSettings"
-							}
-						}
-					},
-					{
-						"name": "Iterate Measurements",
-						"type": "ForEach",
-						"dependsOn": [
-							{
-								"activity": "Get Measurement Folders",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('Get Measurement Folders').output.childItems",
-								"type": "Expression"
-							},
-							"isSequential": false,
-							"activities": [
-								{
-									"name": "Execute Validation Pipeline",
-									"type": "ExecutePipeline",
-									"dependsOn": [],
-									"userProperties": [],
-									"typeProperties": {
-										"pipeline": {
-											"referenceName": "Pipeline_Child_MeasurementValidation",
-											"type": "PipelineReference"
-										},
-										"waitOnCompletion": true,
-										"parameters": {
-											"folderName": {
-												"value": "@item().name",
-												"type": "Expression"
-											},
-											"fileManifestName": {
-												"value": "@pipeline().parameters.fileManifestName",
-												"type": "Expression"
-											},
-											"dataFilesExtension": "*.bag",
-											"landingZoneContainer": {
-												"value": "@pipeline().parameters.landingZoneContainer",
-												"type": "Expression"
-											},
-											"validationManifestName": {
-												"value": "@pipeline().parameters.validationManifestName",
-												"type": "Expression"
-											}
-										}
-									}
-								},
-								{
-									"name": "Validate Manifest Validation",
-									"type": "Validation",
-									"dependsOn": [
-										{
-											"activity": "Execute Validation Pipeline",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"userProperties": [],
-									"typeProperties": {
-										"dataset": {
-											"referenceName": "DS_Manifest",
-											"type": "DatasetReference",
-											"parameters": {
-												"containerName": {
-													"value": "@pipeline().parameters.landingZoneContainer",
-													"type": "Expression"
-												},
-												"folderName": {
-													"value": "@item().name",
-													"type": "Expression"
-												},
-												"fileName": {
-													"value": "@pipeline().parameters.fileManifestName",
-													"type": "Expression"
-												}
-											}
-										},
-										"timeout": "0.00:00:59",
-										"sleep": 5
-									}
-								},
-								{
-									"name": "Lookup Validation Manifest",
-									"type": "Lookup",
-									"dependsOn": [
-										{
-											"activity": "Validate Manifest Validation",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"policy": {
-										"timeout": "0.12:00:00",
-										"retry": 2,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"source": {
-											"type": "JsonSource",
-											"storeSettings": {
-												"type": "AzureBlobFSReadSettings",
-												"recursive": true,
-												"wildcardFileName": "manifest.json",
-												"enablePartitionDiscovery": false
-											},
-											"formatSettings": {
-												"type": "JsonReadSettings"
-											}
-										},
-										"dataset": {
-											"referenceName": "DS_Manifest",
-											"type": "DatasetReference",
-											"parameters": {
-												"containerName": {
-													"value": "@pipeline().parameters.landingZoneContainer",
-													"type": "Expression"
-												},
-												"folderName": {
-													"value": "@item().name",
-													"type": "Expression"
-												},
-												"fileName": {
-													"value": "@pipeline().parameters.validationManifestName",
-													"type": "Expression"
-												}
-											}
-										}
-									}
-								},
-								{
-									"name": "Set IsMeasurement Validation Flag",
-									"type": "SetVariable",
-									"dependsOn": [
-										{
-											"activity": "Lookup Validation Manifest",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"userProperties": [],
-									"typeProperties": {
-										"variableName": "isValidMeasurement",
-										"value": {
-											"value": "@bool(activity('Lookup Validation Manifest').output.firstRow.isValid)",
-											"type": "Expression"
-										}
-									}
-								},
-								{
-									"name": "If Valid Measurement",
-									"type": "IfCondition",
-									"dependsOn": [
-										{
-											"activity": "Set IsMeasurement Validation Flag",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"userProperties": [],
-									"typeProperties": {
-										"expression": {
-											"value": "@equals(variables('isValidMeasurement'),true)",
-											"type": "Expression"
-										},
-										"ifFalseActivities": [
-											{
-												"name": "Validation Failed",
-												"type": "Fail",
-												"dependsOn": [],
-												"userProperties": [],
-												"typeProperties": {
-													"message": "Measurement doesn't have all the required files.",
-													"errorCode": "500"
-												}
-											}
-										],
-										"ifTrueActivities": [
-											{
-												"name": "Lookup  Manifest",
-												"type": "Lookup",
-												"dependsOn": [],
-												"policy": {
-													"timeout": "0.12:00:00",
-													"retry": 2,
-													"retryIntervalInSeconds": 30,
-													"secureOutput": false,
-													"secureInput": false
-												},
-												"userProperties": [],
-												"typeProperties": {
-													"source": {
-														"type": "JsonSource",
-														"storeSettings": {
-															"type": "AzureBlobFSReadSettings",
-															"recursive": true,
-															"enablePartitionDiscovery": false
-														},
-														"formatSettings": {
-															"type": "JsonReadSettings"
-														}
-													},
-													"dataset": {
-														"referenceName": "DS_Manifest",
-														"type": "DatasetReference",
-														"parameters": {
-															"containerName": {
-																"value": "@pipeline().parameters.landingZoneContainer",
-																"type": "Expression"
-															},
-															"folderName": {
-																"value": "@activity('Get Measurement Folders').output.childItems",
-																"type": "Expression"
-															},
-															"fileName": {
-																"value": "@pipeline().parameters.fileManifestName",
-																"type": "Expression"
-															}
-														}
-													},
-													"firstRowOnly": false
-												}
-											},
-											{
-												"name": "Call CreateMeasurement API",
-												"type": "WebActivity",
-												"dependsOn": [
-													{
-														"activity": "Lookup  Manifest",
-														"dependencyConditions": [
-															"Succeeded"
-														]
-													}
-												],
-												"policy": {
-													"timeout": "0.12:00:00",
-													"retry": 2,
-													"retryIntervalInSeconds": 30,
-													"secureOutput": false,
-													"secureInput": false
-												},
-												"userProperties": [],
-												"typeProperties": {
-													"url": {
-														"value": "@concat(pipeline().parameters.apiBaseUrl,pipeline().parameters.apiVersion,'/measurements')",
-														"type": "Expression"
-													},
-													"connectVia": {
-														"referenceName": "IntegrationRuntime",
-														"type": "IntegrationRuntimeReference"
-													},
-													"method": "POST",
-													"headers": {
-														"traceparent": {
-															"value": "@variables('traceparent')",
-															"type": "Expression"
-														}
-													},
-													"body": {
-														"value": "@activity('Lookup  Manifest').output.value[0]",
-														"type": "Expression"
-													}
-												}
-											},
-											{
-												"name": "Call CreateDatastream API",
-												"type": "WebActivity",
-												"dependsOn": [
-													{
-														"activity": "Call CreateMeasurement API",
-														"dependencyConditions": [
-															"Succeeded"
-														]
-													}
-												],
-												"policy": {
-													"timeout": "0.12:00:00",
-													"retry": 2,
-													"retryIntervalInSeconds": 30,
-													"secureOutput": false,
-													"secureInput": false
-												},
-												"userProperties": [],
-												"typeProperties": {
-													"url": {
-														"value": "@concat(pipeline().parameters.apiBaseUrl,pipeline().parameters.apiVersion,'/measurements/',activity('Call CreateMeasurement API').output.id,'/datastreams')",
-														"type": "Expression"
-													},
-													"connectVia": {
-														"referenceName": "IntegrationRuntime",
-														"type": "IntegrationRuntimeReference"
-													},
-													"method": "POST",
-													"headers": {
-														"traceparent": {
-															"value": "@variables('traceparent')",
-															"type": "Expression"
-														}
-													},
-													"body": {
-														"value": "@json(concat('{\n  \"name\": \"rawstream\",\n  \"type\": \"RAW\",\n  \"lineage\": {\n    \"producerMetadata\": {\n      \"name\": \"adflandingtorawcopy\",\n      \"type\": \"system\",\n      \"version\": \"',pipeline().parameters.batchVersion,'\",\n      \"additionalProperties\": {\n        \"pipeLineRunID\" : \"',pipeline().RunId ,'\",\n        \"apiVersion\" : \"',pipeline().parameters.apiVersion,'\"\n      }\n    },\n    \"sources\": []\n  },\n  \"tags\": ',activity('Call CreateMeasurement API').output.tags,'\n}'))",
-														"type": "Expression"
-													}
-												}
-											},
-											{
-												"name": "Update DataStream Status To Processing",
-												"type": "WebActivity",
-												"dependsOn": [
-													{
-														"activity": "Call CreateFileMetadata API",
-														"dependencyConditions": [
-															"Succeeded"
-														]
-													}
-												],
-												"policy": {
-													"timeout": "0.12:00:00",
-													"retry": 2,
-													"retryIntervalInSeconds": 30,
-													"secureOutput": false,
-													"secureInput": false
-												},
-												"userProperties": [],
-												"typeProperties": {
-													"url": {
-														"value": "@concat(pipeline().parameters.apiBaseUrl,pipeline().parameters.apiVersion,'/measurements/',activity('Call CreateMeasurement API').output.id,'/datastreams/',activity('Call CreateDatastream API').output.id)",
-														"type": "Expression"
-													},
-													"connectVia": {
-														"referenceName": "IntegrationRuntime",
-														"type": "IntegrationRuntimeReference"
-													},
-													"method": "PATCH",
-													"headers": {
-														"traceparent": {
-															"value": "@variables('traceparent')",
-															"type": "Expression"
-														}
-													},
-													"body": {
-														"value": "@json(concat('\n{\n  \"status\": \"PROCESSING\"\n}'))",
-														"type": "Expression"
-													}
-												}
-											},
-											{
-												"name": "Set BatchParams",
-												"type": "SetVariable",
-												"dependsOn": [
-													{
-														"activity": "Update DataStream Status To Processing",
-														"dependencyConditions": [
-															"Succeeded"
-														]
-													}
-												],
-												"userProperties": [],
-												"typeProperties": {
-													"variableName": "batchParams",
-													"value": {
-														"value": "@concat(' --measurementId=',activity('Call CreateMeasurement API').output.id,' --rawDataStreamPath=',activity('Call CreateDatastream API').output.relativeUriPath,' --landingPath=',pipeline().parameters.landingZoneContainer,'/',item().name,' --archivePath=',pipeline().parameters.archiveZoneContainer,' --rawDataStreamId=',activity('Call CreateDatastream API').output.id)",
-														"type": "Expression"
-													}
-												}
-											},
-											{
-												"name": "Call CreateFileMetadata API",
-												"description": "Store Files collection",
-												"type": "WebActivity",
-												"dependsOn": [
-													{
-														"activity": "Call CreateDatastream API",
-														"dependencyConditions": [
-															"Succeeded"
-														]
-													}
-												],
-												"policy": {
-													"timeout": "0.12:00:00",
-													"retry": 0,
-													"retryIntervalInSeconds": 30,
-													"secureOutput": false,
-													"secureInput": false
-												},
-												"userProperties": [],
-												"typeProperties": {
-													"url": {
-														"value": "@concat(pipeline().parameters.apiBaseUrl,pipeline().parameters.apiVersion,'/files/batch')",
-														"type": "Expression"
-													},
-													"connectVia": {
-														"referenceName": "IntegrationRuntime",
-														"type": "IntegrationRuntimeReference"
-													},
-													"method": "POST",
-													"headers": {
-														"traceparent": {
-															"value": "@variables('traceparent')",
-															"type": "Expression"
-														}
-													},
-													"body": {
-														"value": "@json(concat('{\n    \"measurementId\": \"',activity('Call CreateMeasurement API').output.id,'\",\n    \"baseUriPath\": \"',activity('Call CreateDatastream API').output.baseUriPath,'\",\n    \"relativeUriPath\": \"',activity('Call CreateDatastream API').output.relativeUriPath,'\",\n    \"items\": ',activity('Call CreateMeasurement API').output.files,'\n}'))",
-														"type": "Expression"
-													}
-												}
-											}
-										]
-									}
-								},
-								{
-									"name": "Fail Missing Manifest Validation",
-									"type": "Fail",
-									"dependsOn": [
-										{
-											"activity": "Validate Manifest Validation",
-											"dependencyConditions": [
-												"Failed"
-											]
-										}
-									],
-									"userProperties": [],
-									"typeProperties": {
-										"message": "Manifest validation was not generated for this measurement.",
-										"errorCode": "500"
-									}
-								}
-							]
-						}
-					},
-					{
-						"name": "traceparent",
-						"type": "SetVariable",
-						"dependsOn": [],
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "traceparent",
-							"value": {
-								"value": "@concat('00-',replace(pipeline().RunId,'-',''),'-0000000000000001-00')",
-								"type": "Expression"
-							}
-						}
-					}
-				],
-				"concurrency": 1,
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"parameters": {
-					"landingZoneContainer": {
-						"type": "string",
-						"defaultValue": "landing"
-					},
-					"rawZoneContainer": {
-						"type": "string",
-						"defaultValue": "raw"
-					},
-					"apiBaseUrl": {
-						"type": "string",
-						"defaultValue": "http://api-stage.av.contoso.internal/"
-					},
-					"fileManifestName": {
-						"type": "string",
-						"defaultValue": "manifest.json"
-					},
-					"validationManifestName": {
-						"type": "string",
-						"defaultValue": "manifest_validation.json"
-					},
-					"archiveZoneContainer": {
-						"type": "string",
-						"defaultValue": "archive"
-					},
-					"apiVersion": {
-						"type": "string",
-						"defaultValue": "v1"
-					},
-					"batchVersion": {
-						"type": "string",
-						"defaultValue": "1.0"
-					}
-				},
-				"variables": {
-					"isValidMeasurement": {
-						"type": "Boolean"
-					},
-					"validationManifestMissing": {
-						"type": "String"
-					},
-					"batchParams": {
-						"type": "String"
-					},
-					"traceparent": {
-						"type": "String"
-					}
-				},
-				"annotations": [],
-				"lastPublishTime": "2022-11-23T10:57:33Z"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DS_SourceMeasurements')]",
-				"[concat(variables('factoryId'), '/pipelines/Pipeline_Child_MeasurementValidation')]",
-				"[concat(variables('factoryId'), '/datasets/DS_Manifest')]",
-				"[concat(variables('factoryId'), '/integrationRuntimes/IntegrationRuntime')]"
 			]
 		}
 	]
