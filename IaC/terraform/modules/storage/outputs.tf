@@ -13,3 +13,7 @@ output "storage_account_primary_access_key" {
 output "primary_blob_endpoint" {
   value = azurerm_storage_account.batch_storage.primary_blob_endpoint
 }
+
+output "primary_connection_string" {
+  value = azurerm_storage_account.batch_storage.primary_connection_string
+}

@@ -32,6 +32,21 @@ resource "azurerm_linux_web_app" "linux_web_app" {
   tags = var.tags
 }
 
+resource "azurerm_resource_group_template_deployment" "app_service_deployment_config" {
+  name                = "${resource.azurerm_linux_web_app.linux_web_app.name}-deploy"
+  resource_group_name = var.resource_group_name
+  deployment_mode     = "Incremental"
+  depends_on = [
+    azurerm_linux_web_app.linux_web_app
+  ]
+  parameters_content = jsonencode({
+    "appServiceName" = { value = resource.azurerm_linux_web_app.linux_web_app.name }
+    "location"       = { value = var.location }
+    "websitePort"    = { value = local.websitePort }
+  })
+  template_content = file("${path.module}/app-service-deployment-config.json")
+}
+
 resource "azurerm_private_endpoint" "linux_web_app_endpoint" {
   name                = "${azurerm_linux_web_app.linux_web_app.name}-private-endpoint"
   location            = var.location

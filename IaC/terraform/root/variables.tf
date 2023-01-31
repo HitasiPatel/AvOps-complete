@@ -310,6 +310,12 @@ variable "batch_pool_allocation_mode" {
   default     = "BatchService"
 }
 
+variable "batch_public_network_access_enabled" {
+  description = "Specifies whether public network access is allowed"
+  type        = bool
+  default     = true
+}
+
 variable "batch_storage_account_authentication_mode" {
   description = "Specifies the storage account authentication mode."
   type        = string

@@ -10,6 +10,7 @@ resource "azurerm_batch_account" "batch_account" {
   storage_account_id                  = var.storage_account_id
   storage_account_authentication_mode = var.storage_account_authentication_mode
   storage_account_node_identity       = var.batch_uami_id
+  public_network_access_enabled       = var.public_network_access_enabled
   identity {
     type = var.identity_type
   }
@@ -31,7 +32,7 @@ resource "azurerm_private_endpoint" "batch-private-endpoint" {
   }
 
   private_dns_zone_group {
-    name = "default"
+    name                 = "default"
     private_dns_zone_ids = [var.batch_dns_zone_id]
   }
 }

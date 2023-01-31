@@ -57,6 +57,26 @@ variable "key_vault_id" {
   type        = string
 }
 
+variable "batch_storage_account_connection_string" {
+  description = "Batch Storage Account connection string"
+  type        = string
+}
+
+variable "batch_account_endpoint" {
+  description = "Batch Account endpoint"
+  type        = string
+}
+
+variable "batch_account_name" {
+  description = "Batch Account Name"
+  type        = string
+}
+
+variable "batch_account_exec_pool_name" {
+  description = "Batch Account exection pool name"
+  type        = string
+}
+
 variable "node_size" {
   description = "The size of the nodes on which the Managed Integration Runtime runs."
   type        = string

@@ -1,5 +1,6 @@
 locals {
   resource_type = "cosmos"
+  subnet_ids    = [var.private_link_subnet_id, var.app_service_subnet_id]
 }
 
 resource "azurerm_cosmosdb_account" "cosmosdb" {
@@ -31,13 +32,21 @@ resource "azurerm_cosmosdb_account" "cosmosdb" {
     location          = var.replication_location
     failover_priority = 0
   }
-} 
+  is_virtual_network_filter_enabled = true
+  dynamic "virtual_network_rule" {
+    for_each = local.subnet_ids
+    content {
+      id                                   = virtual_network_rule.value
+      ignore_missing_vnet_service_endpoint = true
+    }
+  }
+}
 
 resource "azurerm_private_endpoint" "cosmos_db_pvt_endpoint" {
   name                = "${local.resource_type}-${var.cosmosdb_name}-${var.tags.environment}-private-endpoint"
   location            = var.location
   resource_group_name = var.resource_group_name
-  subnet_id           = var.subnet_id
+  subnet_id           = var.private_link_subnet_id
 
   private_service_connection {
     name                           = "${local.resource_type}-${var.cosmosdb_name}-${var.tags.environment}-private-service-connection"
