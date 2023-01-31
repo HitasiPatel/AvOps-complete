@@ -1,9 +1,3 @@
-locals {
-  resource_type_app_svc_plan  = "app-svc-plan"
-  resource_type_linux_web_app = "web-app-linux"
-  app_name                    = "metadata-api"
-}
-
 resource "azurerm_service_plan" "app_svc_plan" {
   name                = "${local.resource_type_app_svc_plan}${var.app_svc_suffix}"
   resource_group_name = var.resource_group_name
@@ -23,17 +17,15 @@ resource "azurerm_linux_web_app" "linux_web_app" {
   identity {
     type = "SystemAssigned"
   }
-  app_settings = {
-    WEBSITE_PORT = var.app_service_expose_port
-  }
+  app_settings = merge(local.app_settings, var.app_settings)
 
   site_config {
-    container_registry_use_managed_identity = true
+    container_registry_use_managed_identity       = true
     container_registry_managed_identity_client_id = var.acr_sami_principal_id
 
     application_stack {
-        docker_image     = "${var.acr_login_server}/${local.app_name}"
-        docker_image_tag = "latest"
+      docker_image     = "${var.acr_login_server}/${local.app_name}"
+      docker_image_tag = "latest"
     }
   }
 

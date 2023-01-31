@@ -54,7 +54,28 @@ variable "acr_sami_principal_id" {
 }
 
 variable "app_service_expose_port" {
-  type = number
+  type        = number
   description = "Container port that will be exposed to access the app service"
-  default = 3100
+  default     = 3100
+}
+
+variable "app_settings" {
+  type = map(string)
+  description = "App settings which includes the env variables"
+  default = {}
+}
+
+variable "azure_cosmos_connection_string" {
+  type        = string
+  description = "Azure Cosmos Primary connection string"
+}
+
+variable "azure_cosmos_database_name" {
+  type        = string
+  description = "Azure Cosmos Database name for mongo API"
+  default     = "avops"
+}
+
+variable "adls_storage_accounts" {
+  description = "Storage accounts list"
 }
