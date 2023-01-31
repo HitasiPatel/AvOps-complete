@@ -242,7 +242,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"command": {
-								"value": "@concat('/bin/bash -c \"export traceparent=\"','hi','\" && ',' export AZURE_TRACING_ENABLED=True ',' && ','cd $AZ_BATCH_APP_PACKAGE_orchestratorapp_1_0','/app && python3 copybags.py ','bye','\"')\n\n\n\n",
+								"value": "@concat('/bin/bash -c \"cd $AZ_BATCH_APP_PACKAGE_av-batch-orchestrator_1_0','/app && python3 copybags.py ','--measurementId=a1094558-89fe-4205-8e9f-a70173b1019a ----rawDataStreamId=c08b8a11-d88c-494d-a3b2-dc181ff311cb --rawDataStreamPath=raw/2022/11/15/KA05AH5050/a1094558-89fe-4205-8e9f-a70173b1019a/c08b8a11-d88c-494d-a3b2-dc181ff311cb --landingPath=landing/2022/11/15/KA05AH5050/a1094558-89fe-4205-8e9f-a70173b1019a/8bfbb508-8438-4ce8-b179-ffa3ef983c0a --archivePath=archive/2022/11/15/KA05AH5050/a1094558-89fe-4205-8e9f-a70173b1019a/8bfbb508-8438-4ce8-b179-ffa3ef983c0a ','\"')\n\n\n\n",
 								"type": "Expression"
 							},
 							"referenceObjects": {
