@@ -7,6 +7,22 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "adf-av-dataops-opxgy"
 		},
+		"LS_AzureBatchStorage_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'LS_AzureBatchStorage'"
+		},
+		"LS_AzureBatch_properties_typeProperties_batchUri": {
+			"type": "string",
+			"defaultValue": "https://batchavdataopsopxgytest.westeurope.batch.azure.com"
+		},
+		"LS_AzureBatch_properties_typeProperties_poolName": {
+			"type": "string",
+			"defaultValue": "avdataops-orchestratorpool"
+		},
+		"LS_AzureBatch_properties_typeProperties_accountName": {
+			"type": "string",
+			"defaultValue": "batchavdataopsopxgytest"
+		},
 		"LS_Derivedopxgy_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://avderivedopxgytest.dfs.core.windows.net/"
@@ -107,6 +123,18 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"LS_AzureBatchStorage_connectionString": {
+						"value": "[parameters('LS_AzureBatchStorage_connectionString')]"
+					},
+					"LS_AzureBatch_properties_typeProperties_batchUri": {
+						"value": "[parameters('LS_AzureBatch_properties_typeProperties_batchUri')]"
+					},
+					"LS_AzureBatch_properties_typeProperties_poolName": {
+						"value": "[parameters('LS_AzureBatch_properties_typeProperties_poolName')]"
+					},
+					"LS_AzureBatch_properties_typeProperties_accountName": {
+						"value": "[parameters('LS_AzureBatch_properties_typeProperties_accountName')]"
 					},
 					"kv-avdops-opxgy-managed-private-endpoint_properties_privateLinkResourceId": {
 						"value": "[parameters('kv-avdops-opxgy-managed-private-endpoint_properties_privateLinkResourceId')]"

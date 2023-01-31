@@ -7,6 +7,22 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "adf-av-dataops-opxgy"
 		},
+		"LS_AzureBatchStorage_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'LS_AzureBatchStorage'"
+		},
+		"LS_AzureBatch_properties_typeProperties_batchUri": {
+			"type": "string",
+			"defaultValue": "https://batchavdataopsopxgytest.westeurope.batch.azure.com"
+		},
+		"LS_AzureBatch_properties_typeProperties_poolName": {
+			"type": "string",
+			"defaultValue": "avdataops-orchestratorpool"
+		},
+		"LS_AzureBatch_properties_typeProperties_accountName": {
+			"type": "string",
+			"defaultValue": "batchavdataopsopxgytest"
+		},
 		"LS_Derivedopxgy_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://avderivedopxgytest.dfs.core.windows.net/"
@@ -485,6 +501,551 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/Pipeline_LandingToRaw_copy1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Get Measurement Folders",
+						"type": "GetMetadata",
+						"dependsOn": [
+							{
+								"activity": "traceparent",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 2,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "DS_SourceMeasurements",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"fieldList": [
+								"childItems"
+							],
+							"storeSettings": {
+								"type": "AzureBlobFSReadSettings",
+								"recursive": true,
+								"enablePartitionDiscovery": false
+							},
+							"formatSettings": {
+								"type": "BinaryReadSettings"
+							}
+						}
+					},
+					{
+						"name": "Iterate Measurements",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Get Measurement Folders",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Get Measurement Folders').output.childItems",
+								"type": "Expression"
+							},
+							"isSequential": false,
+							"activities": [
+								{
+									"name": "If Valid Measurement",
+									"type": "IfCondition",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"expression": {
+											"value": "@equals(true,true)",
+											"type": "Expression"
+										},
+										"ifFalseActivities": [
+											{
+												"name": "Validation Failed",
+												"type": "Fail",
+												"dependsOn": [],
+												"userProperties": [],
+												"typeProperties": {
+													"message": "Measurement doesn't have all the required files.",
+													"errorCode": "500"
+												}
+											}
+										],
+										"ifTrueActivities": [
+											{
+												"name": "Lookup  Manifest",
+												"type": "Lookup",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 2,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"source": {
+														"type": "JsonSource",
+														"storeSettings": {
+															"type": "AzureBlobFSReadSettings",
+															"recursive": true,
+															"enablePartitionDiscovery": false
+														},
+														"formatSettings": {
+															"type": "JsonReadSettings"
+														}
+													},
+													"dataset": {
+														"referenceName": "DS_Manifest",
+														"type": "DatasetReference",
+														"parameters": {
+															"folderName": {
+																"value": "@item().name",
+																"type": "Expression"
+															},
+															"fileName": {
+																"value": "@pipeline().parameters.fileManifestName",
+																"type": "Expression"
+															},
+															"containerName": {
+																"value": "@pipeline().parameters.landingZoneContainer",
+																"type": "Expression"
+															}
+														}
+													},
+													"firstRowOnly": false
+												}
+											},
+											{
+												"name": "Call CreateMeasurement API",
+												"type": "WebActivity",
+												"dependsOn": [
+													{
+														"activity": "Lookup  Manifest",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 2,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"url": {
+														"value": "@concat(pipeline().parameters.apiBaseUrl,pipeline().parameters.apiVersion,'/measurements')",
+														"type": "Expression"
+													},
+													"connectVia": {
+														"referenceName": "IntegrationRuntime",
+														"type": "IntegrationRuntimeReference"
+													},
+													"method": "POST",
+													"headers": {
+														"traceparent": {
+															"value": "@variables('traceparent')",
+															"type": "Expression"
+														}
+													},
+													"body": {
+														"value": "@activity('Lookup  Manifest').output.value[0]",
+														"type": "Expression"
+													}
+												}
+											},
+											{
+												"name": "Call CreateDatastream API",
+												"type": "WebActivity",
+												"dependsOn": [
+													{
+														"activity": "Call CreateMeasurement API",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 2,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"url": {
+														"value": "@concat(pipeline().parameters.apiBaseUrl,pipeline().parameters.apiVersion,'/measurements/',activity('Call CreateMeasurement API').output.id,'/datastreams')",
+														"type": "Expression"
+													},
+													"connectVia": {
+														"referenceName": "IntegrationRuntime",
+														"type": "IntegrationRuntimeReference"
+													},
+													"method": "POST",
+													"headers": {
+														"traceparent": {
+															"value": "@variables('traceparent')",
+															"type": "Expression"
+														}
+													},
+													"body": {
+														"value": "@json(concat('{\n  \"name\": \"rawstream\",\n  \"type\": \"RAW\",\n  \"lineage\": {\n    \"producerMetadata\": {\n      \"name\": \"adflandingtorawcopy\",\n      \"type\": \"system\",\n      \"version\": \"',pipeline().parameters.batchVersion,'\",\n      \"additionalProperties\": {\n        \"pipeLineRunID\" : \"',pipeline().RunId ,'\",\n        \"apiVersion\" : \"',pipeline().parameters.apiVersion,'\"\n      }\n    },\n    \"sources\": []\n  },\n  \"tags\": ',activity('Call CreateMeasurement API').output.tags,'\n}'))",
+														"type": "Expression"
+													}
+												}
+											},
+											{
+												"name": "Update DataStream Status To Processing",
+												"type": "WebActivity",
+												"dependsOn": [
+													{
+														"activity": "Call CreateFileMetadata API",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 2,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"url": {
+														"value": "@concat(pipeline().parameters.apiBaseUrl,pipeline().parameters.apiVersion,'/measurements/',activity('Call CreateMeasurement API').output.id,'/datastreams/',activity('Call CreateDatastream API').output.id)",
+														"type": "Expression"
+													},
+													"connectVia": {
+														"referenceName": "IntegrationRuntime",
+														"type": "IntegrationRuntimeReference"
+													},
+													"method": "PATCH",
+													"headers": {
+														"traceparent": {
+															"value": "@variables('traceparent')",
+															"type": "Expression"
+														}
+													},
+													"body": {
+														"value": "@json(concat('\n{\n  \"status\": \"PROCESSING\"\n}'))",
+														"type": "Expression"
+													}
+												}
+											},
+											{
+												"name": "Batch Copy",
+												"type": "Custom",
+												"dependsOn": [
+													{
+														"activity": "Set BatchParams",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"command": {
+														"value": "@concat('/bin/bash -c \"export traceparent=\"',variables('traceparent'),'\" && ',' export AZURE_TRACING_ENABLED=True ',' && ','cd $AZ_BATCH_APP_PACKAGE_orchestratorapp_1_0','/app && python3 copybags.py ',variables('batchParams'),'\"')\n\n\n\n",
+														"type": "Expression"
+													},
+													"referenceObjects": {
+														"linkedServices": [],
+														"datasets": []
+													}
+												},
+												"linkedServiceName": {
+													"referenceName": "LS_AzureBatch",
+													"type": "LinkedServiceReference"
+												}
+											},
+											{
+												"name": "Set BatchParams",
+												"type": "SetVariable",
+												"dependsOn": [
+													{
+														"activity": "Update DataStream Status To Processing",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"userProperties": [],
+												"typeProperties": {
+													"variableName": "batchParams",
+													"value": {
+														"value": "@concat(' --measurementId=',activity('Call CreateMeasurement API').output.id,' --rawDataStreamPath=',activity('Call CreateDatastream API').output.relativeUriPath,' --landingPath=',pipeline().parameters.landingZoneContainer,'/',item().name,' --archivePath=',pipeline().parameters.archiveZoneContainer,' --rawDataStreamId=',activity('Call CreateDatastream API').output.id)",
+														"type": "Expression"
+													}
+												}
+											},
+											{
+												"name": "Call CreateFileMetadata API",
+												"description": "Store Files collection",
+												"type": "WebActivity",
+												"dependsOn": [
+													{
+														"activity": "Call CreateDatastream API",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"url": {
+														"value": "@concat(pipeline().parameters.apiBaseUrl,pipeline().parameters.apiVersion,'/files/batch')",
+														"type": "Expression"
+													},
+													"connectVia": {
+														"referenceName": "IntegrationRuntime",
+														"type": "IntegrationRuntimeReference"
+													},
+													"method": "POST",
+													"headers": {
+														"traceparent": {
+															"value": "@variables('traceparent')",
+															"type": "Expression"
+														}
+													},
+													"body": {
+														"value": "@json(concat('{\n    \"measurementId\": \"',activity('Call CreateMeasurement API').output.id,'\",\n    \"baseUriPath\": \"',activity('Call CreateDatastream API').output.baseUriPath,'\",\n    \"relativeUriPath\": \"',activity('Call CreateDatastream API').output.relativeUriPath,'\",\n    \"items\": ',activity('Call CreateMeasurement API').output.files,'\n}'))",
+														"type": "Expression"
+													}
+												}
+											},
+											{
+												"name": "Update DataStream Status To Completed",
+												"type": "WebActivity",
+												"dependsOn": [
+													{
+														"activity": "Batch Copy",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 2,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"url": {
+														"value": "@concat(pipeline().parameters.apiBaseUrl,pipeline().parameters.apiVersion,'/measurements/',activity('Call CreateMeasurement API').output.id,'/datastreams/',activity('Call CreateDatastream API').output.id)",
+														"type": "Expression"
+													},
+													"connectVia": {
+														"referenceName": "IntegrationRuntime",
+														"type": "IntegrationRuntimeReference"
+													},
+													"method": "PATCH",
+													"headers": {
+														"traceparent": {
+															"value": "@variables('traceparent')",
+															"type": "Expression"
+														}
+													},
+													"body": {
+														"value": "@json(concat('\n{\n  \"status\": \"COMPLETED\"\n}'))",
+														"type": "Expression"
+													}
+												}
+											},
+											{
+												"name": "Batch Copy_copy1",
+												"type": "Custom",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"command": {
+														"value": "@concat('/bin/bash -c \"export traceparent=\"',variables('traceparent'),'\" && ',' export AZURE_TRACING_ENABLED=True ',' && ','cd $AZ_BATCH_APP_PACKAGE_orchestratorapp_1_0','/app && python3 copybags.py ',variables('batchParams'),'\"')\n\n\n\n",
+														"type": "Expression"
+													},
+													"referenceObjects": {
+														"linkedServices": [],
+														"datasets": []
+													}
+												},
+												"linkedServiceName": {
+													"referenceName": "LS_AzureBatch",
+													"type": "LinkedServiceReference"
+												}
+											}
+										]
+									}
+								}
+							]
+						}
+					},
+					{
+						"name": "traceparent",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "traceparent",
+							"value": {
+								"value": "@concat('00-',replace(pipeline().RunId,'-',''),'-0000000000000001-00')",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"concurrency": 1,
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"landingZoneContainer": {
+						"type": "string",
+						"defaultValue": "landing"
+					},
+					"rawZoneContainer": {
+						"type": "string",
+						"defaultValue": "raw"
+					},
+					"apiBaseUrl": {
+						"type": "string",
+						"defaultValue": "http://api-stage.av.contoso.internal/"
+					},
+					"fileManifestName": {
+						"type": "string",
+						"defaultValue": "manifest.json"
+					},
+					"validationManifestName": {
+						"type": "string",
+						"defaultValue": "manifest_validation.json"
+					},
+					"archiveZoneContainer": {
+						"type": "string",
+						"defaultValue": "archive"
+					},
+					"apiVersion": {
+						"type": "string",
+						"defaultValue": "v1"
+					},
+					"batchVersion": {
+						"type": "string",
+						"defaultValue": "1.0"
+					}
+				},
+				"variables": {
+					"isValidMeasurement": {
+						"type": "Boolean"
+					},
+					"validationManifestMissing": {
+						"type": "String"
+					},
+					"batchParams": {
+						"type": "String"
+					},
+					"traceparent": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-11-23T10:57:33Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_SourceMeasurements')]",
+				"[concat(variables('factoryId'), '/datasets/DS_Manifest')]",
+				"[concat(variables('factoryId'), '/integrationRuntimes/IntegrationRuntime')]",
+				"[concat(variables('factoryId'), '/linkedServices/LS_AzureBatch')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/bala_batch')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Batch Copy",
+						"type": "Custom",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"command": {
+								"value": "@concat('/bin/bash -c \"export traceparent=\"','hi','\" && ',' export AZURE_TRACING_ENABLED=True ',' && ','cd $AZ_BATCH_APP_PACKAGE_orchestratorapp_1_0','/app && python3 copybags.py ','bye','\"')\n\n\n\n",
+								"type": "Expression"
+							},
+							"referenceObjects": {
+								"linkedServices": [],
+								"datasets": []
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "LS_AzureBatch",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_AzureBatch')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -662,7 +1223,7 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"url": "https://web-app-linuxtlsit.azurewebsites.net/v1/measurements",
+							"url": "https://web-app-linuxopxgy.azurewebsites.net/v1/measurements",
 							"connectVia": {
 								"referenceName": "IntegrationRuntime",
 								"type": "IntegrationRuntimeReference"
@@ -684,7 +1245,7 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"url": "https://web-app-linuxtlsit.azurewebsites.net/v1/measurements",
+							"url": "https://web-app-linuxopxgy.azurewebsites.net/v1/measurements",
 							"connectVia": {
 								"referenceName": "IntegrationRuntime",
 								"type": "IntegrationRuntimeReference"
@@ -875,6 +1436,40 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/LS_Landingopxgy')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LS_AzureBatch')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBatch",
+				"typeProperties": {
+					"batchUri": "[parameters('LS_AzureBatch_properties_typeProperties_batchUri')]",
+					"poolName": "[parameters('LS_AzureBatch_properties_typeProperties_poolName')]",
+					"accountName": "[parameters('LS_AzureBatch_properties_typeProperties_accountName')]",
+					"linkedServiceName": {
+						"referenceName": "LS_AzureBatchStorage",
+						"type": "LinkedServiceReference"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_AzureBatchStorage')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LS_AzureBatchStorage')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('LS_AzureBatchStorage_connectionString')]"
+				}
+			},
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/LS_Derivedopxgy')]",

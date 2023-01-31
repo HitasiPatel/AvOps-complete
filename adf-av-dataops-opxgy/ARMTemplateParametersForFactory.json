@@ -5,6 +5,18 @@
 		"factoryName": {
 			"value": "adf-av-dataops-opxgy"
 		},
+		"LS_AzureBatchStorage_connectionString": {
+			"value": ""
+		},
+		"LS_AzureBatch_properties_typeProperties_batchUri": {
+			"value": "https://batchavdataopsopxgytest.westeurope.batch.azure.com"
+		},
+		"LS_AzureBatch_properties_typeProperties_poolName": {
+			"value": "avdataops-orchestratorpool"
+		},
+		"LS_AzureBatch_properties_typeProperties_accountName": {
+			"value": "batchavdataopsopxgytest"
+		},
 		"LS_Derivedopxgy_properties_typeProperties_url": {
 			"value": "https://avderivedopxgytest.dfs.core.windows.net/"
 		},
