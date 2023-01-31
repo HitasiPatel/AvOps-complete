@@ -1,0 +1,52 @@
+# CD - IAC - Terraform
+parameters:
+- name: env
+  displayName: Environment
+  values:
+  - dev
+
+trigger: none
+
+variables:
+  - name: src_dir
+    value: "IaC/terraform/root"
+  - name: TF_RG_NAME
+    value: "rg-tfstate"
+  - name: TF_STORAGE_ACCOUNT
+    value: "avopsdemotfstate"
+  - name: TF_CONTAINER_NAME
+    value: "tfstate-${{ parameters.env }}"
+
+stages:
+  - stage: "install_terraform"
+    jobs:
+      - job: "install_terraform"
+        pool:
+          vmImage: ubuntu-latest
+        displayName: "install-terraform"
+        steps:
+          - script: sudo apt-get update && sudo apt-get install -y gnupg software-properties-common
+
+  - stage: "tf_plan_and_apply"
+    jobs:
+      - job: "tf_plan_and_apply"
+        pool:
+          vmImage: ubuntu-latest
+          displayName: "terraform-plan-and-apply"
+        steps:
+          - script: |
+              cd $(src_dir)
+              az login --service-principal --username $(appId) --password $(password) --tenant $(tenant)
+              export ARM_CLIENT_ID=$(appId)
+              export ARM_CLIENT_SECRET=$(password)
+              export ARM_SUBSCRIPTION_ID=$(subscription)
+              export ARM_TENANT_ID=$(tenant)
+              terraform init \
+              -backend-config="resource_group_name=$(TF_RG_NAME)" \
+              -backend-config="storage_account_name=$(TF_STORAGE_ACCOUNT)" \
+              -backend-config="container_name=$(TF_CONTAINER_NAME)" \
+              -backend-config="access_key=$(eval $(TF_STORAGE_ACCOUNT_KEY))"
+              terraform validate
+              terraform plan
+              terraform apply -auto-approve
+            displayName: "Terraform plan and apply"
