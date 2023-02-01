@@ -4,6 +4,7 @@ parameters:
   displayName: Environment
   values:
   - dev
+  - test
 
 trigger: none
 
