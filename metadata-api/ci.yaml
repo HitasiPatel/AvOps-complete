@@ -1,4 +1,19 @@
 # CI - Metedata API
+parameters:
+  - name: acr_name
+    displayName: ACR name
+    type: string
+    default: "acravdataopsddxkp"
+
+  - name: acr_service_connection_name
+    displayName: ACR Service Connection name
+    type: string
+    default: "acr_service_connection"
+
+  - name: app_service_name
+    displayName: App Service name
+    type: string
+    default: "web-app-linuxddxkp"
 
 trigger:
   branches:
@@ -13,8 +28,12 @@ variables:
     value: "metadata-api/"
   - name: test_dir
     value: "metadata-api/app/tests/"
-  - name: appname
+  - name: app_name
     value: "metadata-api"
+  - name: image_repository
+    value: "metadata-api"
+  - name: tags
+    value: $(Build.BuildId)
 
 stages:
   - stage: "code_quality_checks"
@@ -111,12 +130,19 @@ stages:
             displayName: Login to ACR
             inputs:
               command: "login"
-              containerRegistry: "acr_service_connection"
+              containerRegistry: ${{ parameters.acr_service_connection_name }}
           - task: Docker@2
             displayName: Build and Push to ACR
             inputs:
-              containerRegistry: "acr_service_connection"
-              repository: "metadata-api"
+              containerRegistry: ${{ parameters.acr_service_connection_name }}
+              repository: $(app_name)
               command: "buildAndPush"
-              tags: $(Build.BuildId)
+              tags: $(tags)
               Dockerfile: "**/Dockerfile"
+
+          - task: AzureWebAppContainer@1
+            displayName: "Azure Web App on Container Deploy"
+            inputs:
+              azureSubscription: "arm_service_connection"
+              appName: ${{ parameters.app_service_name }}
+              imageName: ${{ parameters.acr_name }}.azurecr.io/$(image_repository):$(tags)
