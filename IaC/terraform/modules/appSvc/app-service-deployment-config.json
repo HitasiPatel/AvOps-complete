@@ -7,9 +7,6 @@
         },
         "location": {
             "type": "String"
-        },
-        "websitePort": {
-            "type": "String"
         }
     },
     "resources": [
@@ -19,15 +16,7 @@
             "name": "[parameters('appServiceName')]",
             "location": "[parameters('location')]",
             "properties": {
-                "vnetImagePullEnabled": true,
-                "siteConfig": {
-                    "appSettings": [
-                        {
-                            "name": "WEBSITES_PORT",
-                            "value": "[parameters('websitePort)]"
-                        }
-                    ]
-                }
+                "vnetImagePullEnabled": true
             }
         }
     ]

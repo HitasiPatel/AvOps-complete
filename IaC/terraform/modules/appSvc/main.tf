@@ -42,7 +42,6 @@ resource "azurerm_resource_group_template_deployment" "app_service_deployment_co
   parameters_content = jsonencode({
     "appServiceName" = { value = resource.azurerm_linux_web_app.linux_web_app.name }
     "location"       = { value = var.location }
-    "websitePort"    = { value = local.websitePort }
   })
   template_content = file("${path.module}/app-service-deployment-config.json")
 }
