@@ -5,6 +5,7 @@ from app.core.config import getSettings
 from app.core.schemas.datastreams import DataStreamStatus, DataStreamType
 from beanie.operators import In
 from azure.storage.blob import BlobClient, BlobServiceClient
+from azure.identity import DefaultAzureCredential
 
 from app.utils.constants import DATASTREAM_JSON
 
@@ -108,16 +109,7 @@ def getLineageAggregateQuery():
 
 
 def createManifestFile(datastream: DataStream):
-    conn_string = (
-        getSettings().AZURE_STORAGE_ACCOUNT_RAW_ZONE_URL_CONNECTION_STRING
-        if datastream.type == DataStreamType.RAW
-        else getSettings().AZURE_STORAGE_ACCOUNT_DERIVED_ZONE_URL_CONNECTION_STRING
-    )
-    
-    storage_account_key = BlobServiceClient.from_connection_string(
-        conn_string
-    ).credential.account_key
-    
+
     return BlobClient.from_blob_url(
         "/".join(
             map(
@@ -125,6 +117,5 @@ def createManifestFile(datastream: DataStream):
                 [datastream.baseUriPath, datastream.relativeUriPath, DATASTREAM_JSON],
             )
         ),
-        storage_account_key,
+        DefaultAzureCredential()
     ).upload_blob(datastream.json(exclude_none=True), overwrite=True)
-    
