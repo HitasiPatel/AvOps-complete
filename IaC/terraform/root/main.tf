@@ -147,7 +147,7 @@ module "adls" {
   is_manual_connection             = var.adls_is_manual_connection
   last_access_time_enabled         = var.adls_last_access_time_enabled
   blob_storage_cors_origins        = var.adls_blob_storage_cors_origins
-  network_rules_subnet_ids         = [module.privatelink_subnet.subnet_id]
+  network_rules_subnet_ids         = [module.privatelink_subnet.subnet_id, module.appservice_subnet.subnet_id]
   private_link_subnet_id           = module.privatelink_subnet.subnet_id
   blob_storage_dns_zone_id         = module.dns_zones.blob_storage_dns_zone_id
 }

@@ -75,3 +75,11 @@ resource "azurerm_role_assignment" "app_service_acrpull_role" {
   scope                            = var.acr_id
   skip_service_principal_aad_check = true
 }
+
+# Give Linux Web app (App service) access to Storage accounts
+resource "azurerm_role_assignment" "app_service_adls_data_contributor_role" {
+  for_each             = var.adls_storage_accounts
+  scope                = each.value.id
+  role_definition_name = "Storage Blob Data Contributor"
+  principal_id         = var.app_service_sami_principal_id
+}
