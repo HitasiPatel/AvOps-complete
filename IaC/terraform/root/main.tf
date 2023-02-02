@@ -85,7 +85,8 @@ module "cosmosdb" {
   capabilities             = var.cosmosdb_capabilities
   backup                   = var.cosmosdb_backup
   total_throughput_limit   = var.cosmosdb_total_throughput_limit
-  subnet_id                = module.privatelink_subnet.subnet_id
+  private_link_subnet_id   = module.privatelink_subnet.subnet_id
+  app_service_subnet_id    = module.appservice_subnet.subnet_id
   mongo_cosmos_dns_zone_id = module.dns_zones.mongo_cosmos_dns_zone_id
 }
 
@@ -211,6 +212,7 @@ module "batch" {
   account_tier                        = var.batch_account_tier
   account_replication_type            = var.batch_account_replication_type
   storage_account_container_map       = var.batch_storage_account_container_map
+  public_network_access_enabled       = var.batch_public_network_access_enabled
   pool_allocation_mode                = var.batch_pool_allocation_mode
   storage_account_authentication_mode = var.batch_storage_account_authentication_mode
   identity_type                       = var.batch_identity_type
@@ -238,22 +240,26 @@ module "batch" {
 # ------------------------------------------------------------------------------------------------------
 
 module "data_factory" {
-  source                          = "../modules/adf"
-  resource_group_name             = var.resource_group_name
-  location                        = var.location
-  tags                            = var.tags
-  adf_name                        = var.adf_name
-  adf_suffix                      = random_string.common_suffix.id
-  managed_virtual_network_enabled = var.adf_managed_virtual_network_enabled
-  node_size                       = var.adf_node_size
-  virtual_network_id              = module.virtual_network.virtual_network_id
-  subnet_id                       = module.privatelink_subnet.subnet_id
-  adls_storage_accounts           = module.adls.storage_accounts
-  key_vault_id                    = module.key_vault.key_vault_id
-  key_vault_name                  = module.key_vault.key_vault_name
-  app_service_id                  = module.app_service.app_service_id
-  app_service_name                = module.app_service.app_service_name
-  adf_dns_zone_id                 = module.dns_zones.adf_dns_zone_id
+  source                                  = "../modules/adf"
+  resource_group_name                     = var.resource_group_name
+  location                                = var.location
+  tags                                    = var.tags
+  adf_name                                = var.adf_name
+  adf_suffix                              = random_string.common_suffix.id
+  managed_virtual_network_enabled         = var.adf_managed_virtual_network_enabled
+  node_size                               = var.adf_node_size
+  virtual_network_id                      = module.virtual_network.virtual_network_id
+  subnet_id                               = module.privatelink_subnet.subnet_id
+  adls_storage_accounts                   = module.adls.storage_accounts
+  key_vault_id                            = module.key_vault.key_vault_id
+  key_vault_name                          = module.key_vault.key_vault_name
+  batch_storage_account_connection_string = module.batch_storage_account.primary_connection_string
+  batch_account_endpoint                  = module.batch.batch_account_endpoint
+  batch_account_name                      = module.batch.batch_account_name
+  batch_account_exec_pool_name            = module.batch.exec_pool_name
+  app_service_id                          = module.app_service.app_service_id
+  app_service_name                        = module.app_service.app_service_name
+  adf_dns_zone_id                         = module.dns_zones.adf_dns_zone_id
 }
 
 # ------------------------------------------------------------------------------------------------------

@@ -43,8 +43,12 @@ variable "replication_location" {
   type        = string
 }
 
-variable "subnet_id" {
+variable "private_link_subnet_id" {
   description = "Subnet ID for cosmos DB private endpoint"
+}
+
+variable "app_service_subnet_id" {
+  description = "Subnet ID for app service instance"
 }
 
 variable "capabilities" {

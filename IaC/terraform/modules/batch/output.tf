@@ -6,6 +6,10 @@ output "batch_account_name" {
   value = azurerm_batch_account.batch_account.name
 }
 
+output "batch_account_endpoint" {
+  value = azurerm_batch_account.batch_account.account_endpoint
+}
+
 output "batch_account_primary_access_key" {
   value = azurerm_batch_account.batch_account.primary_access_key
 }

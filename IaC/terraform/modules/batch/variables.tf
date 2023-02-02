@@ -52,6 +52,11 @@ variable "pool_allocation_mode" {
   type        = string
 }
 
+variable "public_network_access_enabled" {
+  description = "Specifies whether public network access is allowed"
+  type        = bool
+}
+
 variable "storage_account_authentication_mode" {
   description = "Specifies the storage account authentication mode."
   type        = string

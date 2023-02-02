@@ -2,6 +2,9 @@ locals {
   environment                        = var.tags["environment"]
   resource_type                      = "adf"
   keyvault_link_service_name         = "LS_KeyVault"
+  batch_storage_link_service_name    = "LS_BatchStorage"
+  batch_link_service_name            = "LS_Batch"
+  batch_link_service_type            = "AzureBatch"
   storage_account_prefix             = "av"
   adls_linked_service_prefix         = "LS"
   adf_integration_runtime_azure_name = "IntegrationRuntime"
@@ -56,6 +59,34 @@ resource "azurerm_data_factory_linked_service_key_vault" "key_vault_linked_servi
 
   depends_on = [
     azurerm_data_factory_managed_private_endpoint.keyvault_managed_private_endpoint
+  ]
+}
+
+resource "azurerm_data_factory_linked_service_azure_blob_storage" "batch_storage_linked_service" {
+  name                     = local.batch_storage_link_service_name
+  data_factory_id          = azurerm_data_factory.data_factory.id
+  connection_string        = var.batch_storage_account_connection_string
+  integration_runtime_name = azurerm_data_factory_integration_runtime_azure.managed_integeration_runtime.name
+}
+
+resource "azurerm_data_factory_linked_custom_service" "batch_linked_service" {
+  name                 = local.batch_link_service_name
+  data_factory_id      = azurerm_data_factory.data_factory.id
+  type                 = local.batch_link_service_type
+  type_properties_json = <<JSON
+{
+  "batchUri": "https://${var.batch_account_endpoint}",
+  "poolName": "${var.batch_account_exec_pool_name}",
+  "accountName": "${var.batch_account_name}",
+  "linkedServiceName": {
+    "referenceName": "${local.batch_storage_link_service_name}",
+    "type": "LinkedServiceReference"
+  }
+}
+JSON
+
+  depends_on = [
+    azurerm_data_factory_linked_service_azure_blob_storage.batch_storage_linked_service
   ]
 }
 
