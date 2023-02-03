@@ -10,7 +10,7 @@ trigger: none
 
 variables:
   - name: src_dir
-    value: "IaC/terraform/root"
+    value: "core-infrastructure/terraform/root"
   - name: TF_RG_NAME
     value: "rg-tfstate"
   - name: TF_STORAGE_ACCOUNT
