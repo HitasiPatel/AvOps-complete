@@ -1,0 +1,1 @@
+This module is for creating a Bastion Host on the main virtual network. It can be used to access other components from within the private network.

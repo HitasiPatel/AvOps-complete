@@ -3,12 +3,13 @@
 # ------------------------------------------------------------------------------------------------------
 
 variable "resource_group_name" {
-  description = "Resource Group name to host keyvault"
+  description = "Resource Group name to host resources"
   type        = string
+  default     = "avdataops"
 }
 
 variable "location" {
-  description = "key vault location"
+  description = "Deployment location (Azure region)"
   type        = string
 }
 
@@ -71,6 +72,93 @@ variable "appservice_subnet_service_endpoints" {
   description = "Service Endpoints for the app service subnet"
   type        = list(string)
   default     = ["Microsoft.Web", "Microsoft.Storage"]
+}
+
+# ------------------------------------------------------------------------------------------------------
+# Bastion Host variables
+# ------------------------------------------------------------------------------------------------------
+
+variable "bastion_host_enabled" {
+  description = "Whether to create a Bastion Host"
+  type        = bool
+}
+
+variable "bastion_host_name" {
+  description = "Name of the Bastion Host"
+  type        = string
+  default     = "av-dataops"
+}
+
+variable "bastion_subnet_address_prefix" {
+  description = "Address prefix for the bastion subnet"
+  type        = string
+  default     = "10.0.3.0/24"
+}
+
+variable "bastion_ip_allocation" {
+  description = "Allocation type for the Bastion Host IP"
+  type        = string
+  default     = "Static"
+}
+
+variable "bastion_ip_sku" {
+  description = "SKU for the Bastion Host IP"
+  type        = string
+  default     = "Standard"
+}
+
+variable "bastion_vm_nic_private_ip_allocation" {
+  description = "Private IP Allocation type for the Bastion VM Nic"
+  type        = string
+  default     = "Dynamic"
+}
+
+variable "bastion_vm_size" {
+  description = "Size to use for the Bastion VM"
+  type        = string
+  default     = "Standard_D2s_v3"
+}
+
+variable "bastion_vm_username" {
+  description = "Username for the Bastion VM"
+  type        = string
+  default     = "avdataops"
+}
+
+variable "bastion_vm_caching" {
+  description = "Caching type for the Bastion VM"
+  type        = string
+  default     = "ReadWrite"
+}
+
+variable "bastion_vm_storage_account_type" {
+  description = "Storage Account Type for the Bastion VM"
+  type        = string
+  default     = "Standard_LRS"
+}
+
+variable "bastion_vm_image_publisher" {
+  description = "Image publisher for the Bastion VM"
+  type        = string
+  default     = "MicrosoftWindowsServer"
+}
+
+variable "bastion_vm_image_offer" {
+  description = "Image offer for the Bastion VM"
+  type        = string
+  default     = "WindowsServer"
+}
+
+variable "bastion_vm_image_sku" {
+  description = "Image SKU for the Bastion VM"
+  type        = string
+  default     = "2022-datacenter-azure-edition"
+}
+
+variable "bastion_vm_image_version" {
+  description = "Image Version for the Bastion VM"
+  type        = string
+  default     = "latest"
 }
 
 # ------------------------------------------------------------------------------------------------------

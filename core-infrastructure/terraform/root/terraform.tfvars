@@ -1,5 +1,5 @@
-resource_group_name = "rg-avdataops-dev"
-location            = "westeurope"
+location             = "westeurope"
+bastion_host_enabled = false
 tags = {
-  environment = "test",
+  environment = "dev",
 }
