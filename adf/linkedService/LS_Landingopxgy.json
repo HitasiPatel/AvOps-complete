@@ -1,0 +1,15 @@
+{
+	"name": "LS_Landingopxgy",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"connectVia": {
+			"referenceName": "IntegrationRuntime",
+			"type": "IntegrationRuntimeReference"
+		},
+		"type": "AzureBlobFS",
+		"typeProperties": {
+			"url": "https://avlandingopxgytest.dfs.core.windows.net/"
+		},
+		"annotations": []
+	}
+}

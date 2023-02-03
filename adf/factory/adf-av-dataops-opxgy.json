@@ -1,0 +1,9 @@
+{
+	"name": "adf-av-dataops-opxgy",
+	"location": "westeurope",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "c185153e-5427-4b1b-b8c9-056e6c680b9c",
+		"tenantId": "16b3c013-d300-468d-ac64-7eda0820b6d3"
+	}
+}
