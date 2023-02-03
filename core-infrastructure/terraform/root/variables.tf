@@ -53,7 +53,7 @@ variable "privatelink_subnet_address_prefix" {
 variable "privatelink_subnet_service_endpoints" {
   description = "Service Endpoints for the private link subnet"
   type        = list(string)
-  default     = ["Microsoft.KeyVault", "Microsoft.Storage"]
+  default     = ["Microsoft.KeyVault", "Microsoft.Storage", "Microsoft.AzureCosmosDB"]
 }
 
 variable "appservice_subnet_name" {
@@ -71,7 +71,7 @@ variable "appservice_subnet_address_prefix" {
 variable "appservice_subnet_service_endpoints" {
   description = "Service Endpoints for the app service subnet"
   type        = list(string)
-  default     = ["Microsoft.Web", "Microsoft.Storage"]
+  default     = ["Microsoft.Web", "Microsoft.Storage", "Microsoft.AzureCosmosDB"]
 }
 
 # ------------------------------------------------------------------------------------------------------
