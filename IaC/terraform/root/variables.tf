@@ -70,7 +70,7 @@ variable "appservice_subnet_address_prefix" {
 variable "appservice_subnet_service_endpoints" {
   description = "Service Endpoints for the app service subnet"
   type        = list(string)
-  default     = ["Microsoft.Web"]
+  default     = ["Microsoft.Web", "Microsoft.Storage"]
 }
 
 # ------------------------------------------------------------------------------------------------------
