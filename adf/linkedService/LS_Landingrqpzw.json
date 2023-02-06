@@ -1,14 +1,14 @@
 {
-	"name": "LS_KeyVault",
+	"name": "LS_Landingrqpzw",
 	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
 		"connectVia": {
 			"referenceName": "IntegrationRuntime",
 			"type": "IntegrationRuntimeReference"
 		},
-		"type": "AzureKeyVault",
+		"type": "AzureBlobFS",
 		"typeProperties": {
-			"baseUrl": "https://kv-avdops-rqpzw.vault.azure.net/"
+			"url": "https://avlandingrqpzwtest.dfs.core.windows.net/"
 		},
 		"annotations": []
 	}
