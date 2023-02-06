@@ -25,9 +25,9 @@ trigger:
 
 variables:
   - name: src_dir
-    value: "metadata-api/"
+    value: "./metadata-api/"
   - name: test_dir
-    value: "metadata-api/app/tests/"
+    value: "./metadata-api/app/tests/"
   - name: app_name
     value: "metadata-api"
   - name: image_repository
