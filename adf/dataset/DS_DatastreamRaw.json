@@ -1,0 +1,17 @@
+{
+	"name": "DS_DatastreamRaw",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_Rawopxgy",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation"
+			}
+		},
+		"schema": {}
+	}
+}
