@@ -5,6 +5,10 @@
 		"type": "AzureBlobFS",
 		"typeProperties": {
 			"url": "https://avrawrqpzwtest.dfs.core.windows.net/"
+		},
+		"connectVia": {
+			"referenceName": "IntegrationRuntime",
+			"type": "IntegrationRuntimeReference"
 		}
 	}
 }
