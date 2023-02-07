@@ -21,3 +21,7 @@ output "mongo_cosmos_dns_zone_id" {
 output "app_service_dns_zone_id" {
   value = azurerm_private_dns_zone.app_service_private_link.id
 }
+
+output "acr_dns_zone_id" {
+  value = azurerm_private_dns_zone.acr_private_link.id
+}

@@ -7,6 +7,7 @@ locals {
   dns_batch_private_link        = "privatelink.batch.azure.com"
   dns_mongo_cosmos_private_link = "privatelink.mongo.cosmos.azure.com"
   dns_app_service_private_link  = "privatelink.azurewebsites.net"
+  dns_acr_private_link          = "privatelink.azurecr.io"
 }
 
 resource "azurerm_private_dns_zone" "blob_privatelink" {
@@ -36,5 +37,10 @@ resource "azurerm_private_dns_zone" "mongo_cosmos_private_link" {
 
 resource "azurerm_private_dns_zone" "app_service_private_link" {
   name                = local.dns_app_service_private_link
+  resource_group_name = var.resource_group_name
+}
+
+resource "azurerm_private_dns_zone" "acr_private_link" {
+  name                = local.dns_acr_private_link
   resource_group_name = var.resource_group_name
 }

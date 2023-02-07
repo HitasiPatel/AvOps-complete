@@ -28,6 +28,16 @@ variable "acr_sku" {
   type        = string
 }
 
+variable "private_link_subnet_id" {
+  description = "Subnet for private links"
+  type        = string
+}
+
+variable "acr_dns_zone_id" {
+  description = "ACR DNS zone id"
+  type        = string
+}
+
 variable "tags" {
   description = "Resource tags"
   type        = map(string)
