@@ -1,21 +1,21 @@
 {
 	"name": "LS_Batch",
-	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
+		"annotations": [],
 		"type": "AzureBatch",
 		"typeProperties": {
-			"accountName": "batchavdataopsrqpzwtest",
 			"batchUri": "https://batchavdataopsrqpzwtest.westeurope.batch.azure.com",
-			"poolName": "avdataops-executionpool",
+			"poolName": "avdataops-orchestratorpool",
+			"accountName": "batchavdataopsrqpzwtest",
 			"linkedServiceName": {
 				"referenceName": "LS_BatchStorage",
 				"type": "LinkedServiceReference"
 			}
 		},
-		"annotations": [],
 		"connectVia": {
 			"referenceName": "IntegrationRuntime",
 			"type": "IntegrationRuntimeReference"
 		}
-	}
+	},
+	"type": "Microsoft.DataFactory/factories/linkedservices"
 }
