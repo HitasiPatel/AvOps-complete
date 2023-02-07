@@ -100,7 +100,7 @@
 					}
 				},
 				"linkedServiceName": {
-					"referenceName": "LS_AzureBatch",
+					"referenceName": "LS_Batch",
 					"type": "LinkedServiceReference"
 				}
 			},
