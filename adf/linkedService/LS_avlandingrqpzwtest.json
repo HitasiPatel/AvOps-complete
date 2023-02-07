@@ -1,0 +1,10 @@
+{
+	"name": "LS_avlandingrqpzwtest",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobFS",
+		"typeProperties": {
+			"url": "https://avlandingrqpzwtest.dfs.core.windows.net/"
+		}
+	}
+}

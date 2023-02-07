@@ -1,0 +1,31 @@
+{
+	"name": "Raw to Extracted",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "Pipeline_RawToExtracted_SolutionKit",
+					"type": "PipelineReference"
+				},
+				"parameters": {
+					"dataStreamPath": "@triggerBody().folderPath",
+					"apiBaseUrl": "https://web-app-linuxopxgy.azurewebsites.net",
+					"apiVersion": "v1",
+					"batchVersion": "1.0"
+				}
+			}
+		],
+		"type": "BlobEventsTrigger",
+		"typeProperties": {
+			"blobPathBeginsWith": "/raw/blobs/",
+			"blobPathEndsWith": "datastream.json",
+			"ignoreEmptyBlobs": true,
+			"scope": "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-dev-cd/providers/Microsoft.Storage/storageAccounts/avrawopxgytest",
+			"events": [
+				"Microsoft.Storage.BlobCreated"
+			]
+		}
+	}
+}

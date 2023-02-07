@@ -1,14 +1,15 @@
 {
-	"name": "LS_KeyVault",
+	"name": "LS_BatchStorage",
 	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
 		"connectVia": {
 			"referenceName": "IntegrationRuntime",
 			"type": "IntegrationRuntimeReference"
 		},
-		"type": "AzureKeyVault",
+		"type": "AzureBlobStorage",
 		"typeProperties": {
-			"baseUrl": "https://kv-avdops-rqpzw.vault.azure.net/"
+			"connection": "",
+			"values": ""
 		},
 		"annotations": []
 	}
