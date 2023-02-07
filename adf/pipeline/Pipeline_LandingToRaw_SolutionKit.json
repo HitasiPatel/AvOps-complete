@@ -322,7 +322,7 @@
 			},
 			"apiBaseUrl": {
 				"type": "string",
-				"defaultValue": "https://web-app-linuxopxgy.azurewebsites.net/"
+				"defaultValue": "https://web-app-linuxrqpzw.azurewebsites.net/"
 			},
 			"fileManifestName": {
 				"type": "string",
