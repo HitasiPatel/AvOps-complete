@@ -237,6 +237,7 @@ module "container_registry" {
   batch_uami_id          = module.batch_managed_identity.managed_identity_id
   private_link_subnet_id = module.privatelink_subnet.subnet_id
   acr_dns_zone_id        = module.dns_zones.acr_dns_zone_id
+  app_service_subnet_id  = module.appservice_subnet.subnet_id
 }
 
 # ------------------------------------------------------------------------------------------------------

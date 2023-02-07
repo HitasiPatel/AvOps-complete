@@ -3,12 +3,27 @@ locals {
 }
 
 resource "azurerm_container_registry" "acr" {
-  name                = "${local.resource_type}${var.acr_name}${var.acr_suffix}"
-  resource_group_name = var.resource_group_name
-  location            = var.location
-  sku                 = var.acr_sku
-  admin_enabled       = true
-  tags                = var.tags
+  name                          = "${local.resource_type}${var.acr_name}${var.acr_suffix}"
+  resource_group_name           = var.resource_group_name
+  location                      = var.location
+  sku                           = var.acr_sku
+  admin_enabled                 = true
+  public_network_access_enabled = false
+
+  network_rule_set {
+    virtual_network = [
+      {
+        action    = "Allow"
+        subnet_id = var.private_link_subnet_id
+      },
+      {
+        action    = "Allow"
+        subnet_id = var.app_service_subnet_id
+      }
+    ]
+  }
+
+  tags = var.tags
   identity {
     type = "SystemAssigned"
   }

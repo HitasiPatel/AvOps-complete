@@ -33,6 +33,11 @@ variable "private_link_subnet_id" {
   type        = string
 }
 
+variable "app_service_subnet_id" {
+  description = "Subnet for App service"
+  type        = string
+}
+
 variable "acr_dns_zone_id" {
   description = "ACR DNS zone id"
   type        = string
