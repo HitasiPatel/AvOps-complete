@@ -1,0 +1,20 @@
+{
+	"name": "AzureBatch1",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBatch",
+		"typeProperties": {
+			"batchUri": "https://batchavdataopsrqpzwtest.westeurope.batch.azure.com",
+			"poolName": "avdataops-executionpool",
+			"accountName": "batchavdataopsrqpzwtest",
+			"linkedServiceName": {
+				"referenceName": "LS_BatchStorage",
+				"type": "LinkedServiceReference"
+			}
+		},
+		"connectVia": {
+			"referenceName": "IntegrationRuntime",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
