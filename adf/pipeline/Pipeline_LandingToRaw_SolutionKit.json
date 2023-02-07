@@ -313,7 +313,10 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"command": "@concat('/bin/bash -c \\\"export traceparent=\\\"',variables('traceparent'),'\\\" && ',' export AZURE_TRACING_ENABLED=True ',' && ','cd $AZ_BATCH_APP_PACKAGE_av_batch_orchestrator_1_0','/app && python3 copybags.py ',variables('batchParams'),'\\\"')\\n\\n\\n\\n",
+								"command": {
+									"value": "@concat('/bin/bash -c \\\"export traceparent=\\\"',variables('traceparent'),'\\\" && ',' export AZURE_TRACING_ENABLED=True ',' && ','cd $AZ_BATCH_APP_PACKAGE_av_batch_orchestrator_1_0','/app && python3 copybags.py ',variables('batchParams'),'\\\"')\\n\\n\\n\\n",
+									"type": "Expression"
+								},
 								"referenceObjects": {
 									"linkedServices": [],
 									"datasets": []
