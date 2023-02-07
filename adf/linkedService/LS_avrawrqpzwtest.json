@@ -1,0 +1,10 @@
+{
+	"name": "LS_avrawrqpzwtest",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobFS",
+		"typeProperties": {
+			"url": "https://avrawrqpzwtest.dfs.core.windows.net/"
+		}
+	}
+}
