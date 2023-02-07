@@ -257,9 +257,9 @@
 							"type": "WebActivity",
 							"dependsOn": [
 								{
-									"activity": "Set BatchParams",
+									"activity": "Batch Orchestrator",
 									"dependencyConditions": [
-										"Succeeded"
+										"Skipped"
 									]
 								}
 							],
@@ -291,6 +291,37 @@
 									"value": "@json(concat('\n{\n  \"status\": \"COMPLETED\"\n}'))",
 									"type": "Expression"
 								}
+							}
+						},
+						{
+							"name": "Batch Orchestrator",
+							"type": "Custom",
+							"dependsOn": [
+								{
+									"activity": "Set BatchParams",
+									"dependencyConditions": [
+										"Skipped"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"command": "@concat('/bin/bash -c \"echo Hello World! && pwd && cd $AZ_BATCH_APP_PACKAGE_av_batch_orchestrator_1_0/av-batch-orchestrator/app && pwd && python3 copybags.py --measurementId=a1094558-89fe-4205-8e9f-a70173b1019a --rawDataStreamId=c08b8a11-d88c-494d-a3b2-dc181ff311cb --rawDataStreamPath=raw/2022/11/15/KA05AH5050/a1094558-89fe-4205-8e9f-a70173b1019a/c08b8a11-d88c-494d-a3b2-dc181ff311cb --landingPath=landing/2022/11/15/KA05AH5050/a1094558-89fe-4205-8e9f-a70173b1019a/8bfbb508-8438-4ce8-b179-ffa3ef983c0a --archivePath=archive/2022/11/15/KA05AH5050/a1094558-89fe-4205-8e9f-a70173b1019a/8bfbb508-8438-4ce8-b179-ffa3ef983c0a\"')",
+								"referenceObjects": {
+									"linkedServices": [],
+									"datasets": []
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "LS_Batch",
+								"type": "LinkedServiceReference"
 							}
 						}
 					]
