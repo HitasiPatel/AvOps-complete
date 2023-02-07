@@ -12,6 +12,10 @@
 				"type": "LinkedServiceReference"
 			}
 		},
-		"annotations": []
+		"annotations": [],
+		"connectVia": {
+			"referenceName": "IntegrationRuntime",
+			"type": "IntegrationRuntimeReference"
+		}
 	}
 }
