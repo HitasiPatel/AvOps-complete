@@ -314,7 +314,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"command": {
-									"value": "@concat('/bin/bash -c \"export traceparent=\"',variables('traceparent'),'\" && ',' export AZURE_TRACING_ENABLED=True ',' && ','cd $AZ_BATCH_APP_PACKAGE_batch_orchestrator_1_0','/av-batch-orchestrator/av-batch-orchestrator/app && python3 copybags.py ',variables('batchParams'),'\"')",
+									"value": "@concat('/bin/bash -c \"export traceparent=\"',variables('traceparent'),'\" && ',' export AZURE_TRACING_ENABLED=True ',' && ','cd $AZ_BATCH_APP_PACKAGE_batch_orchestrator_1_0','/av-batch-orchestrator/app && python3 copybags.py ',variables('batchParams'),'\"')",
 									"type": "Expression"
 								},
 								"referenceObjects": {
