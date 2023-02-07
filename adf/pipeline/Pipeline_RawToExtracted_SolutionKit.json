@@ -91,7 +91,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"command": {
-						"value": "@concat('/bin/bash -c \"echo Hello World!')",
+						"value": "@concat('/bin/bash -c \"echo Hello World!\"')",
 						"type": "Expression"
 					},
 					"referenceObjects": {
