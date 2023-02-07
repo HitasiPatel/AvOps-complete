@@ -243,6 +243,10 @@
 						"formatSettings": {
 							"type": "JsonReadSettings"
 						}
+					},
+					"dataset": {
+						"referenceName": "DS_DatastreamRaw",
+						"type": "DatasetReference"
 					}
 				}
 			}
