@@ -1,16 +1,18 @@
 {
 	"name": "LS_BatchStorage",
-	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
-		"connectVia": {
-			"referenceName": "IntegrationRuntime",
-			"type": "IntegrationRuntimeReference"
-		},
+		"annotations": [],
 		"type": "AzureBlobStorage",
 		"typeProperties": {
+			"serviceEndpoint": "https://batchavdopsrqpzwtest.blob.core.windows.net/",
+			"accountKind": "StorageV2",
 			"connection": "",
 			"values": ""
 		},
-		"annotations": []
-	}
+		"connectVia": {
+			"referenceName": "IntegrationRuntime",
+			"type": "IntegrationRuntimeReference"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/linkedservices"
 }
