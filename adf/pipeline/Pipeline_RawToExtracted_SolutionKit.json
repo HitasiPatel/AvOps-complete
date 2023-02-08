@@ -91,7 +91,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"command": {
-						"value": "@concat('/bin/bash -c \"echo Hello World!\"')",
+						"value": "@concat('/bin/bash -c \\\"export traceparent=\\\"',variables('traceparent'),'\\\" && ',' export AZURE_TRACING_ENABLED=True ',' && ','cd $AZ_BATCH_APP_PACKAGE_orchestratorapp_',variables('batchApiVersion'),'/app && python3 extract.py ',variables('batchParams'),'\\\"')",
 						"type": "Expression"
 					},
 					"referenceObjects": {
