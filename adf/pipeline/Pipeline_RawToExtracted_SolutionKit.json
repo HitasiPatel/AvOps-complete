@@ -91,7 +91,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"command": {
-						"value": "@concat('/bin/bash -c \"export traceparent=\"',variables('traceparent'),'\" && ',' export AZURE_TRACING_ENABLED=True ',' && ','cd $AZ_BATCH_APP_PACKAGE_orchestratorapp_',variables('batchApiVersion'),'/app && python3 extract.py ',variables('batchParams'),'\"')",
+						"value": "@concat('/bin/bash -c \"echo Hello World!\"')",
 						"type": "Expression"
 					},
 					"referenceObjects": {
@@ -100,7 +100,7 @@
 					}
 				},
 				"linkedServiceName": {
-					"referenceName": "LS_AzureBatch",
+					"referenceName": "LS_Batch",
 					"type": "LinkedServiceReference"
 				}
 			},
@@ -230,12 +230,14 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
+				"userProperties": [],
 				"typeProperties": {
 					"source": {
 						"type": "JsonSource",
 						"storeSettings": {
 							"type": "AzureBlobFSReadSettings",
 							"recursive": true,
+							"wildcardFolderPath": "*",
 							"wildcardFileName": "datastream.json",
 							"enablePartitionDiscovery": false
 						},
@@ -257,7 +259,7 @@
 			},
 			"apiBaseUrl": {
 				"type": "string",
-				"defaultValue": "https://web-app-linuxopxgy.azurewebsites.net"
+				"defaultValue": "https://web-app-linuxrqpzw.azurewebsites.net/"
 			},
 			"apiVersion": {
 				"type": "string",
