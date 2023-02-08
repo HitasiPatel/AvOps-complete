@@ -91,7 +91,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"command": {
-						"value": "@concat('/bin/bash -c \"export traceparent=\"',variables('traceparent'),'\" && ',' export AZURE_TRACING_ENABLED=True ',' && ','cd $AZ_BATCH_APP_PACKAGE_batch_orchestrator_1_0','/app && python3 extract.py ',variables('batchParams'),'\\\"')",
+						"value": "@concat('/bin/bash -c \"export traceparent=\"',variables('traceparent'),'\" && ',' export AZURE_TRACING_ENABLED=True ',' && ','cd $AZ_BATCH_APP_PACKAGE_batch_orchestrator_1_0','/app && python3 extract.py ',variables('batchParams'),'\"')\n",
 						"type": "Expression"
 					},
 					"referenceObjects": {
