@@ -2,12 +2,12 @@ trigger:
   batch: false
   branches:
     include:
-      - ADA-2011-ADF-CI-CD-Pipeline
+      - main
 
 pr:
    branches:
      include:
-     - ADA-2011-ADF-CI-CD-Pipeline
+     - main
 
 pool:
   vmImage: 'ubuntu-latest'
