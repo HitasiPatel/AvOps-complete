@@ -22,7 +22,7 @@
 			"blobPathBeginsWith": "/raw/blobs/",
 			"blobPathEndsWith": "datastream.json",
 			"ignoreEmptyBlobs": true,
-			"scope": "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-dev-cd/providers/Microsoft.Storage/storageAccounts/avrawopxgytest",
+			"scope": "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-test/providers/Microsoft.Storage/storageAccounts/avrawrqpzwtest",
 			"events": [
 				"Microsoft.Storage.BlobCreated"
 			]
