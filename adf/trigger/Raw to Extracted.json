@@ -11,7 +11,7 @@
 				},
 				"parameters": {
 					"dataStreamPath": "@triggerBody().folderPath",
-					"apiBaseUrl": "https://web-app-linuxopxgy.azurewebsites.net",
+					"apiBaseUrl": "https://web-app-linuxrqpzw.azurewebsites.net/",
 					"apiVersion": "v1",
 					"batchVersion": "1.0"
 				}
