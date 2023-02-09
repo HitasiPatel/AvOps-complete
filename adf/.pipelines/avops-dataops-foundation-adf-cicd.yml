@@ -2,12 +2,12 @@ trigger:
   batch: false
   branches:
     include:
-      - main
+      - feature/ADA-2011-ADF-CI-CD
 
 pr:
    branches:
      include:
-     - main
+     - feature/ADA-2011-ADF-CI-CD
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -15,7 +15,7 @@ pool:
 
 variables:
   - name: adf_code_path
-    value: "$(Build.SourcesDirectory)/adf/"
+    value: "$(Build.SourcesDirectory)/adf"
     
   - name: adf_package_file_path
     value: "$(Build.SourcesDirectory)/adf/.pipelines/"
@@ -48,7 +48,7 @@ stages:
           command: 'custom'
           workingDir: '$(adf_package_file_path)'
 
-          customCommand: 'run build validate $(Build.Repository.LocalPath) /subscriptions/$(azure_subscription_id)/resourceGroups/$(resource_group_name)/providers/Microsoft.DataFactory/factories/$(azure_data_factory_name)'
+          customCommand: 'run build validate $(adf_code_path) /subscriptions/$(azure_subscription_id)/resourceGroups/$(resource_group_name)/providers/Microsoft.DataFactory/factories/$(azure_data_factory_name)'
         displayName: 'Validate'
 
       - task: Npm@1
@@ -56,7 +56,7 @@ stages:
           command: 'custom'
           workingDir: '$(adf_package_file_path)'
 
-          customCommand: 'run build export $(Build.Repository.LocalPath) /subscriptions/$(azure_subscription_id)/resourceGroups/$(resource_group_name)/providers/Microsoft.DataFactory/factories/$(azure_data_factory_name) "ArmTemplate"'
+          customCommand: 'run build export $(adf_code_path) /subscriptions/$(azure_subscription_id)/resourceGroups/$(resource_group_name)/providers/Microsoft.DataFactory/factories/$(azure_data_factory_name) "ArmTemplate"'
 
         displayName: 'Validate and Generate ARM template'
 
