@@ -1,0 +1,943 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "adf-av-dataops-rqpzw"
+		},
+		"AzureBatch1_properties_typeProperties_batchUri": {
+			"type": "string",
+			"defaultValue": "https://batchavdataopsrqpzwtest.westeurope.batch.azure.com"
+		},
+		"AzureBatch1_properties_typeProperties_poolName": {
+			"type": "string",
+			"defaultValue": "avdataops-executionpool"
+		},
+		"AzureBatch1_properties_typeProperties_accountName": {
+			"type": "string",
+			"defaultValue": "batchavdataopsrqpzwtest"
+		},
+		"LS_Batch_properties_typeProperties_batchUri": {
+			"type": "string",
+			"defaultValue": "https://batchavdataopsrqpzwtest.westeurope.batch.azure.com"
+		},
+		"LS_Batch_properties_typeProperties_poolName": {
+			"type": "string",
+			"defaultValue": "avdataops-orchestratorpool"
+		},
+		"LS_Batch_properties_typeProperties_accountName": {
+			"type": "string",
+			"defaultValue": "batchavdataopsrqpzwtest"
+		},
+		"Raw to Extracted_properties_Pipeline_RawToExtracted_SolutionKit_parameters_dataStreamPath": {
+			"type": "string",
+			"defaultValue": "@triggerBody().folderPath"
+		},
+		"Raw to Extracted_properties_Pipeline_RawToExtracted_SolutionKit_parameters_apiBaseUrl": {
+			"type": "string",
+			"defaultValue": "https://web-app-linuxrqpzw.azurewebsites.net/"
+		},
+		"Raw to Extracted_properties_Pipeline_RawToExtracted_SolutionKit_parameters_apiVersion": {
+			"type": "string",
+			"defaultValue": "v1"
+		},
+		"Raw to Extracted_properties_Pipeline_RawToExtracted_SolutionKit_parameters_batchVersion": {
+			"type": "string",
+			"defaultValue": "1.0"
+		},
+		"Raw to Extracted_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-test/providers/Microsoft.Storage/storageAccounts/avrawrqpzwtest"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_SourceDataFiles')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_Landingopxgy",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileSystem": "landing"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_SourceMeasurements')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_avlandingrqpzwtest",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"container": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileSystem": {
+							"value": "@dataset().container",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureBatch1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBatch",
+				"typeProperties": {
+					"batchUri": "[parameters('AzureBatch1_properties_typeProperties_batchUri')]",
+					"poolName": "[parameters('AzureBatch1_properties_typeProperties_poolName')]",
+					"accountName": "[parameters('AzureBatch1_properties_typeProperties_accountName')]",
+					"linkedServiceName": {
+						"referenceName": "LS_BatchStorage",
+						"type": "LinkedServiceReference"
+					}
+				},
+				"connectVia": {
+					"referenceName": "IntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LS_Batch')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBatch",
+				"typeProperties": {
+					"batchUri": "[parameters('LS_Batch_properties_typeProperties_batchUri')]",
+					"poolName": "[parameters('LS_Batch_properties_typeProperties_poolName')]",
+					"accountName": "[parameters('LS_Batch_properties_typeProperties_accountName')]",
+					"linkedServiceName": {
+						"referenceName": "LS_BatchStorage",
+						"type": "LinkedServiceReference"
+					}
+				},
+				"connectVia": {
+					"referenceName": "IntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Pipeline_LandingToRaw_SolutionKit')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Get Measurement Folders",
+						"type": "GetMetadata",
+						"dependsOn": [
+							{
+								"activity": "traceparent",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 2,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "DS_SourceMeasurements",
+								"type": "DatasetReference",
+								"parameters": {
+									"container": {
+										"value": "@pipeline().parameters.landingZoneContainer",
+										"type": "Expression"
+									}
+								}
+							},
+							"fieldList": [
+								"childItems"
+							],
+							"storeSettings": {
+								"type": "AzureBlobFSReadSettings",
+								"recursive": true,
+								"enablePartitionDiscovery": false
+							},
+							"formatSettings": {
+								"type": "BinaryReadSettings"
+							}
+						}
+					},
+					{
+						"name": "Iterate Measurements",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Get Measurement Folders",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Get Measurement Folders').output.childItems",
+								"type": "Expression"
+							},
+							"isSequential": false,
+							"activities": [
+								{
+									"name": "Lookup  Manifest",
+									"type": "Lookup",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 2,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "JsonSource",
+											"storeSettings": {
+												"type": "AzureBlobFSReadSettings",
+												"recursive": true,
+												"enablePartitionDiscovery": false
+											},
+											"formatSettings": {
+												"type": "JsonReadSettings"
+											}
+										},
+										"dataset": {
+											"referenceName": "DS_Manifest",
+											"type": "DatasetReference",
+											"parameters": {
+												"folderName": {
+													"value": "@item().name",
+													"type": "Expression"
+												},
+												"fileName": {
+													"value": "@pipeline().parameters.fileManifestName",
+													"type": "Expression"
+												},
+												"containerName": {
+													"value": "@pipeline().parameters.landingZoneContainer",
+													"type": "Expression"
+												}
+											}
+										},
+										"firstRowOnly": false
+									}
+								},
+								{
+									"name": "Call CreateMeasurement API",
+									"type": "WebActivity",
+									"dependsOn": [
+										{
+											"activity": "Lookup  Manifest",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 2,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"url": {
+											"value": "@concat(pipeline().parameters.apiBaseUrl,pipeline().parameters.apiVersion,'/measurements')",
+											"type": "Expression"
+										},
+										"connectVia": {
+											"referenceName": "IntegrationRuntime",
+											"type": "IntegrationRuntimeReference"
+										},
+										"method": "POST",
+										"headers": {
+											"traceparent": {
+												"value": "@variables('traceparent')",
+												"type": "Expression"
+											}
+										},
+										"body": {
+											"value": "@activity('Lookup  Manifest').output.value[0]",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "Call CreateDatastream API",
+									"type": "WebActivity",
+									"dependsOn": [
+										{
+											"activity": "Call CreateMeasurement API",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 2,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"url": {
+											"value": "@concat(pipeline().parameters.apiBaseUrl,pipeline().parameters.apiVersion,'/measurements/',activity('Call CreateMeasurement API').output.id,'/datastreams')",
+											"type": "Expression"
+										},
+										"connectVia": {
+											"referenceName": "IntegrationRuntime",
+											"type": "IntegrationRuntimeReference"
+										},
+										"method": "POST",
+										"headers": {
+											"traceparent": {
+												"value": "@variables('traceparent')",
+												"type": "Expression"
+											}
+										},
+										"body": {
+											"value": "@json(concat('{\n  \"name\": \"rawstream\",\n  \"type\": \"RAW\",\n  \"lineage\": {\n    \"producerMetadata\": {\n      \"name\": \"adflandingtorawcopy\",\n      \"type\": \"system\",\n      \"version\": \"',pipeline().parameters.batchVersion,'\",\n      \"additionalProperties\": {\n        \"pipeLineRunID\" : \"',pipeline().RunId ,'\",\n        \"apiVersion\" : \"',pipeline().parameters.apiVersion,'\"\n      }\n    },\n    \"sources\": []\n  },\n  \"tags\": []\n}'))",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "Update DataStream Status To Processing",
+									"type": "WebActivity",
+									"dependsOn": [
+										{
+											"activity": "Call CreateDatastream API",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 2,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"url": {
+											"value": "@concat(pipeline().parameters.apiBaseUrl,pipeline().parameters.apiVersion,'/measurements/',activity('Call CreateMeasurement API').output.id,'/datastreams/',activity('Call CreateDatastream API').output.id)",
+											"type": "Expression"
+										},
+										"connectVia": {
+											"referenceName": "IntegrationRuntime",
+											"type": "IntegrationRuntimeReference"
+										},
+										"method": "PATCH",
+										"headers": {
+											"traceparent": {
+												"value": "@variables('traceparent')",
+												"type": "Expression"
+											}
+										},
+										"body": {
+											"value": "@json(concat('\n{\n  \"status\": \"PROCESSING\"\n}'))",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "Set BatchParams",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "Update DataStream Status To Processing",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "batchParams",
+										"value": {
+											"value": "@concat(' --measurementId=',activity('Call CreateMeasurement API').output.id,' --rawDataStreamPath=',activity('Call CreateDatastream API').output.relativeUriPath,' --landingPath=',pipeline().parameters.landingZoneContainer,'/',item().name,' --archivePath=',pipeline().parameters.archiveZoneContainer,' --rawDataStreamId=',activity('Call CreateDatastream API').output.id)",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "Update DataStream Status To Completed",
+									"type": "WebActivity",
+									"dependsOn": [
+										{
+											"activity": "Batch Orchestrator",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 2,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"url": {
+											"value": "@concat(pipeline().parameters.apiBaseUrl,pipeline().parameters.apiVersion,'/measurements/',activity('Call CreateMeasurement API').output.id,'/datastreams/',activity('Call CreateDatastream API').output.id)",
+											"type": "Expression"
+										},
+										"connectVia": {
+											"referenceName": "IntegrationRuntime",
+											"type": "IntegrationRuntimeReference"
+										},
+										"method": "PATCH",
+										"headers": {
+											"traceparent": {
+												"value": "@variables('traceparent')",
+												"type": "Expression"
+											}
+										},
+										"body": {
+											"value": "@json(concat('\n{\n  \"status\": \"COMPLETED\"\n}'))",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "Batch Orchestrator",
+									"type": "Custom",
+									"dependsOn": [
+										{
+											"activity": "Set BatchParams",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"command": {
+											"value": "@concat('/bin/bash -c \"export traceparent=\"',variables('traceparent'),'\" && ',' export AZURE_TRACING_ENABLED=True ',' && ','cd $AZ_BATCH_APP_PACKAGE_batch_orchestrator_1_0','/app && python3 copybags.py ',variables('batchParams'),'\"')",
+											"type": "Expression"
+										},
+										"referenceObjects": {
+											"linkedServices": [],
+											"datasets": []
+										}
+									},
+									"linkedServiceName": {
+										"referenceName": "LS_Batch",
+										"type": "LinkedServiceReference"
+									}
+								}
+							]
+						}
+					},
+					{
+						"name": "traceparent",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "traceparent",
+							"value": {
+								"value": "@concat('00-',replace(pipeline().RunId,'-',''),'-0000000000000001-00')",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"concurrency": 1,
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"landingZoneContainer": {
+						"type": "string",
+						"defaultValue": "landing"
+					},
+					"rawZoneContainer": {
+						"type": "string",
+						"defaultValue": "raw"
+					},
+					"apiBaseUrl": {
+						"type": "string",
+						"defaultValue": "https://web-app-linuxrqpzw.azurewebsites.net/"
+					},
+					"fileManifestName": {
+						"type": "string",
+						"defaultValue": "manifest.json"
+					},
+					"validationManifestName": {
+						"type": "string",
+						"defaultValue": "manifest_validation.json"
+					},
+					"archiveZoneContainer": {
+						"type": "string",
+						"defaultValue": "archive"
+					},
+					"apiVersion": {
+						"type": "string",
+						"defaultValue": "v1"
+					},
+					"batchVersion": {
+						"type": "string",
+						"defaultValue": "1.0"
+					}
+				},
+				"variables": {
+					"isValidMeasurement": {
+						"type": "Boolean"
+					},
+					"validationManifestMissing": {
+						"type": "String"
+					},
+					"batchParams": {
+						"type": "String"
+					},
+					"traceparent": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-11-23T10:57:33Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_SourceMeasurements')]",
+				"[concat(variables('factoryId'), '/linkedServices/LS_Batch')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Pipeline_RawToExtracted_SolutionKit')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Create Data stream api",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "Format Batch application Version",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Get FileDataStream Json",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 2,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": {
+								"value": "@concat(pipeline().parameters.apiBaseUrl,pipeline().parameters.apiVersion,'/measurements/',activity('Get FileDataStream Json').output.firstRow.measurementId,'/datastreams')",
+								"type": "Expression"
+							},
+							"connectVia": {
+								"referenceName": "IntegrationRuntime",
+								"type": "IntegrationRuntimeReference"
+							},
+							"method": "POST",
+							"headers": {
+								"traceparent": {
+									"value": "@variables('traceparent')",
+									"type": "Expression"
+								}
+							},
+							"body": {
+								"value": "@json(concat('{\n  \"name\": \"extractedstream\",\n  \"type\": \"EXTRACTED\",\n  \"lineage\": {\n    \"producerMetadata\": {\n      \"name\": \"batchextractor\",\n      \"type\": \"system\",\n      \"version\": \"',pipeline().parameters.batchVersion,'\",\n      \"additionalProperties\": {\n        \"pipeLineRunID\" : \"',pipeline().RunId,'\",\n        \"apiVersion\" : \"',pipeline().parameters.apiVersion,'\"\n      }\n    },\n    \"sources\": [\n      \"',activity('Get FileDataStream Json').output.firstRow.id,'\"\n    ]\n  },\n  \"tags\": ',activity('Get FileDataStream Json').output.firstRow.tags,'\n}'))",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "CreateBatchParams",
+						"description": "",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Create Data stream api",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "batchParams",
+							"value": {
+								"value": "@concat(' --measurementId=',activity('Get FileDataStream Json').output.firstRow.measurementId,' --rawDataStreamPath=',pipeline().parameters.dataStreamPath,' --extractedDataStreamPath=',activity('Create Data stream api').output.relativeUriPath,' --extractedDataStreamId=',activity('Create Data stream api').output.id)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Batch orchestrator",
+						"type": "Custom",
+						"dependsOn": [
+							{
+								"activity": "Update Datastream to Processing",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 2,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"command": {
+								"value": "@concat('/bin/bash -c \"export traceparent=\"',variables('traceparent'),'\" && ',' export AZURE_TRACING_ENABLED=True ',' && ','cd $AZ_BATCH_APP_PACKAGE_batch_orchestrator_1_0','/app && python3 extract.py ',variables('batchParams'),'\"')\n",
+								"type": "Expression"
+							},
+							"referenceObjects": {
+								"linkedServices": [],
+								"datasets": []
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "LS_Batch",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "Format Batch application Version",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "batchApiVersion",
+							"value": {
+								"value": "@replace(pipeline().parameters.batchVersion,'.','_')",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Update Datastream to Processing",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "CreateBatchParams",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": {
+								"value": "@concat(pipeline().parameters.apiBaseUrl,pipeline().parameters.apiVersion,'/measurements/',activity('Get FileDataStream Json').output.firstRow.measurementId,'/datastreams/',activity('Create Data stream api').output.id)",
+								"type": "Expression"
+							},
+							"connectVia": {
+								"referenceName": "IntegrationRuntime",
+								"type": "IntegrationRuntimeReference"
+							},
+							"method": "PATCH",
+							"headers": {
+								"traceparent": {
+									"value": "@variables('traceparent')",
+									"type": "Expression"
+								}
+							},
+							"body": {
+								"value": "@json(concat('\n{\n  \"status\": \"PROCESSING\"\n}'))",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Update Datastream to Completed",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "Batch orchestrator",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": {
+								"value": "@concat(pipeline().parameters.apiBaseUrl,pipeline().parameters.apiVersion,'/measurements/',activity('Get FileDataStream Json').output.firstRow.measurementId,'/datastreams/',activity('Create Data stream api').output.id)",
+								"type": "Expression"
+							},
+							"connectVia": {
+								"referenceName": "IntegrationRuntime",
+								"type": "IntegrationRuntimeReference"
+							},
+							"method": "PATCH",
+							"headers": {
+								"traceparent": {
+									"value": "@variables('traceparent')",
+									"type": "Expression"
+								}
+							},
+							"body": {
+								"value": "@json(concat('\n{\n  \"status\": \"COMPLETED\"\n}'))",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "traceparent",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "traceparent",
+							"value": {
+								"value": "@concat('00-',replace(pipeline().RunId,'-',''),'-0000000000000001-00')",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Get FileDataStream Json",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "traceparent",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "JsonSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"wildcardFolderPath": "*",
+									"wildcardFileName": "datastream.json",
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "JsonReadSettings"
+								}
+							},
+							"dataset": {
+								"referenceName": "DS_DatastreamRaw",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"dataStreamPath": {
+						"type": "string",
+						"defaultValue": "@triggerBody().folderPath"
+					},
+					"apiBaseUrl": {
+						"type": "string",
+						"defaultValue": "https://web-app-linuxrqpzw.azurewebsites.net/"
+					},
+					"apiVersion": {
+						"type": "string",
+						"defaultValue": "v1"
+					},
+					"batchVersion": {
+						"type": "string",
+						"defaultValue": "1.0"
+					}
+				},
+				"variables": {
+					"rawDataStreamId": {
+						"type": "String"
+					},
+					"batchParams": {
+						"type": "String"
+					},
+					"batchApiVersion": {
+						"type": "String"
+					},
+					"traceparent": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-11-23T10:01:01Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_Batch')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Custom1",
+						"type": "Custom",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"command": {
+								"value": "@concat('/bin/bash -c \"echo Hello World! && pwd && cd $AZ_BATCH_APP_PACKAGE_av_batch_orchestrator_1_0/av-batch-orchestrator/app && pwd && python3 copybags.py --measurementId=a1094558-89fe-4205-8e9f-a70173b1019a --rawDataStreamId=c08b8a11-d88c-494d-a3b2-dc181ff311cb --rawDataStreamPath=raw/2022/11/15/KA05AH5050/a1094558-89fe-4205-8e9f-a70173b1019a/c08b8a11-d88c-494d-a3b2-dc181ff311cb --landingPath=landing/2022/11/15/KA05AH5050/a1094558-89fe-4205-8e9f-a70173b1019a/8bfbb508-8438-4ce8-b179-ffa3ef983c0a --archivePath=archive/2022/11/15/KA05AH5050/a1094558-89fe-4205-8e9f-a70173b1019a/8bfbb508-8438-4ce8-b179-ffa3ef983c0a\"')",
+								"type": "Expression"
+							},
+							"referenceObjects": {
+								"linkedServices": [],
+								"datasets": []
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "LS_Batch",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_Batch')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Raw to Extracted')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "Pipeline_RawToExtracted_SolutionKit",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"dataStreamPath": "[parameters('Raw to Extracted_properties_Pipeline_RawToExtracted_SolutionKit_parameters_dataStreamPath')]",
+							"apiBaseUrl": "[parameters('Raw to Extracted_properties_Pipeline_RawToExtracted_SolutionKit_parameters_apiBaseUrl')]",
+							"apiVersion": "[parameters('Raw to Extracted_properties_Pipeline_RawToExtracted_SolutionKit_parameters_apiVersion')]",
+							"batchVersion": "[parameters('Raw to Extracted_properties_Pipeline_RawToExtracted_SolutionKit_parameters_batchVersion')]"
+						}
+					}
+				],
+				"type": "BlobEventsTrigger",
+				"typeProperties": {
+					"blobPathBeginsWith": "/raw/blobs/",
+					"blobPathEndsWith": "datastream.json",
+					"ignoreEmptyBlobs": true,
+					"scope": "[parameters('Raw to Extracted_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/Pipeline_RawToExtracted_SolutionKit')]"
+			]
+		}
+	]
+}

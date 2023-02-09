@@ -1,0 +1,339 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "adf-av-dataops-rqpzw"
+		},
+		"LS_AzureBatchStorage_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'LS_AzureBatchStorage'",
+			"defaultValue": "DefaultEndpointsProtocol=https;AccountKey=[object Object];"
+		},
+		"LS_AzureBatchStorage_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'LS_AzureBatchStorage'"
+		},
+		"LS_BatchStorage_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'LS_BatchStorage'"
+		},
+		"AzureBatch1_properties_typeProperties_batchUri": {
+			"type": "string",
+			"defaultValue": "https://batchavdataopsrqpzwtest.westeurope.batch.azure.com"
+		},
+		"AzureBatch1_properties_typeProperties_poolName": {
+			"type": "string",
+			"defaultValue": "avdataops-executionpool"
+		},
+		"AzureBatch1_properties_typeProperties_accountName": {
+			"type": "string",
+			"defaultValue": "batchavdataopsrqpzwtest"
+		},
+		"LS_AzureBatch_properties_typeProperties_batchUri": {
+			"type": "string",
+			"defaultValue": "https://batchavdataopsopxgytest.westeurope.batch.azure.com"
+		},
+		"LS_AzureBatch_properties_typeProperties_poolName": {
+			"type": "string",
+			"defaultValue": "avdataops-orchestratorpool"
+		},
+		"LS_AzureBatch_properties_typeProperties_accountName": {
+			"type": "string",
+			"defaultValue": "batchavdataopsopxgytest"
+		},
+		"LS_Batch_properties_typeProperties_batchUri": {
+			"type": "string",
+			"defaultValue": "https://batchavdataopsrqpzwtest.westeurope.batch.azure.com"
+		},
+		"LS_Batch_properties_typeProperties_poolName": {
+			"type": "string",
+			"defaultValue": "avdataops-orchestratorpool"
+		},
+		"LS_Batch_properties_typeProperties_accountName": {
+			"type": "string",
+			"defaultValue": "batchavdataopsrqpzwtest"
+		},
+		"LS_Derivedopxgy_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://avderivedopxgytest.dfs.core.windows.net/"
+		},
+		"LS_Derivedrqpzw_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://avderivedrqpzwtest.dfs.core.windows.net/"
+		},
+		"LS_KeyVault_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://kv-avdops-rqpzw.vault.azure.net/"
+		},
+		"LS_Landingopxgy_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://avlandingopxgytest.dfs.core.windows.net/"
+		},
+		"LS_Landingrqpzw_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://avlandingrqpzwtest.dfs.core.windows.net/"
+		},
+		"LS_Rawopxgy_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://avrawopxgytest.dfs.core.windows.net/"
+		},
+		"LS_Rawrqpzw_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://avrawrqpzwtest.dfs.core.windows.net/"
+		},
+		"LS_avlandingrqpzwtest_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://avlandingrqpzwtest.dfs.core.windows.net/"
+		},
+		"LS_avrawrqpzwtest_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://avrawrqpzwtest.dfs.core.windows.net/"
+		},
+		"Raw to Extracted_properties_Pipeline_RawToExtracted_SolutionKit_parameters_dataStreamPath": {
+			"type": "string",
+			"defaultValue": "@triggerBody().folderPath"
+		},
+		"Raw to Extracted_properties_Pipeline_RawToExtracted_SolutionKit_parameters_apiBaseUrl": {
+			"type": "string",
+			"defaultValue": "https://web-app-linuxrqpzw.azurewebsites.net/"
+		},
+		"Raw to Extracted_properties_Pipeline_RawToExtracted_SolutionKit_parameters_apiVersion": {
+			"type": "string",
+			"defaultValue": "v1"
+		},
+		"Raw to Extracted_properties_Pipeline_RawToExtracted_SolutionKit_parameters_batchVersion": {
+			"type": "string",
+			"defaultValue": "1.0"
+		},
+		"Raw to Extracted_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-test/providers/Microsoft.Storage/storageAccounts/avrawrqpzwtest"
+		},
+		"kv-avdops-opxgy-managed-private-endpoint_properties_privateLinkResourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-dev-cd/providers/Microsoft.KeyVault/vaults/kv-avdops-opxgy"
+		},
+		"kv-avdops-opxgy-managed-private-endpoint_properties_groupId": {
+			"type": "string",
+			"defaultValue": "vault"
+		},
+		"kv-avdops-opxgy-managed-private-endpoint_properties_fqdns": {
+			"type": "array",
+			"defaultValue": [
+				"kv-avdops-opxgy.vault.azure.net"
+			]
+		},
+		"kv-avdops-rqpzw-managed-private-endpoint_properties_privateLinkResourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-test/providers/Microsoft.KeyVault/vaults/kv-avdops-rqpzw"
+		},
+		"kv-avdops-rqpzw-managed-private-endpoint_properties_groupId": {
+			"type": "string",
+			"defaultValue": "vault"
+		},
+		"kv-avdops-rqpzw-managed-private-endpoint_properties_fqdns": {
+			"type": "array",
+			"defaultValue": [
+				"kv-avdops-rqpzw.vault.azure.net"
+			]
+		},
+		"web-app-linuxopxgy-managed-private-endpoint_properties_privateLinkResourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-dev-cd/providers/Microsoft.Web/sites/web-app-linuxopxgy"
+		},
+		"web-app-linuxopxgy-managed-private-endpoint_properties_groupId": {
+			"type": "string",
+			"defaultValue": "sites"
+		},
+		"web-app-linuxopxgy-managed-private-endpoint_properties_fqdns": {
+			"type": "array",
+			"defaultValue": [
+				"web-app-linuxopxgy.azurewebsites.net",
+				"web-app-linuxopxgy.scm.azurewebsites.net"
+			]
+		},
+		"web-app-linuxrqpzw-managed-private-endpoint_properties_privateLinkResourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-test/providers/Microsoft.Web/sites/web-app-linuxrqpzw"
+		},
+		"web-app-linuxrqpzw-managed-private-endpoint_properties_groupId": {
+			"type": "string",
+			"defaultValue": "sites"
+		},
+		"web-app-linuxrqpzw-managed-private-endpoint_properties_fqdns": {
+			"type": "array",
+			"defaultValue": [
+				"web-app-linuxrqpzw.azurewebsites.net",
+				"web-app-linuxrqpzw.scm.azurewebsites.net"
+			]
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "adf-av-dataops-rqpzw_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"LS_AzureBatchStorage_connectionString": {
+						"value": "[parameters('LS_AzureBatchStorage_connectionString')]"
+					},
+					"LS_AzureBatchStorage_accountKey": {
+						"value": "[parameters('LS_AzureBatchStorage_accountKey')]"
+					},
+					"LS_BatchStorage_connectionString": {
+						"value": "[parameters('LS_BatchStorage_connectionString')]"
+					},
+					"LS_AzureBatch_properties_typeProperties_batchUri": {
+						"value": "[parameters('LS_AzureBatch_properties_typeProperties_batchUri')]"
+					},
+					"LS_AzureBatch_properties_typeProperties_poolName": {
+						"value": "[parameters('LS_AzureBatch_properties_typeProperties_poolName')]"
+					},
+					"LS_AzureBatch_properties_typeProperties_accountName": {
+						"value": "[parameters('LS_AzureBatch_properties_typeProperties_accountName')]"
+					},
+					"kv-avdops-opxgy-managed-private-endpoint_properties_privateLinkResourceId": {
+						"value": "[parameters('kv-avdops-opxgy-managed-private-endpoint_properties_privateLinkResourceId')]"
+					},
+					"kv-avdops-opxgy-managed-private-endpoint_properties_groupId": {
+						"value": "[parameters('kv-avdops-opxgy-managed-private-endpoint_properties_groupId')]"
+					},
+					"kv-avdops-opxgy-managed-private-endpoint_properties_fqdns": {
+						"value": "[parameters('kv-avdops-opxgy-managed-private-endpoint_properties_fqdns')]"
+					},
+					"kv-avdops-rqpzw-managed-private-endpoint_properties_privateLinkResourceId": {
+						"value": "[parameters('kv-avdops-rqpzw-managed-private-endpoint_properties_privateLinkResourceId')]"
+					},
+					"kv-avdops-rqpzw-managed-private-endpoint_properties_groupId": {
+						"value": "[parameters('kv-avdops-rqpzw-managed-private-endpoint_properties_groupId')]"
+					},
+					"kv-avdops-rqpzw-managed-private-endpoint_properties_fqdns": {
+						"value": "[parameters('kv-avdops-rqpzw-managed-private-endpoint_properties_fqdns')]"
+					},
+					"web-app-linuxopxgy-managed-private-endpoint_properties_privateLinkResourceId": {
+						"value": "[parameters('web-app-linuxopxgy-managed-private-endpoint_properties_privateLinkResourceId')]"
+					},
+					"web-app-linuxopxgy-managed-private-endpoint_properties_groupId": {
+						"value": "[parameters('web-app-linuxopxgy-managed-private-endpoint_properties_groupId')]"
+					},
+					"web-app-linuxopxgy-managed-private-endpoint_properties_fqdns": {
+						"value": "[parameters('web-app-linuxopxgy-managed-private-endpoint_properties_fqdns')]"
+					},
+					"web-app-linuxrqpzw-managed-private-endpoint_properties_privateLinkResourceId": {
+						"value": "[parameters('web-app-linuxrqpzw-managed-private-endpoint_properties_privateLinkResourceId')]"
+					},
+					"web-app-linuxrqpzw-managed-private-endpoint_properties_groupId": {
+						"value": "[parameters('web-app-linuxrqpzw-managed-private-endpoint_properties_groupId')]"
+					},
+					"web-app-linuxrqpzw-managed-private-endpoint_properties_fqdns": {
+						"value": "[parameters('web-app-linuxrqpzw-managed-private-endpoint_properties_fqdns')]"
+					},
+					"LS_Derivedopxgy_properties_typeProperties_url": {
+						"value": "[parameters('LS_Derivedopxgy_properties_typeProperties_url')]"
+					},
+					"LS_Derivedrqpzw_properties_typeProperties_url": {
+						"value": "[parameters('LS_Derivedrqpzw_properties_typeProperties_url')]"
+					},
+					"LS_KeyVault_properties_typeProperties_baseUrl": {
+						"value": "[parameters('LS_KeyVault_properties_typeProperties_baseUrl')]"
+					},
+					"LS_Landingopxgy_properties_typeProperties_url": {
+						"value": "[parameters('LS_Landingopxgy_properties_typeProperties_url')]"
+					},
+					"LS_Landingrqpzw_properties_typeProperties_url": {
+						"value": "[parameters('LS_Landingrqpzw_properties_typeProperties_url')]"
+					},
+					"LS_Rawopxgy_properties_typeProperties_url": {
+						"value": "[parameters('LS_Rawopxgy_properties_typeProperties_url')]"
+					},
+					"LS_Rawrqpzw_properties_typeProperties_url": {
+						"value": "[parameters('LS_Rawrqpzw_properties_typeProperties_url')]"
+					},
+					"LS_avlandingrqpzwtest_properties_typeProperties_url": {
+						"value": "[parameters('LS_avlandingrqpzwtest_properties_typeProperties_url')]"
+					},
+					"LS_avrawrqpzwtest_properties_typeProperties_url": {
+						"value": "[parameters('LS_avrawrqpzwtest_properties_typeProperties_url')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "adf-av-dataops-rqpzw_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"AzureBatch1_properties_typeProperties_batchUri": {
+						"value": "[parameters('AzureBatch1_properties_typeProperties_batchUri')]"
+					},
+					"AzureBatch1_properties_typeProperties_poolName": {
+						"value": "[parameters('AzureBatch1_properties_typeProperties_poolName')]"
+					},
+					"AzureBatch1_properties_typeProperties_accountName": {
+						"value": "[parameters('AzureBatch1_properties_typeProperties_accountName')]"
+					},
+					"LS_Batch_properties_typeProperties_batchUri": {
+						"value": "[parameters('LS_Batch_properties_typeProperties_batchUri')]"
+					},
+					"LS_Batch_properties_typeProperties_poolName": {
+						"value": "[parameters('LS_Batch_properties_typeProperties_poolName')]"
+					},
+					"LS_Batch_properties_typeProperties_accountName": {
+						"value": "[parameters('LS_Batch_properties_typeProperties_accountName')]"
+					},
+					"Raw to Extracted_properties_Pipeline_RawToExtracted_SolutionKit_parameters_dataStreamPath": {
+						"value": "[parameters('Raw to Extracted_properties_Pipeline_RawToExtracted_SolutionKit_parameters_dataStreamPath')]"
+					},
+					"Raw to Extracted_properties_Pipeline_RawToExtracted_SolutionKit_parameters_apiBaseUrl": {
+						"value": "[parameters('Raw to Extracted_properties_Pipeline_RawToExtracted_SolutionKit_parameters_apiBaseUrl')]"
+					},
+					"Raw to Extracted_properties_Pipeline_RawToExtracted_SolutionKit_parameters_apiVersion": {
+						"value": "[parameters('Raw to Extracted_properties_Pipeline_RawToExtracted_SolutionKit_parameters_apiVersion')]"
+					},
+					"Raw to Extracted_properties_Pipeline_RawToExtracted_SolutionKit_parameters_batchVersion": {
+						"value": "[parameters('Raw to Extracted_properties_Pipeline_RawToExtracted_SolutionKit_parameters_batchVersion')]"
+					},
+					"Raw to Extracted_properties_typeProperties_scope": {
+						"value": "[parameters('Raw to Extracted_properties_typeProperties_scope')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'adf-av-dataops-rqpzw_ArmTemplate_0')]"
+			]
+		}
+	]
+}
