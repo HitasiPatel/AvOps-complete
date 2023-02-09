@@ -1,5 +1,5 @@
 variable "resource_group_name" {
-  description = "Resource Group name to host the virtual network"
+  description = "Name of the resource group"
   type        = string
 }
 
@@ -8,13 +8,14 @@ variable "location" {
   type        = string
 }
 
-variable "vnet_name" {
-  description = "Name of the virtual network"
+variable "nsg_name" {
+  description = "Name of the nsg"
   type        = string
 }
 
-variable "address_space" {
-  description = "Address Space for the VNET"
+variable "subnet_id" {
+  description = "ID of the Subnet"
+  type        = string
 }
 
 variable "tags" {
