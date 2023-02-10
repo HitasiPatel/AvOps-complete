@@ -1,0 +1,18 @@
+{
+	"name": "DS_DatastreamRaw",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_avrawrqpzwtest",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation"
+			}
+		},
+		"schema": {}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
