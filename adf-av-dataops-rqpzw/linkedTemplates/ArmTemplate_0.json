@@ -7,6 +7,14 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "adf-av-dataops-rqpzw"
 		},
+		"AzureBlobStorage1_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage1'"
+		},
+		"AzureDataLakeStorage1_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage1'"
+		},
 		"LS_AzureBatchStorage_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'LS_AzureBatchStorage'",
@@ -20,6 +28,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'LS_BatchStorage'"
 		},
+		"AzureDataLakeStorage1_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://batchavdopsdkknfdev.dfs.core.windows.net/"
+		},
 		"LS_AzureBatch_properties_typeProperties_batchUri": {
 			"type": "string",
 			"defaultValue": "https://batchavdataopsopxgytest.westeurope.batch.azure.com"
@@ -31,20 +43,6 @@
 		"LS_AzureBatch_properties_typeProperties_accountName": {
 			"type": "string",
 			"defaultValue": "batchavdataopsopxgytest"
-		},
-		"kv-avdops-opxgy-managed-private-endpoint_properties_privateLinkResourceId": {
-			"type": "string",
-			"defaultValue": "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-dev-cd/providers/Microsoft.KeyVault/vaults/kv-avdops-opxgy"
-		},
-		"kv-avdops-opxgy-managed-private-endpoint_properties_groupId": {
-			"type": "string",
-			"defaultValue": "vault"
-		},
-		"kv-avdops-opxgy-managed-private-endpoint_properties_fqdns": {
-			"type": "array",
-			"defaultValue": [
-				"kv-avdops-opxgy.vault.azure.net"
-			]
 		},
 		"kv-avdops-rqpzw-managed-private-endpoint_properties_privateLinkResourceId": {
 			"type": "string",
@@ -58,21 +56,6 @@
 			"type": "array",
 			"defaultValue": [
 				"kv-avdops-rqpzw.vault.azure.net"
-			]
-		},
-		"web-app-linuxopxgy-managed-private-endpoint_properties_privateLinkResourceId": {
-			"type": "string",
-			"defaultValue": "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-dev-cd/providers/Microsoft.Web/sites/web-app-linuxopxgy"
-		},
-		"web-app-linuxopxgy-managed-private-endpoint_properties_groupId": {
-			"type": "string",
-			"defaultValue": "sites"
-		},
-		"web-app-linuxopxgy-managed-private-endpoint_properties_fqdns": {
-			"type": "array",
-			"defaultValue": [
-				"web-app-linuxopxgy.azurewebsites.net",
-				"web-app-linuxopxgy.scm.azurewebsites.net"
 			]
 		},
 		"web-app-linuxrqpzw-managed-private-endpoint_properties_privateLinkResourceId": {
@@ -131,6 +114,36 @@
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureBlobStorage1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('AzureBlobStorage1_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureDataLakeStorage1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('AzureDataLakeStorage1_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('AzureDataLakeStorage1_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/LS_AzureBatchStorage')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
@@ -206,19 +219,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/default/kv-avdops-opxgy-managed-private-endpoint')]",
-			"type": "Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"privateLinkResourceId": "[parameters('kv-avdops-opxgy-managed-private-endpoint_properties_privateLinkResourceId')]",
-				"groupId": "[parameters('kv-avdops-opxgy-managed-private-endpoint_properties_groupId')]",
-				"fqdns": "[parameters('kv-avdops-opxgy-managed-private-endpoint_properties_fqdns')]"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/default/kv-avdops-rqpzw-managed-private-endpoint')]",
 			"type": "Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints",
 			"apiVersion": "2018-06-01",
@@ -226,19 +226,6 @@
 				"privateLinkResourceId": "[parameters('kv-avdops-rqpzw-managed-private-endpoint_properties_privateLinkResourceId')]",
 				"groupId": "[parameters('kv-avdops-rqpzw-managed-private-endpoint_properties_groupId')]",
 				"fqdns": "[parameters('kv-avdops-rqpzw-managed-private-endpoint_properties_fqdns')]"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/default/web-app-linuxopxgy-managed-private-endpoint')]",
-			"type": "Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"privateLinkResourceId": "[parameters('web-app-linuxopxgy-managed-private-endpoint_properties_privateLinkResourceId')]",
-				"groupId": "[parameters('web-app-linuxopxgy-managed-private-endpoint_properties_groupId')]",
-				"fqdns": "[parameters('web-app-linuxopxgy-managed-private-endpoint_properties_fqdns')]"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"

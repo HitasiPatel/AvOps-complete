@@ -5,6 +5,12 @@
 		"factoryName": {
 			"value": "adf-av-dataops-rqpzw"
 		},
+		"AzureBlobStorage1_connectionString": {
+			"value": ""
+		},
+		"AzureDataLakeStorage1_accountKey": {
+			"value": ""
+		},
 		"LS_AzureBatchStorage_connectionString": {
 			"value": "DefaultEndpointsProtocol=https;AccountKey=[object Object];"
 		},
@@ -22,6 +28,9 @@
 		},
 		"AzureBatch1_properties_typeProperties_accountName": {
 			"value": "batchavdataopsrqpzwtest"
+		},
+		"AzureDataLakeStorage1_properties_typeProperties_url": {
+			"value": "https://batchavdopsdkknfdev.dfs.core.windows.net/"
 		},
 		"LS_AzureBatch_properties_typeProperties_batchUri": {
 			"value": "https://batchavdataopsopxgytest.westeurope.batch.azure.com"
@@ -83,17 +92,6 @@
 		"Raw to Extracted_properties_typeProperties_scope": {
 			"value": "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-test/providers/Microsoft.Storage/storageAccounts/avrawrqpzwtest"
 		},
-		"kv-avdops-opxgy-managed-private-endpoint_properties_privateLinkResourceId": {
-			"value": "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-dev-cd/providers/Microsoft.KeyVault/vaults/kv-avdops-opxgy"
-		},
-		"kv-avdops-opxgy-managed-private-endpoint_properties_groupId": {
-			"value": "vault"
-		},
-		"kv-avdops-opxgy-managed-private-endpoint_properties_fqdns": {
-			"value": [
-				"kv-avdops-opxgy.vault.azure.net"
-			]
-		},
 		"kv-avdops-rqpzw-managed-private-endpoint_properties_privateLinkResourceId": {
 			"value": "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-test/providers/Microsoft.KeyVault/vaults/kv-avdops-rqpzw"
 		},
@@ -103,18 +101,6 @@
 		"kv-avdops-rqpzw-managed-private-endpoint_properties_fqdns": {
 			"value": [
 				"kv-avdops-rqpzw.vault.azure.net"
-			]
-		},
-		"web-app-linuxopxgy-managed-private-endpoint_properties_privateLinkResourceId": {
-			"value": "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-dev-cd/providers/Microsoft.Web/sites/web-app-linuxopxgy"
-		},
-		"web-app-linuxopxgy-managed-private-endpoint_properties_groupId": {
-			"value": "sites"
-		},
-		"web-app-linuxopxgy-managed-private-endpoint_properties_fqdns": {
-			"value": [
-				"web-app-linuxopxgy.azurewebsites.net",
-				"web-app-linuxopxgy.scm.azurewebsites.net"
 			]
 		},
 		"web-app-linuxrqpzw-managed-private-endpoint_properties_privateLinkResourceId": {
