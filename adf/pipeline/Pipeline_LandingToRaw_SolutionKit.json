@@ -362,10 +362,6 @@
 				"type": "string",
 				"defaultValue": "manifest.json"
 			},
-			"validationManifestName": {
-				"type": "string",
-				"defaultValue": "manifest_validation.json"
-			},
 			"archiveZoneContainer": {
 				"type": "string",
 				"defaultValue": "archive"
@@ -380,12 +376,6 @@
 			}
 		},
 		"variables": {
-			"isValidMeasurement": {
-				"type": "Boolean"
-			},
-			"validationManifestMissing": {
-				"type": "String"
-			},
 			"batchParams": {
 				"type": "String"
 			},
