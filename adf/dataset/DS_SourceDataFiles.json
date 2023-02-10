@@ -2,7 +2,7 @@
 	"name": "DS_SourceDataFiles",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "LS_Landingopxgy",
+			"referenceName": "LS_avlandingrqpzwtest",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
