@@ -67,7 +67,6 @@ stages:
           publishLocation: 'pipeline'
           
   - stage: Deploy_to_PreProd
-    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'), eq(variables['build.SourceBranchName'], 'feature/ADA-2011-ADF-CI-CD'))
     displayName: Deploy Pre Prod Stage
     dependsOn: Build_And_Publish_ADF_Artifacts
     jobs: 
