@@ -1,0 +1,15 @@
+{
+	"name": "LS_avrawrqpzwtest",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobFS",
+		"typeProperties": {
+			"url": "https://avrawrqpzwtest.dfs.core.windows.net/"
+		},
+		"connectVia": {
+			"referenceName": "IntegrationRuntime",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

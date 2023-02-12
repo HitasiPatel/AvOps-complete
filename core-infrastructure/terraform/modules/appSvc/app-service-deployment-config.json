@@ -16,7 +16,7 @@
             "name": "[parameters('appServiceName')]",
             "location": "[parameters('location')]",
             "properties": {
-                "vnetImagePullEnabled": true
+                "vnetImagePullEnabled": false
             }
         }
     ]

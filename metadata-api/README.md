@@ -1,15 +1,17 @@
-# Using the API Template
+#Metadata API
 
-1. Clone or Download the repository to your Local. 
-2. Execute the following command to install depedencies : 
+Metadata API is built using FastAPI framework in Python and deployed in Azure App Service.
+Metadata API is used for managing measurements and datastreams.
+
+# Setting up Metadata API
+
+1. Execute the following command to install depedencies : 
 
 ```
-git config core.hooksPath .githooks
 python -m virtualenv venv
 source venv/bin/activate 
 pip3 install -r requirements.txt
 ```
-
 
 ## Running the App 
 
@@ -35,8 +37,8 @@ docker build . -t fastapi-todo
 docker run --env-file ./src/.env -p 3100:3100 -t fastapi-todo
 ```
 
-### Steps for updating your collection name to the createIndexes.sh script so that on deployment, your indexes are created
+### Swagger Docs
+Swagger docs can be viewed at http://localhost:3100/docs once you deploy the api locally.
+You can also try out the APIs through the Swagger UI.
 
-* Go to the path ```.pipelines/stages/postDeploy/createIndexes.sh```
-* Check the collectionList (Line 31) and add/update the name of the collections where you want to have the indexes.
-* Currently we have wildcard indexes enabled, you can add other types as and when needed.
+![Swagger for Metadata API](../docs/images/metadata-api-swagger.png)

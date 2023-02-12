@@ -1,5 +1,5 @@
 variable "resource_group_name" {
-  description = "Resource Group name to host keyvault"
+  description = "Resource Group name to host the storage accounts"
   type        = string
 }
 

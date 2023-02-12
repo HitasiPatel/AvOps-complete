@@ -1,0 +1,9 @@
+{
+	"name": "adf-av-dataops-rqpzw",
+	"location": "westeurope",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "7d35c5fa-c468-4d3c-b635-01a0f5f963d9",
+		"tenantId": "16b3c013-d300-468d-ac64-7eda0820b6d3"
+	}
+}

@@ -91,7 +91,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"command": {
-						"value": "@concat('/bin/bash -c \"export traceparent=\"',variables('traceparent'),'\" && ',' export AZURE_TRACING_ENABLED=True ',' && ','cd $AZ_BATCH_APP_PACKAGE_orchestratorapp_',variables('batchApiVersion'),'/app && python3 extract.py ',variables('batchParams'),'\"')",
+						"value": "@concat('/bin/bash -c \"export traceparent=\"',variables('traceparent'),'\" && ',' export AZURE_TRACING_ENABLED=True ',' && ','cd $AZ_BATCH_APP_PACKAGE_batch_orchestrator_',variables('batchApiVersion'),'/app && python3 extract.py ',variables('batchParams'),'\"')",
 						"type": "Expression"
 					},
 					"referenceObjects": {
@@ -100,7 +100,7 @@
 					}
 				},
 				"linkedServiceName": {
-					"referenceName": "LS_AzureBatch",
+					"referenceName": "LS_Batch",
 					"type": "LinkedServiceReference"
 				}
 			},
@@ -237,12 +237,17 @@
 						"storeSettings": {
 							"type": "AzureBlobFSReadSettings",
 							"recursive": true,
+							"wildcardFolderPath": "*",
 							"wildcardFileName": "datastream.json",
 							"enablePartitionDiscovery": false
 						},
 						"formatSettings": {
 							"type": "JsonReadSettings"
 						}
+					},
+					"dataset": {
+						"referenceName": "DS_DatastreamRaw",
+						"type": "DatasetReference"
 					}
 				}
 			}
@@ -254,7 +259,7 @@
 			},
 			"apiBaseUrl": {
 				"type": "string",
-				"defaultValue": "https://web-app-linuxopxgy.azurewebsites.net"
+				"defaultValue": "https://web-app-linuxrqpzw.azurewebsites.net/"
 			},
 			"apiVersion": {
 				"type": "string",
@@ -280,6 +285,7 @@
 			}
 		},
 		"annotations": [],
-		"lastPublishTime": "2022-11-23T10:01:01Z"
-	}
+		"lastPublishTime": "2023-02-10T11:46:51Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
 }

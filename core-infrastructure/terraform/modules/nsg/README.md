@@ -1,0 +1,1 @@
+This module is for retrieveing the creating nsg rules for the batch subnet.
