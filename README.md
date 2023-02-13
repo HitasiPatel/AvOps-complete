@@ -16,6 +16,15 @@ You can use this code to get started with your own data pipelines.
 * [Infrastructure as Code](docs/iac.md)
 * [Observability](docs/observability.md)
 
+## Quick Start
+Below steps will help you to quickly deploy the avops solution in your azure subscription.
+
+1. ## [Deploy the Infra](CoreInfraStructure/CoreInfraStructureDeploy.md)
+
+2. ## [Deploy the MetaData API](MetaDataAPI/MetaDataAPIDeploy.md)
+
+3. ## [Deploy the ADF Pipelines](ADFPipelines/ADFPipelinesDeploy.md)
+
 ## Getting Started
 * [Prerequisites](#prerequisites)
 * [Installation](#installation)
