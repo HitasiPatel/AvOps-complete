@@ -2,12 +2,12 @@
 
 The IaC CD pipeline enables the automatic deployment of your infrastructure.This pipeline supports the deployment of terraform scripts. 
 
-## Pre-requisites 
+## Prerequisites 
 
 1. Set up a remote backend on azure - The terraform script uses a remote backend to store the state. Before running this pipeline you need to ensure that a dedicated storage account with appropriate container names is created to be used as the remote backend where the terraform state files will be stored. For more details, refer this [article.](https://learn.microsoft.com/en-us/azure/developer/terraform/store-state-in-azure-storage?tabs=azure-cli)
 Note: Name the blob container in the format - "tfstate-{env}" [supported environments are - dev and test]. 
 
-2. Create a service princiapl - A service principal with contributor access is needed to deploy our IaC scripts on azure. Refer this [article](https://learn.microsoft.com/en-us/cli/azure/create-an-azure-service-principal-azure-cli) on steps to create a service principal. 
+2. Create a service principal - A service principal with contributor access is needed to deploy our IaC scripts on azure. Refer this [article](https://learn.microsoft.com/en-us/cli/azure/create-an-azure-service-principal-azure-cli) on steps to create a service principal. 
 
 ```
 az ad sp create-for-rbac --name myServicePrincipalName \
@@ -25,6 +25,8 @@ az ad sp create-for-rbac --name myServicePrincipalName \
 
 ## Pipeline parameters 
 
+1. **env** - The type of environment you are trying to set up. The pipeline supports two environments - dev and test. You can add more environments by setting up blob containers in your Azure storage account configured as the terraform backend. 
+
 ## Pipeline variables 
 
 1. src_dir - this variable defines the path of the root directory where the main terraform file is present
@@ -38,7 +40,7 @@ az ad sp create-for-rbac --name myServicePrincipalName \
 2. tf_plan_and_apply - 
     1. Login to azure with the service principal
     1. Set the service principal credentials as environment variables on the host. This is required by terraform to authenticate to the azure portal.
-    1. Initialise the terraform modules with the backend configured. 
+    1. Initialize the terraform modules with the backend configured. 
     1. Validate the terraform scripts
     1. Plan the terraform deployment.
     1. Deploy the modules to the azure portal. 
@@ -46,7 +48,7 @@ az ad sp create-for-rbac --name myServicePrincipalName \
 ## Steps to run the pipeline
 
 1. The pipeline has a manual trigger.
-2. After all the pre-requisites are set up, in the AzDo project go to pipelines and select "avops-dataops-foundation-iac-cd"
+2. After all the prerequisites are set up, in the AzDo project go to pipelines and select "avops-dataops-foundation-iac-cd"
 3. Click on "Run Pipeline" and select the branch you wish to deploy from and the environment you wish to set up.
 
 ![infra-cd](./images/infra-cd.png)

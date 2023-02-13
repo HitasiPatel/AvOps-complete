@@ -1,18 +1,18 @@
 # avops-dataops-foundation-metadata-api-ci
 
-This pipeline automates the integeration and deployment of the metadata API to Azure App Service.
+This pipeline automates the integration and deployment of the metadata API to Azure App Service.
 
-## Pre-requisites - 
+## Prerequisites
 
 1. Run the **avops-dataops-foundation-iac-cd** and set up your environment on Azure. Refer this [document](../../core-infrastructure/.pipelines/README.md) on steps to run the pipeline. 
 1. Create service connections - 
     - **ARM Service connection** - This is needed to deploy the docket image to App Service. Name the service connection "arm_service_connection_{env}" (environments supported are dev and test), this is the format in which it is referred in the pipeline. 
     - **Docker Registry** - This service connection is needed to login to the Axure Container Registry and push the metadata-api docker image to the registry. Name the service connection "acr_service_connection_{env}" (environments supported are dev and test), this is the format in which it is referred in the pipeline. 
-Refere this [article](https://learn.microsoft.com/en-us/azure/devops/pipelines/library/service-endpoints?view=azure-devops&tabs=yaml) for more details and steps to cretae a service connection.
+Refer this [article](https://learn.microsoft.com/en-us/azure/devops/pipelines/library/service-endpoints?view=azure-devops&tabs=yaml) for more details and steps to create a service connection.
 
 ## Pipeline parameters
 
-The pipeline takes the folowwing inputs on running it via manual trigger. When the pipeline is triggered on merge to the main, it picks up the default values. You can change these default values based on your environment.
+The pipeline takes the following inputs on running it via manual trigger. When the pipeline is triggered on merge to the main, it picks up the default values. You can change these default values based on your environment.
 
 1. **acr_name** - Name of the Azure Container Registry.
 1. **app_service_name** - Name of the Azure App Service. 
