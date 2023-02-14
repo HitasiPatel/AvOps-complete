@@ -12,4 +12,6 @@
 
 6. Now relax and grab a cup a coffee and be right back at the pipeline run after 10-15 minutes. Check the status, if it's failed, go to the Troubleshooting steps as linked at the end of this page.
 
+## [Next Step](../MetaDataAPI/MetaDataAPIDeploy.md)
+
 ## [TroubleShooting](TrobuleShooting.md)
