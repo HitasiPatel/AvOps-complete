@@ -12,6 +12,6 @@ This pipeline pushes the MetaData API docker container in to the ACR and then de
 
 5. Select your branch name, Environment and fill up the required options and hit the blue Run button in the down right corner of the browser.
 
-## [Next Step](../ADFPipelines/ADFPipelinesDeploy.md)
+## [Next Steps: Deploy ADF Pipelines](../ADFPipelines/ADFPipelinesDeploy.md)
 
-## [TroubleShooting](TrobuleShooting.md)
+## [Troubleshooting](TroubleShooting.md)
