@@ -71,40 +71,6 @@
 				}
 			},
 			{
-				"name": "Batch orchestrator",
-				"type": "Custom",
-				"dependsOn": [
-					{
-						"activity": "Update Datastream to Processing",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 2,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"command": {
-						"value": "@concat('/bin/bash -c \"export traceparent=\"',variables('traceparent'),'\" && ',' export AZURE_TRACING_ENABLED=True ',' && ','cd $AZ_BATCH_APP_PACKAGE_batch_orchestrator_',variables('batchApiVersion'),'/app && python3 extract.py ',variables('batchParams'),'\"')",
-						"type": "Expression"
-					},
-					"referenceObjects": {
-						"linkedServices": [],
-						"datasets": []
-					}
-				},
-				"linkedServiceName": {
-					"referenceName": "LS_Batch",
-					"type": "LinkedServiceReference"
-				}
-			},
-			{
 				"name": "Format Batch application Version",
 				"type": "SetVariable",
 				"dependsOn": [],
@@ -154,47 +120,6 @@
 					},
 					"body": {
 						"value": "@json(concat('\n{\n  \"status\": \"PROCESSING\"\n}'))",
-						"type": "Expression"
-					}
-				}
-			},
-			{
-				"name": "Update Datastream to Completed",
-				"type": "WebActivity",
-				"dependsOn": [
-					{
-						"activity": "Batch orchestrator",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"url": {
-						"value": "@concat(pipeline().parameters.apiBaseUrl,pipeline().parameters.apiVersion,'/measurements/',activity('Get FileDataStream Json').output.firstRow.measurementId,'/datastreams/',activity('Create Data stream api').output.id)",
-						"type": "Expression"
-					},
-					"connectVia": {
-						"referenceName": "IntegrationRuntime",
-						"type": "IntegrationRuntimeReference"
-					},
-					"method": "PATCH",
-					"headers": {
-						"traceparent": {
-							"value": "@variables('traceparent')",
-							"type": "Expression"
-						}
-					},
-					"body": {
-						"value": "@json(concat('\n{\n  \"status\": \"COMPLETED\"\n}'))",
 						"type": "Expression"
 					}
 				}
