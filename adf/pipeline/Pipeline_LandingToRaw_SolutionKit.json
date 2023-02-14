@@ -257,7 +257,7 @@
 							"type": "WebActivity",
 							"dependsOn": [
 								{
-									"activity": "Batch Orchestrator",
+									"activity": "Set BatchParams",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -291,40 +291,6 @@
 									"value": "@json(concat('\n{\n  \"status\": \"COMPLETED\"\n}'))",
 									"type": "Expression"
 								}
-							}
-						},
-						{
-							"name": "Batch Orchestrator",
-							"type": "Custom",
-							"dependsOn": [
-								{
-									"activity": "Set BatchParams",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"policy": {
-								"timeout": "0.12:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"command": {
-									"value": "@concat('/bin/bash -c \"export traceparent=\"',variables('traceparent'),'\" && ',' export AZURE_TRACING_ENABLED=True ',' && ','cd $AZ_BATCH_APP_PACKAGE_batch_orchestrator_1_0','/app && python3 copybags.py ',variables('batchParams'),'\"')",
-									"type": "Expression"
-								},
-								"referenceObjects": {
-									"linkedServices": [],
-									"datasets": []
-								}
-							},
-							"linkedServiceName": {
-								"referenceName": "LS_Batch",
-								"type": "LinkedServiceReference"
 							}
 						}
 					]
