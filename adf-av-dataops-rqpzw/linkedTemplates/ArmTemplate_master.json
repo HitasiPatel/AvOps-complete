@@ -7,22 +7,13 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "adf-av-dataops-rqpzw"
 		},
-		"AzureBlobStorage1_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage1'"
-		},
 		"AzureDataLakeStorage1_accountKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage1'"
 		},
 		"LS_AzureBatchStorage_connectionString": {
 			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'LS_AzureBatchStorage'",
-			"defaultValue": "DefaultEndpointsProtocol=https;AccountKey=[object Object];"
-		},
-		"LS_AzureBatchStorage_accountKey": {
-			"type": "secureString",
-			"metadata": "Secure string for 'accountKey' of 'LS_AzureBatchStorage'"
+			"metadata": "Secure string for 'connectionString' of 'LS_AzureBatchStorage'"
 		},
 		"LS_BatchStorage_connectionString": {
 			"type": "secureString",
@@ -124,6 +115,42 @@
 			"type": "string",
 			"defaultValue": "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-test/providers/Microsoft.Storage/storageAccounts/avrawrqpzwtest"
 		},
+		"AzureKeyVault870_properties_privateLinkResourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-test/providers/Microsoft.KeyVault/vaults/kv-avdops-rqpzw"
+		},
+		"AzureKeyVault870_properties_groupId": {
+			"type": "string",
+			"defaultValue": "vault"
+		},
+		"AzureKeyVault870_properties_fqdns": {
+			"type": "array",
+			"defaultValue": [
+				"kv-avdops-rqpzw.vault.azure.net"
+			]
+		},
+		"AzureStorageBlobPrivateEp_properties_privateLinkResourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-test/providers/Microsoft.Storage/storageAccounts/batchavdopsrqpzwtest"
+		},
+		"AzureStorageBlobPrivateEp_properties_groupId": {
+			"type": "string",
+			"defaultValue": "blob"
+		},
+		"AzureStorageBlobPrivateEp_properties_fqdns": {
+			"type": "array",
+			"defaultValue": [
+				"batchavdopsrqpzwtest.blob.core.windows.net"
+			]
+		},
+		"kv-avdops-opxgy-managed-private-endpoint_properties_privateLinkResourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-dev-cd/providers/Microsoft.KeyVault/vaults/kv-avdops-opxgy"
+		},
+		"kv-avdops-opxgy-managed-private-endpoint_properties_groupId": {
+			"type": "string",
+			"defaultValue": "vault"
+		},
 		"kv-avdops-rqpzw-managed-private-endpoint_properties_privateLinkResourceId": {
 			"type": "string",
 			"defaultValue": "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-test/providers/Microsoft.KeyVault/vaults/kv-avdops-rqpzw"
@@ -137,6 +164,14 @@
 			"defaultValue": [
 				"kv-avdops-rqpzw.vault.azure.net"
 			]
+		},
+		"web-app-linuxopxgy-managed-private-endpoint_properties_privateLinkResourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-dev-cd/providers/Microsoft.Web/sites/web-app-linuxopxgy"
+		},
+		"web-app-linuxopxgy-managed-private-endpoint_properties_groupId": {
+			"type": "string",
+			"defaultValue": "sites"
 		},
 		"web-app-linuxrqpzw-managed-private-endpoint_properties_privateLinkResourceId": {
 			"type": "string",
@@ -180,17 +215,11 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
-					"AzureBlobStorage1_connectionString": {
-						"value": "[parameters('AzureBlobStorage1_connectionString')]"
-					},
 					"AzureDataLakeStorage1_accountKey": {
 						"value": "[parameters('AzureDataLakeStorage1_accountKey')]"
 					},
 					"LS_AzureBatchStorage_connectionString": {
 						"value": "[parameters('LS_AzureBatchStorage_connectionString')]"
-					},
-					"LS_AzureBatchStorage_accountKey": {
-						"value": "[parameters('LS_AzureBatchStorage_accountKey')]"
 					},
 					"LS_BatchStorage_connectionString": {
 						"value": "[parameters('LS_BatchStorage_connectionString')]"
@@ -207,6 +236,30 @@
 					"LS_AzureBatch_properties_typeProperties_accountName": {
 						"value": "[parameters('LS_AzureBatch_properties_typeProperties_accountName')]"
 					},
+					"AzureKeyVault870_properties_privateLinkResourceId": {
+						"value": "[parameters('AzureKeyVault870_properties_privateLinkResourceId')]"
+					},
+					"AzureKeyVault870_properties_groupId": {
+						"value": "[parameters('AzureKeyVault870_properties_groupId')]"
+					},
+					"AzureKeyVault870_properties_fqdns": {
+						"value": "[parameters('AzureKeyVault870_properties_fqdns')]"
+					},
+					"AzureStorageBlobPrivateEp_properties_privateLinkResourceId": {
+						"value": "[parameters('AzureStorageBlobPrivateEp_properties_privateLinkResourceId')]"
+					},
+					"AzureStorageBlobPrivateEp_properties_groupId": {
+						"value": "[parameters('AzureStorageBlobPrivateEp_properties_groupId')]"
+					},
+					"AzureStorageBlobPrivateEp_properties_fqdns": {
+						"value": "[parameters('AzureStorageBlobPrivateEp_properties_fqdns')]"
+					},
+					"kv-avdops-opxgy-managed-private-endpoint_properties_privateLinkResourceId": {
+						"value": "[parameters('kv-avdops-opxgy-managed-private-endpoint_properties_privateLinkResourceId')]"
+					},
+					"kv-avdops-opxgy-managed-private-endpoint_properties_groupId": {
+						"value": "[parameters('kv-avdops-opxgy-managed-private-endpoint_properties_groupId')]"
+					},
 					"kv-avdops-rqpzw-managed-private-endpoint_properties_privateLinkResourceId": {
 						"value": "[parameters('kv-avdops-rqpzw-managed-private-endpoint_properties_privateLinkResourceId')]"
 					},
@@ -215,6 +268,12 @@
 					},
 					"kv-avdops-rqpzw-managed-private-endpoint_properties_fqdns": {
 						"value": "[parameters('kv-avdops-rqpzw-managed-private-endpoint_properties_fqdns')]"
+					},
+					"web-app-linuxopxgy-managed-private-endpoint_properties_privateLinkResourceId": {
+						"value": "[parameters('web-app-linuxopxgy-managed-private-endpoint_properties_privateLinkResourceId')]"
+					},
+					"web-app-linuxopxgy-managed-private-endpoint_properties_groupId": {
+						"value": "[parameters('web-app-linuxopxgy-managed-private-endpoint_properties_groupId')]"
 					},
 					"web-app-linuxrqpzw-managed-private-endpoint_properties_privateLinkResourceId": {
 						"value": "[parameters('web-app-linuxrqpzw-managed-private-endpoint_properties_privateLinkResourceId')]"
@@ -248,9 +307,6 @@
 					},
 					"LS_avlandingrqpzwtest_properties_typeProperties_url": {
 						"value": "[parameters('LS_avlandingrqpzwtest_properties_typeProperties_url')]"
-					},
-					"LS_avrawrqpzwtest_properties_typeProperties_url": {
-						"value": "[parameters('LS_avrawrqpzwtest_properties_typeProperties_url')]"
 					}
 				}
 			},
@@ -269,6 +325,9 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"LS_avrawrqpzwtest_properties_typeProperties_url": {
+						"value": "[parameters('LS_avrawrqpzwtest_properties_typeProperties_url')]"
 					},
 					"AzureBatch1_properties_typeProperties_batchUri": {
 						"value": "[parameters('AzureBatch1_properties_typeProperties_batchUri')]"

@@ -5,16 +5,10 @@
 		"factoryName": {
 			"value": "adf-av-dataops-rqpzw"
 		},
-		"AzureBlobStorage1_connectionString": {
-			"value": ""
-		},
 		"AzureDataLakeStorage1_accountKey": {
 			"value": ""
 		},
 		"LS_AzureBatchStorage_connectionString": {
-			"value": "DefaultEndpointsProtocol=https;AccountKey=[object Object];"
-		},
-		"LS_AzureBatchStorage_accountKey": {
 			"value": ""
 		},
 		"LS_BatchStorage_connectionString": {
@@ -92,6 +86,34 @@
 		"Raw to Extracted_properties_typeProperties_scope": {
 			"value": "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-test/providers/Microsoft.Storage/storageAccounts/avrawrqpzwtest"
 		},
+		"AzureKeyVault870_properties_privateLinkResourceId": {
+			"value": "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-test/providers/Microsoft.KeyVault/vaults/kv-avdops-rqpzw"
+		},
+		"AzureKeyVault870_properties_groupId": {
+			"value": "vault"
+		},
+		"AzureKeyVault870_properties_fqdns": {
+			"value": [
+				"kv-avdops-rqpzw.vault.azure.net"
+			]
+		},
+		"AzureStorageBlobPrivateEp_properties_privateLinkResourceId": {
+			"value": "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-test/providers/Microsoft.Storage/storageAccounts/batchavdopsrqpzwtest"
+		},
+		"AzureStorageBlobPrivateEp_properties_groupId": {
+			"value": "blob"
+		},
+		"AzureStorageBlobPrivateEp_properties_fqdns": {
+			"value": [
+				"batchavdopsrqpzwtest.blob.core.windows.net"
+			]
+		},
+		"kv-avdops-opxgy-managed-private-endpoint_properties_privateLinkResourceId": {
+			"value": "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-dev-cd/providers/Microsoft.KeyVault/vaults/kv-avdops-opxgy"
+		},
+		"kv-avdops-opxgy-managed-private-endpoint_properties_groupId": {
+			"value": "vault"
+		},
 		"kv-avdops-rqpzw-managed-private-endpoint_properties_privateLinkResourceId": {
 			"value": "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-test/providers/Microsoft.KeyVault/vaults/kv-avdops-rqpzw"
 		},
@@ -102,6 +124,12 @@
 			"value": [
 				"kv-avdops-rqpzw.vault.azure.net"
 			]
+		},
+		"web-app-linuxopxgy-managed-private-endpoint_properties_privateLinkResourceId": {
+			"value": "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-dev-cd/providers/Microsoft.Web/sites/web-app-linuxopxgy"
+		},
+		"web-app-linuxopxgy-managed-private-endpoint_properties_groupId": {
+			"value": "sites"
 		},
 		"web-app-linuxrqpzw-managed-private-endpoint_properties_privateLinkResourceId": {
 			"value": "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-test/providers/Microsoft.Web/sites/web-app-linuxrqpzw"

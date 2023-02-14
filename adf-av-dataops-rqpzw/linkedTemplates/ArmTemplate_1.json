@@ -7,6 +7,10 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "adf-av-dataops-rqpzw"
 		},
+		"LS_avrawrqpzwtest_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://avrawrqpzwtest.dfs.core.windows.net/"
+		},
 		"AzureBatch1_properties_typeProperties_batchUri": {
 			"type": "string",
 			"defaultValue": "https://batchavdataopsrqpzwtest.westeurope.batch.azure.com"
@@ -56,6 +60,88 @@
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/LS_avrawrqpzwtest')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('LS_avrawrqpzwtest_properties_typeProperties_url')]"
+				},
+				"connectVia": {
+					"referenceName": "IntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_DatastreamRaw')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_avrawrqpzwtest",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_avrawrqpzwtest')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_Manifest')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_avlandingrqpzwtest",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"containerName": {
+						"type": "string"
+					},
+					"folderName": {
+						"type": "string"
+					},
+					"fileName": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@dataset().fileName",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@dataset().folderName",
+							"type": "Expression"
+						},
+						"fileSystem": {
+							"value": "@dataset().containerName",
+							"type": "Expression"
+						}
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": []
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/DS_SourceDataFiles')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
@@ -552,10 +638,11 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2023-02-09T04:37:56Z"
+				"lastPublishTime": "2023-02-10T11:46:50Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/DS_SourceMeasurements')]",
+				"[concat(variables('factoryId'), '/datasets/DS_Manifest')]",
 				"[concat(variables('factoryId'), '/linkedServices/LS_Batch')]"
 			]
 		},
@@ -853,10 +940,11 @@
 					}
 				},
 				"annotations": [],
-				"lastPublishTime": "2023-02-09T05:19:51Z"
+				"lastPublishTime": "2023-02-10T11:46:51Z"
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/LS_Batch')]"
+				"[concat(variables('factoryId'), '/linkedServices/LS_Batch')]",
+				"[concat(variables('factoryId'), '/datasets/DS_DatastreamRaw')]"
 			]
 		},
 		{
@@ -865,7 +953,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
-				"runtimeState": "Stopped",
+				"runtimeState": "Started",
 				"pipelines": [
 					{
 						"pipelineReference": {
