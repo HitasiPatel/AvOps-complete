@@ -7,46 +7,6 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "adf-av-dataops-rqpzw"
 		},
-		"AzureDataLakeStorage1_accountKey": {
-			"type": "secureString",
-			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage1'"
-		},
-		"LS_AzureBatchStorage_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'LS_AzureBatchStorage'"
-		},
-		"LS_BatchStorage_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'LS_BatchStorage'"
-		},
-		"AzureBatch1_properties_typeProperties_batchUri": {
-			"type": "string",
-			"defaultValue": "https://batchavdataopsrqpzwtest.westeurope.batch.azure.com"
-		},
-		"AzureBatch1_properties_typeProperties_poolName": {
-			"type": "string",
-			"defaultValue": "avdataops-executionpool"
-		},
-		"AzureBatch1_properties_typeProperties_accountName": {
-			"type": "string",
-			"defaultValue": "batchavdataopsrqpzwtest"
-		},
-		"AzureDataLakeStorage1_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://batchavdopsdkknfdev.dfs.core.windows.net/"
-		},
-		"LS_AzureBatch_properties_typeProperties_batchUri": {
-			"type": "string",
-			"defaultValue": "https://batchavdataopsopxgytest.westeurope.batch.azure.com"
-		},
-		"LS_AzureBatch_properties_typeProperties_poolName": {
-			"type": "string",
-			"defaultValue": "avdataops-orchestratorpool"
-		},
-		"LS_AzureBatch_properties_typeProperties_accountName": {
-			"type": "string",
-			"defaultValue": "batchavdataopsopxgytest"
-		},
 		"LS_Batch_properties_typeProperties_batchUri": {
 			"type": "string",
 			"defaultValue": "https://batchavdataopsrqpzwtest.westeurope.batch.azure.com"
@@ -59,33 +19,21 @@
 			"type": "string",
 			"defaultValue": "batchavdataopsrqpzwtest"
 		},
-		"LS_Derivedopxgy_properties_typeProperties_url": {
+		"LS_BatchStorage_properties_typeProperties_connectionString_secretName": {
 			"type": "string",
-			"defaultValue": "https://avderivedopxgytest.dfs.core.windows.net/"
+			"defaultValue": "azurebatchstorageconnstring"
 		},
 		"LS_Derivedrqpzw_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://avderivedrqpzwtest.dfs.core.windows.net/"
 		},
-		"LS_KeyVault_properties_typeProperties_baseUrl": {
+		"LS_KeyVault_test_properties_typeProperties_baseUrl": {
 			"type": "string",
 			"defaultValue": "https://kv-avdops-rqpzw.vault.azure.net/"
 		},
 		"LS_Landingopxgy_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://avlandingopxgytest.dfs.core.windows.net/"
-		},
-		"LS_Landingrqpzw_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://avlandingrqpzwtest.dfs.core.windows.net/"
-		},
-		"LS_Rawopxgy_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://avrawopxgytest.dfs.core.windows.net/"
-		},
-		"LS_Rawrqpzw_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://avrawrqpzwtest.dfs.core.windows.net/"
 		},
 		"LS_avlandingrqpzwtest_properties_typeProperties_url": {
 			"type": "string",
@@ -115,20 +63,6 @@
 			"type": "string",
 			"defaultValue": "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-test/providers/Microsoft.Storage/storageAccounts/avrawrqpzwtest"
 		},
-		"AzureKeyVault870_properties_privateLinkResourceId": {
-			"type": "string",
-			"defaultValue": "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-test/providers/Microsoft.KeyVault/vaults/kv-avdops-rqpzw"
-		},
-		"AzureKeyVault870_properties_groupId": {
-			"type": "string",
-			"defaultValue": "vault"
-		},
-		"AzureKeyVault870_properties_fqdns": {
-			"type": "array",
-			"defaultValue": [
-				"kv-avdops-rqpzw.vault.azure.net"
-			]
-		},
 		"AzureStorageBlobPrivateEp_properties_privateLinkResourceId": {
 			"type": "string",
 			"defaultValue": "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-test/providers/Microsoft.Storage/storageAccounts/batchavdopsrqpzwtest"
@@ -143,50 +77,21 @@
 				"batchavdopsrqpzwtest.blob.core.windows.net"
 			]
 		},
-		"kv-avdops-opxgy-managed-private-endpoint_properties_privateLinkResourceId": {
-			"type": "string",
-			"defaultValue": "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-dev-cd/providers/Microsoft.KeyVault/vaults/kv-avdops-opxgy"
-		},
-		"kv-avdops-opxgy-managed-private-endpoint_properties_groupId": {
-			"type": "string",
-			"defaultValue": "vault"
-		},
-		"kv-avdops-rqpzw-managed-private-endpoint_properties_privateLinkResourceId": {
+		"MPE_AzureKeyVault_properties_privateLinkResourceId": {
 			"type": "string",
 			"defaultValue": "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-test/providers/Microsoft.KeyVault/vaults/kv-avdops-rqpzw"
 		},
-		"kv-avdops-rqpzw-managed-private-endpoint_properties_groupId": {
+		"MPE_AzureKeyVault_properties_groupId": {
 			"type": "string",
 			"defaultValue": "vault"
 		},
-		"kv-avdops-rqpzw-managed-private-endpoint_properties_fqdns": {
-			"type": "array",
-			"defaultValue": [
-				"kv-avdops-rqpzw.vault.azure.net"
-			]
-		},
-		"web-app-linuxopxgy-managed-private-endpoint_properties_privateLinkResourceId": {
-			"type": "string",
-			"defaultValue": "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-dev-cd/providers/Microsoft.Web/sites/web-app-linuxopxgy"
-		},
-		"web-app-linuxopxgy-managed-private-endpoint_properties_groupId": {
-			"type": "string",
-			"defaultValue": "sites"
-		},
-		"web-app-linuxrqpzw-managed-private-endpoint_properties_privateLinkResourceId": {
+		"web-app-rqpzw-managed-private-endpoint_properties_privateLinkResourceId": {
 			"type": "string",
 			"defaultValue": "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-test/providers/Microsoft.Web/sites/web-app-linuxrqpzw"
 		},
-		"web-app-linuxrqpzw-managed-private-endpoint_properties_groupId": {
+		"web-app-rqpzw-managed-private-endpoint_properties_groupId": {
 			"type": "string",
 			"defaultValue": "sites"
-		},
-		"web-app-linuxrqpzw-managed-private-endpoint_properties_fqdns": {
-			"type": "array",
-			"defaultValue": [
-				"web-app-linuxrqpzw.azurewebsites.net",
-				"web-app-linuxrqpzw.scm.azurewebsites.net"
-			]
 		}
 	},
 	"variables": {
@@ -563,10 +468,6 @@
 						"type": "string",
 						"defaultValue": "manifest.json"
 					},
-					"validationManifestName": {
-						"type": "string",
-						"defaultValue": "manifest_validation.json"
-					},
 					"archiveZoneContainer": {
 						"type": "string",
 						"defaultValue": "archive"
@@ -581,12 +482,6 @@
 					}
 				},
 				"variables": {
-					"isValidMeasurement": {
-						"type": "Boolean"
-					},
-					"validationManifestMissing": {
-						"type": "String"
-					},
 					"batchParams": {
 						"type": "String"
 					},
@@ -979,7 +874,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "LS_Landingopxgy",
+					"referenceName": "LS_avlandingrqpzwtest",
 					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
@@ -992,7 +887,7 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/LS_Landingopxgy')]"
+				"[concat(variables('factoryId'), '/linkedServices/LS_avlandingrqpzwtest')]"
 			]
 		},
 		{
@@ -1024,85 +919,6 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/LS_avlandingrqpzwtest')]"
 			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureBatch1')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBatch",
-				"typeProperties": {
-					"batchUri": "[parameters('AzureBatch1_properties_typeProperties_batchUri')]",
-					"poolName": "[parameters('AzureBatch1_properties_typeProperties_poolName')]",
-					"accountName": "[parameters('AzureBatch1_properties_typeProperties_accountName')]",
-					"linkedServiceName": {
-						"referenceName": "LS_BatchStorage",
-						"type": "LinkedServiceReference"
-					}
-				},
-				"connectVia": {
-					"referenceName": "IntegrationRuntime",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/IntegrationRuntime')]",
-				"[concat(variables('factoryId'), '/linkedServices/LS_BatchStorage')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureDataLakeStorage1')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobFS",
-				"typeProperties": {
-					"url": "[parameters('AzureDataLakeStorage1_properties_typeProperties_url')]",
-					"accountKey": {
-						"type": "SecureString",
-						"value": "[parameters('AzureDataLakeStorage1_accountKey')]"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/LS_AzureBatch')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBatch",
-				"typeProperties": {
-					"batchUri": "[parameters('LS_AzureBatch_properties_typeProperties_batchUri')]",
-					"poolName": "[parameters('LS_AzureBatch_properties_typeProperties_poolName')]",
-					"accountName": "[parameters('LS_AzureBatch_properties_typeProperties_accountName')]",
-					"linkedServiceName": {
-						"referenceName": "LS_AzureBatchStorage",
-						"type": "LinkedServiceReference"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/LS_AzureBatchStorage')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/LS_AzureBatchStorage')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobStorage",
-				"typeProperties": {
-					"connectionString": "[parameters('LS_AzureBatchStorage_connectionString')]",
-					"connection": "",
-					"values": ""
-				}
-			},
-			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/LS_Batch')]",
@@ -1138,7 +954,15 @@
 				"annotations": [],
 				"type": "AzureBlobStorage",
 				"typeProperties": {
-					"connectionString": "[parameters('LS_BatchStorage_connectionString')]",
+					"connectionString": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "LS_KeyVault_test",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "[parameters('LS_BatchStorage_properties_typeProperties_connectionString_secretName')]",
+						"secretVersion": "182247cbac2d41f79c895421b705c7ad"
+					},
 					"connection": "",
 					"values": ""
 				},
@@ -1148,26 +972,8 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/IntegrationRuntime')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/LS_Derivedopxgy')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobFS",
-				"typeProperties": {
-					"url": "[parameters('LS_Derivedopxgy_properties_typeProperties_url')]"
-				},
-				"connectVia": {
-					"referenceName": "IntegrationRuntime",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/IntegrationRuntime')]"
+				"[concat(variables('factoryId'), '/integrationRuntimes/IntegrationRuntime')]",
+				"[concat(variables('factoryId'), '/linkedServices/LS_KeyVault_test')]"
 			]
 		},
 		{
@@ -1190,23 +996,17 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/LS_KeyVault')]",
+			"name": "[concat(parameters('factoryName'), '/LS_KeyVault_test')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
 				"type": "AzureKeyVault",
 				"typeProperties": {
-					"baseUrl": "[parameters('LS_KeyVault_properties_typeProperties_baseUrl')]"
-				},
-				"connectVia": {
-					"referenceName": "IntegrationRuntime",
-					"type": "IntegrationRuntimeReference"
+					"baseUrl": "[parameters('LS_KeyVault_test_properties_typeProperties_baseUrl')]"
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/IntegrationRuntime')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/LS_Landingopxgy')]",
@@ -1217,63 +1017,6 @@
 				"type": "AzureBlobFS",
 				"typeProperties": {
 					"url": "[parameters('LS_Landingopxgy_properties_typeProperties_url')]"
-				},
-				"connectVia": {
-					"referenceName": "IntegrationRuntime",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/IntegrationRuntime')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/LS_Landingrqpzw')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobFS",
-				"typeProperties": {
-					"url": "[parameters('LS_Landingrqpzw_properties_typeProperties_url')]"
-				},
-				"connectVia": {
-					"referenceName": "IntegrationRuntime",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/IntegrationRuntime')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/LS_Rawopxgy')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobFS",
-				"typeProperties": {
-					"url": "[parameters('LS_Rawopxgy_properties_typeProperties_url')]"
-				},
-				"connectVia": {
-					"referenceName": "IntegrationRuntime",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/IntegrationRuntime')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/LS_Rawrqpzw')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobFS",
-				"typeProperties": {
-					"url": "[parameters('LS_Rawrqpzw_properties_typeProperties_url')]"
 				},
 				"connectVia": {
 					"referenceName": "IntegrationRuntime",
@@ -1393,19 +1136,6 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/default/AzureKeyVault870')]",
-			"type": "Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"privateLinkResourceId": "[parameters('AzureKeyVault870_properties_privateLinkResourceId')]",
-				"groupId": "[parameters('AzureKeyVault870_properties_groupId')]",
-				"fqdns": "[parameters('AzureKeyVault870_properties_fqdns')]"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/default/AzureStorageBlobPrivateEp')]",
 			"type": "Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints",
 			"apiVersion": "2018-06-01",
@@ -1419,50 +1149,24 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/default/kv-avdops-opxgy-managed-private-endpoint')]",
+			"name": "[concat(parameters('factoryName'), '/default/MPE_AzureKeyVault')]",
 			"type": "Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"privateLinkResourceId": "[parameters('kv-avdops-opxgy-managed-private-endpoint_properties_privateLinkResourceId')]",
-				"groupId": "[parameters('kv-avdops-opxgy-managed-private-endpoint_properties_groupId')]"
+				"privateLinkResourceId": "[parameters('MPE_AzureKeyVault_properties_privateLinkResourceId')]",
+				"groupId": "[parameters('MPE_AzureKeyVault_properties_groupId')]"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/default/kv-avdops-rqpzw-managed-private-endpoint')]",
+			"name": "[concat(parameters('factoryName'), '/default/web-app-rqpzw-managed-private-endpoint')]",
 			"type": "Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"privateLinkResourceId": "[parameters('kv-avdops-rqpzw-managed-private-endpoint_properties_privateLinkResourceId')]",
-				"groupId": "[parameters('kv-avdops-rqpzw-managed-private-endpoint_properties_groupId')]",
-				"fqdns": "[parameters('kv-avdops-rqpzw-managed-private-endpoint_properties_fqdns')]"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/default/web-app-linuxopxgy-managed-private-endpoint')]",
-			"type": "Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"privateLinkResourceId": "[parameters('web-app-linuxopxgy-managed-private-endpoint_properties_privateLinkResourceId')]",
-				"groupId": "[parameters('web-app-linuxopxgy-managed-private-endpoint_properties_groupId')]"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/default/web-app-linuxrqpzw-managed-private-endpoint')]",
-			"type": "Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"privateLinkResourceId": "[parameters('web-app-linuxrqpzw-managed-private-endpoint_properties_privateLinkResourceId')]",
-				"groupId": "[parameters('web-app-linuxrqpzw-managed-private-endpoint_properties_groupId')]",
-				"fqdns": "[parameters('web-app-linuxrqpzw-managed-private-endpoint_properties_fqdns')]"
+				"privateLinkResourceId": "[parameters('web-app-rqpzw-managed-private-endpoint_properties_privateLinkResourceId')]",
+				"groupId": "[parameters('web-app-rqpzw-managed-private-endpoint_properties_groupId')]"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"

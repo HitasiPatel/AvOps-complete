@@ -7,47 +7,9 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "adf-av-dataops-rqpzw"
 		},
-		"AzureDataLakeStorage1_accountKey": {
-			"type": "secureString",
-			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage1'"
-		},
-		"LS_AzureBatchStorage_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'LS_AzureBatchStorage'"
-		},
-		"LS_BatchStorage_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'LS_BatchStorage'"
-		},
-		"AzureDataLakeStorage1_properties_typeProperties_url": {
+		"LS_KeyVault_test_properties_typeProperties_baseUrl": {
 			"type": "string",
-			"defaultValue": "https://batchavdopsdkknfdev.dfs.core.windows.net/"
-		},
-		"LS_AzureBatch_properties_typeProperties_batchUri": {
-			"type": "string",
-			"defaultValue": "https://batchavdataopsopxgytest.westeurope.batch.azure.com"
-		},
-		"LS_AzureBatch_properties_typeProperties_poolName": {
-			"type": "string",
-			"defaultValue": "avdataops-orchestratorpool"
-		},
-		"LS_AzureBatch_properties_typeProperties_accountName": {
-			"type": "string",
-			"defaultValue": "batchavdataopsopxgytest"
-		},
-		"AzureKeyVault870_properties_privateLinkResourceId": {
-			"type": "string",
-			"defaultValue": "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-test/providers/Microsoft.KeyVault/vaults/kv-avdops-rqpzw"
-		},
-		"AzureKeyVault870_properties_groupId": {
-			"type": "string",
-			"defaultValue": "vault"
-		},
-		"AzureKeyVault870_properties_fqdns": {
-			"type": "array",
-			"defaultValue": [
-				"kv-avdops-rqpzw.vault.azure.net"
-			]
+			"defaultValue": "https://kv-avdops-rqpzw.vault.azure.net/"
 		},
 		"AzureStorageBlobPrivateEp_properties_privateLinkResourceId": {
 			"type": "string",
@@ -63,82 +25,73 @@
 				"batchavdopsrqpzwtest.blob.core.windows.net"
 			]
 		},
-		"kv-avdops-opxgy-managed-private-endpoint_properties_privateLinkResourceId": {
-			"type": "string",
-			"defaultValue": "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-dev-cd/providers/Microsoft.KeyVault/vaults/kv-avdops-opxgy"
-		},
-		"kv-avdops-opxgy-managed-private-endpoint_properties_groupId": {
-			"type": "string",
-			"defaultValue": "vault"
-		},
-		"kv-avdops-rqpzw-managed-private-endpoint_properties_privateLinkResourceId": {
+		"MPE_AzureKeyVault_properties_privateLinkResourceId": {
 			"type": "string",
 			"defaultValue": "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-test/providers/Microsoft.KeyVault/vaults/kv-avdops-rqpzw"
 		},
-		"kv-avdops-rqpzw-managed-private-endpoint_properties_groupId": {
+		"MPE_AzureKeyVault_properties_groupId": {
 			"type": "string",
 			"defaultValue": "vault"
 		},
-		"kv-avdops-rqpzw-managed-private-endpoint_properties_fqdns": {
-			"type": "array",
-			"defaultValue": [
-				"kv-avdops-rqpzw.vault.azure.net"
-			]
-		},
-		"web-app-linuxopxgy-managed-private-endpoint_properties_privateLinkResourceId": {
-			"type": "string",
-			"defaultValue": "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-dev-cd/providers/Microsoft.Web/sites/web-app-linuxopxgy"
-		},
-		"web-app-linuxopxgy-managed-private-endpoint_properties_groupId": {
-			"type": "string",
-			"defaultValue": "sites"
-		},
-		"web-app-linuxrqpzw-managed-private-endpoint_properties_privateLinkResourceId": {
+		"web-app-rqpzw-managed-private-endpoint_properties_privateLinkResourceId": {
 			"type": "string",
 			"defaultValue": "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-test/providers/Microsoft.Web/sites/web-app-linuxrqpzw"
 		},
-		"web-app-linuxrqpzw-managed-private-endpoint_properties_groupId": {
+		"web-app-rqpzw-managed-private-endpoint_properties_groupId": {
 			"type": "string",
 			"defaultValue": "sites"
 		},
-		"web-app-linuxrqpzw-managed-private-endpoint_properties_fqdns": {
-			"type": "array",
-			"defaultValue": [
-				"web-app-linuxrqpzw.azurewebsites.net",
-				"web-app-linuxrqpzw.scm.azurewebsites.net"
-			]
-		},
-		"LS_Derivedopxgy_properties_typeProperties_url": {
+		"LS_BatchStorage_properties_typeProperties_connectionString_secretName": {
 			"type": "string",
-			"defaultValue": "https://avderivedopxgytest.dfs.core.windows.net/"
+			"defaultValue": "azurebatchstorageconnstring"
 		},
 		"LS_Derivedrqpzw_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://avderivedrqpzwtest.dfs.core.windows.net/"
 		},
-		"LS_KeyVault_properties_typeProperties_baseUrl": {
-			"type": "string",
-			"defaultValue": "https://kv-avdops-rqpzw.vault.azure.net/"
-		},
 		"LS_Landingopxgy_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://avlandingopxgytest.dfs.core.windows.net/"
 		},
-		"LS_Landingrqpzw_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://avlandingrqpzwtest.dfs.core.windows.net/"
-		},
-		"LS_Rawopxgy_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://avrawopxgytest.dfs.core.windows.net/"
-		},
-		"LS_Rawrqpzw_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://avrawrqpzwtest.dfs.core.windows.net/"
-		},
 		"LS_avlandingrqpzwtest_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://avlandingrqpzwtest.dfs.core.windows.net/"
+		},
+		"LS_avrawrqpzwtest_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://avrawrqpzwtest.dfs.core.windows.net/"
+		},
+		"LS_Batch_properties_typeProperties_batchUri": {
+			"type": "string",
+			"defaultValue": "https://batchavdataopsrqpzwtest.westeurope.batch.azure.com"
+		},
+		"LS_Batch_properties_typeProperties_poolName": {
+			"type": "string",
+			"defaultValue": "avdataops-orchestratorpool"
+		},
+		"LS_Batch_properties_typeProperties_accountName": {
+			"type": "string",
+			"defaultValue": "batchavdataopsrqpzwtest"
+		},
+		"Raw to Extracted_properties_Pipeline_RawToExtracted_SolutionKit_parameters_dataStreamPath": {
+			"type": "string",
+			"defaultValue": "@triggerBody().folderPath"
+		},
+		"Raw to Extracted_properties_Pipeline_RawToExtracted_SolutionKit_parameters_apiBaseUrl": {
+			"type": "string",
+			"defaultValue": "https://web-app-linuxrqpzw.azurewebsites.net/"
+		},
+		"Raw to Extracted_properties_Pipeline_RawToExtracted_SolutionKit_parameters_apiVersion": {
+			"type": "string",
+			"defaultValue": "v1"
+		},
+		"Raw to Extracted_properties_Pipeline_RawToExtracted_SolutionKit_parameters_batchVersion": {
+			"type": "string",
+			"defaultValue": "1.0"
+		},
+		"Raw to Extracted_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-test/providers/Microsoft.Storage/storageAccounts/avrawrqpzwtest"
 		}
 	},
 	"variables": {
@@ -146,33 +99,14 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/AzureDataLakeStorage1')]",
+			"name": "[concat(parameters('factoryName'), '/LS_KeyVault_test')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
-				"type": "AzureBlobFS",
+				"type": "AzureKeyVault",
 				"typeProperties": {
-					"url": "[parameters('AzureDataLakeStorage1_properties_typeProperties_url')]",
-					"accountKey": {
-						"type": "SecureString",
-						"value": "[parameters('AzureDataLakeStorage1_accountKey')]"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/LS_AzureBatchStorage')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobStorage",
-				"typeProperties": {
-					"connectionString": "[parameters('LS_AzureBatchStorage_connectionString')]",
-					"connection": "",
-					"values": ""
+					"baseUrl": "[parameters('LS_KeyVault_test_properties_typeProperties_baseUrl')]"
 				}
 			},
 			"dependsOn": []
@@ -183,27 +117,6 @@
 			"apiVersion": "2018-06-01",
 			"properties": {},
 			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/LS_AzureBatch')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBatch",
-				"typeProperties": {
-					"batchUri": "[parameters('LS_AzureBatch_properties_typeProperties_batchUri')]",
-					"poolName": "[parameters('LS_AzureBatch_properties_typeProperties_poolName')]",
-					"accountName": "[parameters('LS_AzureBatch_properties_typeProperties_accountName')]",
-					"linkedServiceName": {
-						"referenceName": "LS_AzureBatchStorage",
-						"type": "LinkedServiceReference"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/LS_AzureBatchStorage')]"
-			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/IntegrationRuntime')]",
@@ -233,19 +146,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/default/AzureKeyVault870')]",
-			"type": "Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"privateLinkResourceId": "[parameters('AzureKeyVault870_properties_privateLinkResourceId')]",
-				"groupId": "[parameters('AzureKeyVault870_properties_groupId')]",
-				"fqdns": "[parameters('AzureKeyVault870_properties_fqdns')]"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/default/AzureStorageBlobPrivateEp')]",
 			"type": "Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints",
 			"apiVersion": "2018-06-01",
@@ -259,50 +159,24 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/default/kv-avdops-opxgy-managed-private-endpoint')]",
+			"name": "[concat(parameters('factoryName'), '/default/MPE_AzureKeyVault')]",
 			"type": "Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"privateLinkResourceId": "[parameters('kv-avdops-opxgy-managed-private-endpoint_properties_privateLinkResourceId')]",
-				"groupId": "[parameters('kv-avdops-opxgy-managed-private-endpoint_properties_groupId')]"
+				"privateLinkResourceId": "[parameters('MPE_AzureKeyVault_properties_privateLinkResourceId')]",
+				"groupId": "[parameters('MPE_AzureKeyVault_properties_groupId')]"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/default/kv-avdops-rqpzw-managed-private-endpoint')]",
+			"name": "[concat(parameters('factoryName'), '/default/web-app-rqpzw-managed-private-endpoint')]",
 			"type": "Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"privateLinkResourceId": "[parameters('kv-avdops-rqpzw-managed-private-endpoint_properties_privateLinkResourceId')]",
-				"groupId": "[parameters('kv-avdops-rqpzw-managed-private-endpoint_properties_groupId')]",
-				"fqdns": "[parameters('kv-avdops-rqpzw-managed-private-endpoint_properties_fqdns')]"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/default/web-app-linuxopxgy-managed-private-endpoint')]",
-			"type": "Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"privateLinkResourceId": "[parameters('web-app-linuxopxgy-managed-private-endpoint_properties_privateLinkResourceId')]",
-				"groupId": "[parameters('web-app-linuxopxgy-managed-private-endpoint_properties_groupId')]"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/default/web-app-linuxrqpzw-managed-private-endpoint')]",
-			"type": "Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"privateLinkResourceId": "[parameters('web-app-linuxrqpzw-managed-private-endpoint_properties_privateLinkResourceId')]",
-				"groupId": "[parameters('web-app-linuxrqpzw-managed-private-endpoint_properties_groupId')]",
-				"fqdns": "[parameters('web-app-linuxrqpzw-managed-private-endpoint_properties_fqdns')]"
+				"privateLinkResourceId": "[parameters('web-app-rqpzw-managed-private-endpoint_properties_privateLinkResourceId')]",
+				"groupId": "[parameters('web-app-rqpzw-managed-private-endpoint_properties_groupId')]"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"
@@ -316,7 +190,15 @@
 				"annotations": [],
 				"type": "AzureBlobStorage",
 				"typeProperties": {
-					"connectionString": "[parameters('LS_BatchStorage_connectionString')]",
+					"connectionString": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "LS_KeyVault_test",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "[parameters('LS_BatchStorage_properties_typeProperties_connectionString_secretName')]",
+						"secretVersion": "182247cbac2d41f79c895421b705c7ad"
+					},
 					"connection": "",
 					"values": ""
 				},
@@ -326,26 +208,8 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/IntegrationRuntime')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/LS_Derivedopxgy')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobFS",
-				"typeProperties": {
-					"url": "[parameters('LS_Derivedopxgy_properties_typeProperties_url')]"
-				},
-				"connectVia": {
-					"referenceName": "IntegrationRuntime",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/IntegrationRuntime')]"
+				"[concat(variables('factoryId'), '/integrationRuntimes/IntegrationRuntime')]",
+				"[concat(variables('factoryId'), '/linkedServices/LS_KeyVault_test')]"
 			]
 		},
 		{
@@ -357,25 +221,6 @@
 				"type": "AzureBlobFS",
 				"typeProperties": {
 					"url": "[parameters('LS_Derivedrqpzw_properties_typeProperties_url')]"
-				},
-				"connectVia": {
-					"referenceName": "IntegrationRuntime",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/IntegrationRuntime')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/LS_KeyVault')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureKeyVault",
-				"typeProperties": {
-					"baseUrl": "[parameters('LS_KeyVault_properties_typeProperties_baseUrl')]"
 				},
 				"connectVia": {
 					"referenceName": "IntegrationRuntime",
@@ -406,63 +251,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/LS_Landingrqpzw')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobFS",
-				"typeProperties": {
-					"url": "[parameters('LS_Landingrqpzw_properties_typeProperties_url')]"
-				},
-				"connectVia": {
-					"referenceName": "IntegrationRuntime",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/IntegrationRuntime')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/LS_Rawopxgy')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobFS",
-				"typeProperties": {
-					"url": "[parameters('LS_Rawopxgy_properties_typeProperties_url')]"
-				},
-				"connectVia": {
-					"referenceName": "IntegrationRuntime",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/IntegrationRuntime')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/LS_Rawrqpzw')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobFS",
-				"typeProperties": {
-					"url": "[parameters('LS_Rawrqpzw_properties_typeProperties_url')]"
-				},
-				"connectVia": {
-					"referenceName": "IntegrationRuntime",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/IntegrationRuntime')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/LS_avlandingrqpzwtest')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -479,6 +267,909 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/integrationRuntimes/IntegrationRuntime')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LS_avrawrqpzwtest')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('LS_avrawrqpzwtest_properties_typeProperties_url')]"
+				},
+				"connectVia": {
+					"referenceName": "IntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/IntegrationRuntime')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_DatastreamRaw')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_avrawrqpzwtest",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_avrawrqpzwtest')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_Manifest')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_avlandingrqpzwtest",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"containerName": {
+						"type": "string"
+					},
+					"folderName": {
+						"type": "string"
+					},
+					"fileName": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@dataset().fileName",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@dataset().folderName",
+							"type": "Expression"
+						},
+						"fileSystem": {
+							"value": "@dataset().containerName",
+							"type": "Expression"
+						}
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_avlandingrqpzwtest')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_SourceDataFiles')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_avlandingrqpzwtest",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileSystem": "landing"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_avlandingrqpzwtest')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_SourceMeasurements')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_avlandingrqpzwtest",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"container": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileSystem": {
+							"value": "@dataset().container",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_avlandingrqpzwtest')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LS_Batch')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBatch",
+				"typeProperties": {
+					"batchUri": "[parameters('LS_Batch_properties_typeProperties_batchUri')]",
+					"poolName": "[parameters('LS_Batch_properties_typeProperties_poolName')]",
+					"accountName": "[parameters('LS_Batch_properties_typeProperties_accountName')]",
+					"linkedServiceName": {
+						"referenceName": "LS_BatchStorage",
+						"type": "LinkedServiceReference"
+					}
+				},
+				"connectVia": {
+					"referenceName": "IntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/IntegrationRuntime')]",
+				"[concat(variables('factoryId'), '/linkedServices/LS_BatchStorage')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Pipeline_LandingToRaw_SolutionKit')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Get Measurement Folders",
+						"type": "GetMetadata",
+						"dependsOn": [
+							{
+								"activity": "traceparent",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 2,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "DS_SourceMeasurements",
+								"type": "DatasetReference",
+								"parameters": {
+									"container": {
+										"value": "@pipeline().parameters.landingZoneContainer",
+										"type": "Expression"
+									}
+								}
+							},
+							"fieldList": [
+								"childItems"
+							],
+							"storeSettings": {
+								"type": "AzureBlobFSReadSettings",
+								"recursive": true,
+								"enablePartitionDiscovery": false
+							},
+							"formatSettings": {
+								"type": "BinaryReadSettings"
+							}
+						}
+					},
+					{
+						"name": "Iterate Measurements",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Get Measurement Folders",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Get Measurement Folders').output.childItems",
+								"type": "Expression"
+							},
+							"isSequential": false,
+							"activities": [
+								{
+									"name": "Lookup  Manifest",
+									"type": "Lookup",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 2,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "JsonSource",
+											"storeSettings": {
+												"type": "AzureBlobFSReadSettings",
+												"recursive": true,
+												"enablePartitionDiscovery": false
+											},
+											"formatSettings": {
+												"type": "JsonReadSettings"
+											}
+										},
+										"dataset": {
+											"referenceName": "DS_Manifest",
+											"type": "DatasetReference",
+											"parameters": {
+												"folderName": {
+													"value": "@item().name",
+													"type": "Expression"
+												},
+												"fileName": {
+													"value": "@pipeline().parameters.fileManifestName",
+													"type": "Expression"
+												},
+												"containerName": {
+													"value": "@pipeline().parameters.landingZoneContainer",
+													"type": "Expression"
+												}
+											}
+										},
+										"firstRowOnly": false
+									}
+								},
+								{
+									"name": "Call CreateMeasurement API",
+									"type": "WebActivity",
+									"dependsOn": [
+										{
+											"activity": "Lookup  Manifest",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 2,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"url": {
+											"value": "@concat(pipeline().parameters.apiBaseUrl,pipeline().parameters.apiVersion,'/measurements')",
+											"type": "Expression"
+										},
+										"connectVia": {
+											"referenceName": "IntegrationRuntime",
+											"type": "IntegrationRuntimeReference"
+										},
+										"method": "POST",
+										"headers": {
+											"traceparent": {
+												"value": "@variables('traceparent')",
+												"type": "Expression"
+											}
+										},
+										"body": {
+											"value": "@activity('Lookup  Manifest').output.value[0]",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "Call CreateDatastream API",
+									"type": "WebActivity",
+									"dependsOn": [
+										{
+											"activity": "Call CreateMeasurement API",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 2,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"url": {
+											"value": "@concat(pipeline().parameters.apiBaseUrl,pipeline().parameters.apiVersion,'/measurements/',activity('Call CreateMeasurement API').output.id,'/datastreams')",
+											"type": "Expression"
+										},
+										"connectVia": {
+											"referenceName": "IntegrationRuntime",
+											"type": "IntegrationRuntimeReference"
+										},
+										"method": "POST",
+										"headers": {
+											"traceparent": {
+												"value": "@variables('traceparent')",
+												"type": "Expression"
+											}
+										},
+										"body": {
+											"value": "@json(concat('{\n  \"name\": \"rawstream\",\n  \"type\": \"RAW\",\n  \"lineage\": {\n    \"producerMetadata\": {\n      \"name\": \"adflandingtorawcopy\",\n      \"type\": \"system\",\n      \"version\": \"',pipeline().parameters.batchVersion,'\",\n      \"additionalProperties\": {\n        \"pipeLineRunID\" : \"',pipeline().RunId ,'\",\n        \"apiVersion\" : \"',pipeline().parameters.apiVersion,'\"\n      }\n    },\n    \"sources\": []\n  },\n  \"tags\": []\n}'))",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "Update DataStream Status To Processing",
+									"type": "WebActivity",
+									"dependsOn": [
+										{
+											"activity": "Call CreateDatastream API",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 2,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"url": {
+											"value": "@concat(pipeline().parameters.apiBaseUrl,pipeline().parameters.apiVersion,'/measurements/',activity('Call CreateMeasurement API').output.id,'/datastreams/',activity('Call CreateDatastream API').output.id)",
+											"type": "Expression"
+										},
+										"connectVia": {
+											"referenceName": "IntegrationRuntime",
+											"type": "IntegrationRuntimeReference"
+										},
+										"method": "PATCH",
+										"headers": {
+											"traceparent": {
+												"value": "@variables('traceparent')",
+												"type": "Expression"
+											}
+										},
+										"body": {
+											"value": "@json(concat('\n{\n  \"status\": \"PROCESSING\"\n}'))",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "Set BatchParams",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "Update DataStream Status To Processing",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "batchParams",
+										"value": {
+											"value": "@concat(' --measurementId=',activity('Call CreateMeasurement API').output.id,' --rawDataStreamPath=',activity('Call CreateDatastream API').output.relativeUriPath,' --landingPath=',pipeline().parameters.landingZoneContainer,'/',item().name,' --archivePath=',pipeline().parameters.archiveZoneContainer,' --rawDataStreamId=',activity('Call CreateDatastream API').output.id)",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "Batch Orchestrator",
+									"type": "Custom",
+									"dependsOn": [
+										{
+											"activity": "Set BatchParams",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"command": {
+											"value": "@concat('/bin/bash -c \"export traceparent=\"',variables('traceparent'),'\" && ',' export AZURE_TRACING_ENABLED=True ',' && ','cd $AZ_BATCH_APP_PACKAGE_batch_orchestrator_1_0','/app && python3 copybags.py ',variables('batchParams'),'\"')",
+											"type": "Expression"
+										},
+										"referenceObjects": {
+											"linkedServices": [],
+											"datasets": []
+										}
+									},
+									"linkedServiceName": {
+										"referenceName": "LS_Batch",
+										"type": "LinkedServiceReference"
+									}
+								},
+								{
+									"name": "Update DataStream Status To Completed",
+									"type": "WebActivity",
+									"dependsOn": [
+										{
+											"activity": "Batch Orchestrator",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 2,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"url": {
+											"value": "@concat(pipeline().parameters.apiBaseUrl,pipeline().parameters.apiVersion,'/measurements/',activity('Call CreateMeasurement API').output.id,'/datastreams/',activity('Call CreateDatastream API').output.id)",
+											"type": "Expression"
+										},
+										"connectVia": {
+											"referenceName": "IntegrationRuntime",
+											"type": "IntegrationRuntimeReference"
+										},
+										"method": "PATCH",
+										"headers": {
+											"traceparent": {
+												"value": "@variables('traceparent')",
+												"type": "Expression"
+											}
+										},
+										"body": {
+											"value": "@json(concat('\n{\n  \"status\": \"COMPLETED\"\n}'))",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					},
+					{
+						"name": "traceparent",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "traceparent",
+							"value": {
+								"value": "@concat('00-',replace(pipeline().RunId,'-',''),'-0000000000000001-00')",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"concurrency": 1,
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"landingZoneContainer": {
+						"type": "string",
+						"defaultValue": "landing"
+					},
+					"rawZoneContainer": {
+						"type": "string",
+						"defaultValue": "raw"
+					},
+					"apiBaseUrl": {
+						"type": "string",
+						"defaultValue": "https://web-app-linuxrqpzw.azurewebsites.net/"
+					},
+					"fileManifestName": {
+						"type": "string",
+						"defaultValue": "manifest.json"
+					},
+					"archiveZoneContainer": {
+						"type": "string",
+						"defaultValue": "archive"
+					},
+					"apiVersion": {
+						"type": "string",
+						"defaultValue": "v1"
+					},
+					"batchVersion": {
+						"type": "string",
+						"defaultValue": "1.0"
+					}
+				},
+				"variables": {
+					"batchParams": {
+						"type": "String"
+					},
+					"traceparent": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-02-10T11:46:50Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_SourceMeasurements')]",
+				"[concat(variables('factoryId'), '/datasets/DS_Manifest')]",
+				"[concat(variables('factoryId'), '/integrationRuntimes/IntegrationRuntime')]",
+				"[concat(variables('factoryId'), '/linkedServices/LS_Batch')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Pipeline_RawToExtracted_SolutionKit')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Create Data stream api",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "Format Batch application Version",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Get FileDataStream Json",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 2,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": {
+								"value": "@concat(pipeline().parameters.apiBaseUrl,pipeline().parameters.apiVersion,'/measurements/',activity('Get FileDataStream Json').output.firstRow.measurementId,'/datastreams')",
+								"type": "Expression"
+							},
+							"connectVia": {
+								"referenceName": "IntegrationRuntime",
+								"type": "IntegrationRuntimeReference"
+							},
+							"method": "POST",
+							"headers": {
+								"traceparent": {
+									"value": "@variables('traceparent')",
+									"type": "Expression"
+								}
+							},
+							"body": {
+								"value": "@json(concat('{\n  \"name\": \"extractedstream\",\n  \"type\": \"EXTRACTED\",\n  \"lineage\": {\n    \"producerMetadata\": {\n      \"name\": \"batchextractor\",\n      \"type\": \"system\",\n      \"version\": \"',pipeline().parameters.batchVersion,'\",\n      \"additionalProperties\": {\n        \"pipeLineRunID\" : \"',pipeline().RunId,'\",\n        \"apiVersion\" : \"',pipeline().parameters.apiVersion,'\"\n      }\n    },\n    \"sources\": [\n      \"',activity('Get FileDataStream Json').output.firstRow.id,'\"\n    ]\n  },\n  \"tags\": ',activity('Get FileDataStream Json').output.firstRow.tags,'\n}'))",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "CreateBatchParams",
+						"description": "",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Create Data stream api",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "batchParams",
+							"value": {
+								"value": "@concat(' --measurementId=',activity('Get FileDataStream Json').output.firstRow.measurementId,' --rawDataStreamPath=',pipeline().parameters.dataStreamPath,' --extractedDataStreamPath=',activity('Create Data stream api').output.relativeUriPath,' --extractedDataStreamId=',activity('Create Data stream api').output.id)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Format Batch application Version",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "batchApiVersion",
+							"value": {
+								"value": "@replace(pipeline().parameters.batchVersion,'.','_')",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Update Datastream to Processing",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "CreateBatchParams",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": {
+								"value": "@concat(pipeline().parameters.apiBaseUrl,pipeline().parameters.apiVersion,'/measurements/',activity('Get FileDataStream Json').output.firstRow.measurementId,'/datastreams/',activity('Create Data stream api').output.id)",
+								"type": "Expression"
+							},
+							"connectVia": {
+								"referenceName": "IntegrationRuntime",
+								"type": "IntegrationRuntimeReference"
+							},
+							"method": "PATCH",
+							"headers": {
+								"traceparent": {
+									"value": "@variables('traceparent')",
+									"type": "Expression"
+								}
+							},
+							"body": {
+								"value": "@json(concat('\n{\n  \"status\": \"PROCESSING\"\n}'))",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "traceparent",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "traceparent",
+							"value": {
+								"value": "@concat('00-',replace(pipeline().RunId,'-',''),'-0000000000000001-00')",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Get FileDataStream Json",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "traceparent",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "JsonSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"wildcardFolderPath": "*",
+									"wildcardFileName": "datastream.json",
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "JsonReadSettings"
+								}
+							},
+							"dataset": {
+								"referenceName": "DS_DatastreamRaw",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "Batch orchestrator",
+						"type": "Custom",
+						"dependsOn": [
+							{
+								"activity": "Update Datastream to Processing",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 2,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"command": {
+								"value": "@concat('/bin/bash -c \"export traceparent=\"',variables('traceparent'),'\" && ',' export AZURE_TRACING_ENABLED=True ',' && ','cd $AZ_BATCH_APP_PACKAGE_batch_orchestrator_',variables('batchApiVersion'),'/app && python3 extract.py ',variables('batchParams'),'\"')",
+								"type": "Expression"
+							},
+							"referenceObjects": {
+								"linkedServices": [],
+								"datasets": []
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "LS_Batch",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "Update Datastream to Completed",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "Batch orchestrator",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": {
+								"value": "@concat(pipeline().parameters.apiBaseUrl,pipeline().parameters.apiVersion,'/measurements/',activity('Get FileDataStream Json').output.firstRow.measurementId,'/datastreams/',activity('Create Data stream api').output.id)",
+								"type": "Expression"
+							},
+							"connectVia": {
+								"referenceName": "IntegrationRuntime",
+								"type": "IntegrationRuntimeReference"
+							},
+							"method": "PATCH",
+							"headers": {
+								"traceparent": {
+									"value": "@variables('traceparent')",
+									"type": "Expression"
+								}
+							},
+							"body": {
+								"value": "@json(concat('\n{\n  \"status\": \"COMPLETED\"\n}'))",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"dataStreamPath": {
+						"type": "string",
+						"defaultValue": "@triggerBody().folderPath"
+					},
+					"apiBaseUrl": {
+						"type": "string",
+						"defaultValue": "https://web-app-linuxrqpzw.azurewebsites.net/"
+					},
+					"apiVersion": {
+						"type": "string",
+						"defaultValue": "v1"
+					},
+					"batchVersion": {
+						"type": "string",
+						"defaultValue": "1.0"
+					}
+				},
+				"variables": {
+					"rawDataStreamId": {
+						"type": "String"
+					},
+					"batchParams": {
+						"type": "String"
+					},
+					"batchApiVersion": {
+						"type": "String"
+					},
+					"traceparent": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-02-10T11:46:51Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/IntegrationRuntime')]",
+				"[concat(variables('factoryId'), '/datasets/DS_DatastreamRaw')]",
+				"[concat(variables('factoryId'), '/linkedServices/LS_Batch')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Raw to Extracted')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "Pipeline_RawToExtracted_SolutionKit",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"dataStreamPath": "[parameters('Raw to Extracted_properties_Pipeline_RawToExtracted_SolutionKit_parameters_dataStreamPath')]",
+							"apiBaseUrl": "[parameters('Raw to Extracted_properties_Pipeline_RawToExtracted_SolutionKit_parameters_apiBaseUrl')]",
+							"apiVersion": "[parameters('Raw to Extracted_properties_Pipeline_RawToExtracted_SolutionKit_parameters_apiVersion')]",
+							"batchVersion": "[parameters('Raw to Extracted_properties_Pipeline_RawToExtracted_SolutionKit_parameters_batchVersion')]"
+						}
+					}
+				],
+				"type": "BlobEventsTrigger",
+				"typeProperties": {
+					"blobPathBeginsWith": "/raw/blobs/",
+					"blobPathEndsWith": "datastream.json",
+					"ignoreEmptyBlobs": true,
+					"scope": "[parameters('Raw to Extracted_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/Pipeline_RawToExtracted_SolutionKit')]"
 			]
 		}
 	]
