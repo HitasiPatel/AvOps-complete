@@ -11,9 +11,19 @@ The IaC CD pipeline enables the automatic deployment of your infrastructure.This
     1. subscription - Subscription ID of your Azure subscription
     1. TF_STORAGE_ACCOUNT_KEY - Access Key of your azure storage account that you have configured as your terraform remote backend. 
 
+- To set the secerts follow these steps - 
+    1. On the AzDo project go to pipelines and select `avops-dataops-foundation-iac-cd`. 
+    1. Click on Edit 
+    ![edit_pipeline](./images/edit_pipeline.png)
+    1. Click on Variables. 
+    ![pipeline_variable](./images/variables.png)
+    1. Add the variable name and value and select the box `Keep this value secret`
+    ![add_seceret](./images/add_seceret.png)
+    1. Click on `OK` and the secret will be added. 
+
 ## Pipeline parameters 
 
-1. **env** - The type of environment you are trying to set up. The pipeline supports two environments - dev and test. You can add more environments by setting up blob containers in your Azure storage account configured as the terraform backend. 
+1. **env** - The type of environment you are trying to set up. You can add more environments by setting up blob containers in your Azure storage account configured as the terraform backend. This container will be dedicated for the terraform state files for the environment.
 
 ## Pipeline variables 
 
@@ -36,10 +46,10 @@ The IaC CD pipeline enables the automatic deployment of your infrastructure.This
 ## Steps to run the pipeline
 
 1. The pipeline has a manual trigger.
-2. After all the prerequisites are set up, in the AzDo project go to pipelines and select "avops-dataops-foundation-iac-cd"
-3. Click on "Run Pipeline" and select the branch you wish to deploy from and the environment you wish to set up.
+2. After all the prerequisites are set up, in the AzDo project go to pipelines and select `avops-dataops-foundation-iac-cd`
+3. Click on `Run Pipeline` and select the branch you wish to deploy from and the environment you wish to set up.
 
 ![infra-cd](./images/infra-cd.png)
 
-4. Click on "Run" and your pipeline will be triggered. 
+4. Click on `Run` and your pipeline will be triggered. 
 

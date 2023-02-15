@@ -6,8 +6,8 @@ This pipeline automates the integration and deployment of the metadata API to Az
 
 1. Run the **avops-dataops-foundation-iac-cd** and set up your environment on Azure. Refer this [document](../../core-infrastructure/.pipelines/README.md) on steps to run the pipeline. 
 1. Create service connections - 
-    - **ARM Service connection** - This is needed to deploy the docket image to App Service. Name the service connection "arm_service_connection_{env}" (environments supported are dev and test), this is the format in which it is referred in the pipeline. 
-    - **Docker Registry** - This service connection is needed to login to the Axure Container Registry and push the metadata-api docker image to the registry. Name the service connection "acr_service_connection_{env}" (environments supported are dev and test), this is the format in which it is referred in the pipeline. 
+    - **ARM Service connection** - This is needed to deploy the docket image to App Service. Name the service connection "arm_service_connection_{env}", this is the format in which it is referred in the pipeline. 
+    - **Docker Registry** - This service connection is needed to login to the Axure Container Registry and push the metadata-api docker image to the registry. Name the service connection "acr_service_connection_{env}", this is the format in which it is referred in the pipeline. 
 Refer this [article](https://learn.microsoft.com/en-us/azure/devops/pipelines/library/service-endpoints?view=azure-devops&tabs=yaml) for more details and steps to create a service connection.
 
 ## Pipeline parameters
@@ -16,7 +16,7 @@ The pipeline takes the following inputs on running it via manual trigger. When t
 
 1. **acr_name** - Name of the Azure Container Registry.
 1. **app_service_name** - Name of the Azure App Service. 
-1. **env** - Type of the environment you wish to deploy to. Default value is dev.
+1. **env** - Type of the environment you wish to deploy to. Default value is `dev`.
 
 ## Pipeline Variables 
 
@@ -46,4 +46,3 @@ The pipeline takes the following inputs on running it via manual trigger. When t
 1. Click on "Run Pipeline" and fill in the values as asked by the prompt. Click on Run. 
 
 ![metadata-api-ci](./images/metadata-api-ci.png)
-
