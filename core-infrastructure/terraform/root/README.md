@@ -8,7 +8,7 @@ This folder contains the main Terraform script used to call the component module
 - Terraform v1.3.5+ ([download](https://developer.hashicorp.com/terraform/downloads))
 - AZ CLI ([download](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest))
 
-### Deployment
+### Pre-Deployment
 
 Prior to running the deployment, the pre-deployment step initializes the following resources necessary to run the main Terraform script:
 - Service Principal with Owner role to authenticate Terraform
@@ -30,12 +30,17 @@ az login --tenant '{Tenant Id}'
 az account set --subscription "{Subscription Id or Name}"
 
 # Run pre-deployment step
-# OPTIONAL args: ./pre-deploy.sh -l westeurope -e dev -h
+# OPTIONAL args: ./pre-deploy.sh -l <Azure region> -e <environment> -h
+# Example: ./pre-deploy.sh -l westeurope -e dev
 ./pre-deploy.sh
 
 ```
 
-Run the main deployment script. Repeat these steps to rerun the terraform deployment.
+### Deploy Locally 
+
+Running the main deployment locally is *optional* and **not** recommended. The recommended way to run the main deployment script is to run via the CI/CD pipeline. Refer to the [pipeline documentation](../../.pipelines/README.md) to run the deployment script through the pipeline.
+
+If you opt to run the deployment script *locally*, continue below. Repeat these steps to rerun the terraform deployment.
 
 ```bash
 

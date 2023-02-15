@@ -53,6 +53,13 @@ then
   echo "Location provided is not valid. Please provide an Azure supported location."
   exit 1;
 fi
+
+if [ ${#ENV} -gt 3 ]
+then
+  echo "Please provide an environment name that <= 3 characters. "
+  exit 1;
+fi
+
 export AVOPS_TF_RG_LOCATION=$LOCATION
 export AVOPS_ENV_NAME=$ENV
 
@@ -106,3 +113,5 @@ do
 done
 echo "export ARM_CLIENT_SECRET=\$($AVOPS_SP_CLIENT_SECRET)" >> ./.avdataops-tf.env
 echo "export ARM_ACCESS_KEY=\$($AVOPS_STORAGE_ACCOUNT_KEY)" >> ./.avdataops-tf.env
+
+echo "Pre-deployment complete."
