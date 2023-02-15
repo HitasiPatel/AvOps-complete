@@ -14,7 +14,7 @@
 ### b. Update the terraform vars
 * Update the [terraform vars file](../../../core-infrastructure/terraform/root/terraform.tfvars) with the environment variable name you used in the Step 1 (Setting up Terraform backend)
 
-Note: [Click-Here](https://learn.microsoft.com/en-us/azure/devops/pipelines/process/set-secret-variables?view=azure-devops&tabs=yaml%2Cbash) to know How to setup the secrets in azure devops
+* Note: [Click-Here](https://learn.microsoft.com/en-us/azure/devops/pipelines/process/set-secret-variables?view=azure-devops&tabs=yaml%2Cbash) to know How to setup the secrets in azure devops
 
 ### c. Pipeline steps
 
