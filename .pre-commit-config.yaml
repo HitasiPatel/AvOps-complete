@@ -25,9 +25,9 @@ repos:
         args: [--multiline, --negate]
         stages: [commit-msg]
 
--   repo: local
-    hooks:
-    -   id: branch-name
-        name: Branch name check
-        language: script
-        entry: ./.githooks/branch-name
+# -   repo: local
+#     hooks:
+#     -   id: branch-name
+#         name: Branch name check
+#         language: script
+#         entry: ./.githooks/branch-name
