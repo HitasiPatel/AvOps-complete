@@ -1,0 +1,90 @@
+# CI - Image Processor
+parameters:
+  - name: acr_service_connection_name
+    displayName: ACR Service Connection name
+    type: string
+    default: "acr_service_connection"
+
+trigger:
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - image-processor/*
+
+variables:
+  - name: src_dir
+    value: "./image-processor/"
+  - name: app_name
+    value: "image-processor"
+  - name: image_repository
+    value: "image-processor"
+  - name: tags
+    value: $(Build.BuildId)
+
+stages:
+  - stage: "code_quality_checks"
+    jobs:
+      - job: detect_secrets
+        displayName: "detect-secrets"
+        pool:
+          vmImage: ubuntu-latest
+        steps:
+          - task: UsePythonVersion@0
+            displayName: "Set Python 3 as default"
+            inputs:
+              versionSpec: "3"
+              addToPath: true
+              architecture: "x64"
+
+          - script: pip install detect-secrets
+            displayName: "Install detect-secrets using pip"
+
+          - script: |
+              detect-secrets --version
+              detect-secrets scan --all-files --disable-plugin KeywordDetector --disable-plugin AWSKeyDetector --exclude-files FETCH_HEAD --exclude-files .secrets.baseline  > $(Pipeline.Workspace)/detect-secrets.json
+            displayName: "Run detect-secrets tool"
+
+          - task: PublishPipelineArtifact@1
+            displayName: "Publish results in the Pipeline Artifact"
+            inputs:
+              targetPath: "$(Pipeline.Workspace)/detect-secrets.json"
+              artifact: "detect-secrets"
+              publishLocation: "pipeline"
+
+          - script: |
+              dsjson=$(cat $(Pipeline.Workspace)/detect-secrets.json)
+              echo "${dsjson}"
+
+              count=$(echo "${dsjson}" | jq -c -r '.results | length')
+
+              if [ $count -gt 0 ]; then
+                msg="Secrets were detected in code. ${count} file(s) affected."
+                echo "##vso[task.logissue type=error]${msg}"
+                echo "##vso[task.complete result=Failed;]${msg}."
+              else
+                echo "##vso[task.complete result=Succeeded;]No secrets detected."
+              fi
+            displayName: "Analyzing detect-secrets results"
+
+  - stage: "Push_image_to_ACR"
+    jobs:
+      - job: "Build_and_push_to_ACR"
+        displayName: "build-and-push-to-acr"
+        pool:
+          vmImage: "Ubuntu-latest"
+        steps:
+          - task: Docker@2
+            displayName: Login to ACR
+            inputs:
+              command: "login"
+              containerRegistry: ${{ parameters.acr_service_connection_name }}
+          - task: Docker@2
+            displayName: Build and Push to ACR
+            inputs:
+              containerRegistry: ${{ parameters.acr_service_connection_name }}
+              repository: $(app_name)
+              command: "buildAndPush"
+              tags: $(tags)
+              Dockerfile: "**/Dockerfile"
