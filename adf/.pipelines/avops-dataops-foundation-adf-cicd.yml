@@ -1,9 +1,11 @@
 parameters:
 - name: env
   displayName: Environment
+  default: dev
   values:
   - dev
   - test
+
 
 trigger:
   batch: false
@@ -100,5 +102,5 @@ stages:
             templateLocation: 'Linked artifact'
             csmFile: '$(Pipeline.Workspace)/adf-artifact-$(Build.BuildNumber)/ARMTemplateForFactory.json'
             csmParametersFile: '$(Pipeline.Workspace)/adf-artifact-$(Build.BuildNumber)/ARMTemplateParametersForFactory.json'
-            overrideParameters: '-factoryName $(azure_data_factory_name)'
+            overrideParameters: '-factoryName "$(azure_data_factory_name)" -LS_Batch_properties_typeProperties_batchUri "https://batchavdataopsdkknfdev.westeurope.batch.azure.com" -MPE_AzureKeyVault_properties_privateLinkResourceId "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-dev/providers/Microsoft.KeyVault/vaults/kv-avdops-dkknf" -MPE_WebAPI_properties_privateLinkResourceId "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-dev/providers/Microsoft.Web/sites/web-app-linuxdkknf"" -LS_Batch_properties_typeProperties_accountName "batchavdataopsdkknfdev"'
             deploymentMode: 'Incremental'
