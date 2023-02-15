@@ -20,3 +20,10 @@ Once measurement comes into the Landing zone in the cloud, a raw datastream is c
 
 ## Data Lineage
 We maintain the lineage of the data from the measurement to the derived datastream. This makes it easy to track which Rosbag had the files for the derived datastream. This becomes important when auditing is happening and we need to understand which videos and images went into the training of the ML model. Hence lineage of the data becomes important from the audit and legal standpoints.
+
+## Datastream statuses
+- raw 
+- extracted 
+- derived
+- curated
+- annotated

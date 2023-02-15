@@ -13,9 +13,7 @@ parameters:
   - name: env
     displayName: Environment
     type: string
-    values:
-      - dev
-      - test
+    default: "dev"
 
 trigger:
   branches:

@@ -1,4 +1,4 @@
-FROM python:3.10 as base
+FROM mcr.microsoft.com/azure-functions/python:4-python3.10 as base
 WORKDIR /code
 
 FROM base as dependencies
