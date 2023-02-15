@@ -4,6 +4,13 @@ This solution kit is to setup a DataOps solution to process data collected at th
 We have provided sample data pipelines built using ADLS Gen 2, ADF, Azure Batch, Cosmos DB and App Service to process ROS 2 files.
 You can use this code to get started with your own data pipelines.
 
+## Quick Start
+Below steps will help you to quickly deploy the avops solution in your azure subscription.
+
+* [Deploy the Infra](docs/QuickStart/CoreInfraStructure/CoreInfraStructureDeploy.md)
+* [Deploy the MetaData API](docs/QuickStart/MetaDataAPI/MetaDataAPIDeploy.md)
+* [Deploy the ADF Pipelines](docs/QuickStart/ADFPipelines/ADFPipelinesDeploy.md)
+
 ## Solution Overview
 * [Architecture](docs/architecture.md)
 * [Data Pipelines](docs/data-pipelines.md)
@@ -15,14 +22,7 @@ You can use this code to get started with your own data pipelines.
 * [Infrastructure as Code](docs/iac.md)
 * [Observability](docs/observability.md)
 
-## Quick Start
-Below steps will help you to quickly deploy the avops solution in your azure subscription.
-
-* [Deploy the Infra](docs/QuickStart/CoreInfraStructure/CoreInfraStructureDeploy.md)
-* [Deploy the MetaData API](docs/QuickStart/MetaDataAPI/MetaDataAPIDeploy.md)
-* [Deploy the ADF Pipelines](docs/QuickStart/ADFPipelines/ADFPipelinesDeploy.md)
-
-## Getting Started
+## Innerloop
 * [Prerequisites](#prerequisites)
 * [Installation](#installation)
 * [Run the Application Locally](#run-the-application-locally)
