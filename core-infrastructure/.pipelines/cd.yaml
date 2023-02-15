@@ -2,9 +2,8 @@
 parameters:
 - name: env
   displayName: Environment
-  values:
-  - dev
-  - test
+  type: string
+  default: "dev"
 
 trigger: none
 
