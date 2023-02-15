@@ -10,5 +10,6 @@ locals {
     AZURE_LOG_LEVEL                                      = "INFO"
     AZURE_STORAGE_ACCOUNT_RAW_ZONE_URL                   = var.adls_storage_accounts["avraw"].primary_blob_endpoint
     AZURE_STORAGE_ACCOUNT_DERIVED_ZONE_URL               = var.adls_storage_accounts["avderived"].primary_blob_endpoint
+    DOCKER_REGISTRY_SERVER_URL                           = var.acr_login_server
   }
 }
