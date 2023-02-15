@@ -1,10 +1,7 @@
 {
-    "name": "kv-avdops-rqpzw-managed-private-endpoint",
+    "name": "MPE_AzureKeyVault",
     "properties": {
         "privateLinkResourceId": "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-test/providers/Microsoft.KeyVault/vaults/kv-avdops-rqpzw",
-        "groupId": "vault",
-        "fqdns": [
-            "kv-avdops-rqpzw.vault.azure.net"
-        ]
+        "groupId": "vault"
     }
 }

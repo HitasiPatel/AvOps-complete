@@ -67,6 +67,7 @@ resource "azurerm_batch_pool" "orch_pool" {
     common_environment_properties = {
       storage_account_container_map = jsonencode(var.storage_account_container_map)
       env                           = var.tags.environment
+      suffix                        = var.batch_account_suffix 
       BATCH_INSIGHTS_DOWNLOAD_URL   = "https://github.com/Azure/batch-insights/releases/download/v1.3.0/batch-insights"
       AZCOPY_CONCURRENCY_VALUE      = "AUTO"
     }
@@ -137,6 +138,7 @@ resource "azurerm_batch_pool" "exec_pool" {
     common_environment_properties = {
       storage_account_container_map = jsonencode(var.storage_account_container_map)
       env                           = var.tags.environment
+      suffix                        = var.batch_account_suffix
       BATCH_INSIGHTS_DOWNLOAD_URL   = "https://github.com/Azure/batch-insights/releases/download/v1.3.0/batch-insights"
       AZCOPY_CONCURRENCY_VALUE      = "AUTO"
     }

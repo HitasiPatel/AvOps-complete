@@ -1,5 +1,6 @@
 {
 	"name": "LS_Batch",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
 		"annotations": [],
 		"type": "AzureBatch",
@@ -16,6 +17,5 @@
 			"referenceName": "IntegrationRuntime",
 			"type": "IntegrationRuntimeReference"
 		}
-	},
-	"type": "Microsoft.DataFactory/factories/linkedservices"
+	}
 }
