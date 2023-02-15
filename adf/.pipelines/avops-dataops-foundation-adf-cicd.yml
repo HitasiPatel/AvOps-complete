@@ -100,5 +100,5 @@ stages:
             templateLocation: 'Linked artifact'
             csmFile: '$(Pipeline.Workspace)/adf-artifact-$(Build.BuildNumber)/ARMTemplateForFactory.json'
             csmParametersFile: '$(Pipeline.Workspace)/adf-artifact-$(Build.BuildNumber)/ARMTemplateParametersForFactory.json'
-            overrideParameters: '-factoryName "$(azure_data_factory_name)" -keyvault_connection_properties_typeProperties_baseUrl "https://$(azure_keyvault_name).vault.azure.net/"'
+            overrideParameters: '-factoryName "$(azure_data_factory_name)" -Raw to Extracted_properties_typeProperties_scope "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-dev/providers/Microsoft.Storage/storageAccounts/avrawdkknfdev"'
             deploymentMode: 'Incremental'
