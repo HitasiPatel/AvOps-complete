@@ -77,6 +77,42 @@ module "appservice_subnet" {
   }
 }
 
+module "databricks_host_subnet" {
+  source               = "../modules/subnet"
+  resource_group_name  = azurerm_resource_group.deployment_rg.name
+  location             = var.location
+  virtual_network_name = module.virtual_network.virtual_network_name
+  subnet_name          = var.databricks_host_subnet_name
+  address_prefix       = var.databricks_host_subnet_address_prefix
+  service_endpoints    = var.databricks_host_subnet_service_endpoints
+  subnet_delegation = {
+    "${var.databricks_host_subnet_name}" = [
+      {
+        name    = "Microsoft.Databricks/workspaces"
+        actions = []
+      }
+    ]
+  }
+}
+
+module "databricks_container_subnet" {
+  source               = "../modules/subnet"
+  resource_group_name  = azurerm_resource_group.deployment_rg.name
+  location             = var.location
+  virtual_network_name = module.virtual_network.virtual_network_name
+  subnet_name          = var.databricks_container_subnet_name
+  address_prefix       = var.databricks_container_subnet_address_prefix
+  service_endpoints    = var.databricks_container_subnet_service_endpoints
+  subnet_delegation = {
+    "${var.databricks_container_subnet_name}" = [
+      {
+        name    = "Microsoft.Databricks/workspaces"
+        actions = []
+      }
+    ]
+  }
+}
+
 # ------------------------------------------------------------------------------------------------------
 # Deploy Private DNS Zones
 # ------------------------------------------------------------------------------------------------------
@@ -195,7 +231,7 @@ module "adls" {
   is_manual_connection             = var.adls_is_manual_connection
   last_access_time_enabled         = var.adls_last_access_time_enabled
   blob_storage_cors_origins        = var.adls_blob_storage_cors_origins
-  network_rules_subnet_ids         = [module.privatelink_subnet.subnet_id, module.appservice_subnet.subnet_id]
+  network_rules_subnet_ids         = [module.privatelink_subnet.subnet_id, module.appservice_subnet.subnet_id, module.databricks_host_subnet.subnet_id]
   private_link_subnet_id           = module.privatelink_subnet.subnet_id
   blob_storage_dns_zone_id         = module.dns_zones.blob_storage_dns_zone_id
 }
@@ -308,6 +344,25 @@ module "data_factory" {
   app_service_id                          = module.app_service.app_service_id
   app_service_name                        = module.app_service.app_service_name
   adf_dns_zone_id                         = module.dns_zones.adf_dns_zone_id
+}
+
+# ------------------------------------------------------------------------------------------------------
+# Deploy Data Bricks
+# ------------------------------------------------------------------------------------------------------
+
+module "databricks" {
+  source                = "../modules/dataBricks"
+  resource_group_name   = azurerm_resource_group.deployment_rg.name
+  location              = var.location
+  tags                  = var.tags
+  databricks_name       = var.databricks_name
+  databricks_suffix     = random_string.common_suffix.id
+  sku                   = var.databricks_sku
+  virtual_network_id    = module.virtual_network.virtual_network_id
+  container_subnet_name = module.databricks_container_subnet.subnet_name
+  host_subnet_name      = module.databricks_host_subnet.subnet_name
+  container_subnet_id   = module.databricks_container_subnet.subnet_id
+  host_subnet_id        = module.databricks_host_subnet.subnet_id
 }
 
 # ------------------------------------------------------------------------------------------------------

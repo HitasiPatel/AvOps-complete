@@ -23,7 +23,7 @@ Add code to invoke processor from app.py with required parameters
 run app.py directly from VSCode using Run/Debug Option
 
 ```
-python3 app.py --mid mid --dsid dsid --inputpath <inputpath> --outputpath <outputpath> --msgtype sensor_msgs/Image --apibaseurl https://avops.dataopos.com/v1/
+python3 /app/app.py --measurementId mid --dataStreamId did --inputpath <inputpath> --outputpath <outputpath> --msgtype sensor_msgs/msg/Image --apibaseurl https://avops.dataopos.com/v1/
 ```
 
 ### Runing in Dev Containers
@@ -36,5 +36,5 @@ Run the app directly from VSCode using Run/Debug Option
 
 docker build . -t processor:latest
 ```
-docker run --rm --mount type=bind,source=/Users/name1/Downloads/download1,target=/raw --mount type=bind,source=/Users/name1/Downloads/output,target=/extracted processor:latest bash -c "source /opt/ros/noetic/setup.bash&&python3 /code/app.py --msid mid --dsid did --inputfilepath <inputpath> --outputpath <outputpath> --msgtype sensor_msgs/msg/Image"
+docker run --rm --mount type=bind,source=/Users/name1/Downloads/download1,target=/raw --mount type=bind,source=/Users/name1/Downloads/output,target=/extracted processor:latest bash -c "source /opt/ros/noetic/setup.bash&&python3 /code/app.py --measurementId mid --dataStreamId did --inputpath <inputpath> --outputpath <outputpath> --msgtype sensor_msgs/msg/Image --apibaseurl https://avops.dataopos.com/v1"
 ```

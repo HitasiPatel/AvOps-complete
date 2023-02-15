@@ -13,7 +13,8 @@ def getTaskDefinitions(settings: Settings = getSettings()) -> list:
         {
             "name": "ExtractCameraDataTask",
             "imageName": f"{settings.CAMERA_PROCESSOR_IMAGE}",
-            "command": "python3 /code/app.py --msid ##MID## --dsid ##DID## --inputpath ##INPUTFILE## --outputpath ##OUTPUTPATH## --msgtype sensor_msgs/Image --apibaseurl ##APIBASEURL##",
+            ##The message type supported by this processor is sensor_msgs/msg/Image and the same is passed for msgtype param
+            "command": "python3 /code/app.py --measurementId ##MID## --dataStreamId ##DID## --inputpath ##INPUTFILE## --outputpath ##OUTPUTPATH## --msgtype sensor_msgs/msg/Image --apibaseurl ##APIBASEURL##",
             "taskSlotsRequired": 2,
         }
     ]

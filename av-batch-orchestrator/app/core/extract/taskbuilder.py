@@ -89,6 +89,6 @@ class TaskBuilder:
             commandTemplate.replace("##MID##", str(measurementId))
             .replace("##DID##", str(datastreamId))
             .replace("##INPUTFILE##", fileName)
-            .replace("##OUTPUTPATH##", f"/{destinationPath}")
+            .replace("##OUTPUTPATH##", f"{destinationPath}")
             .replace("##APIBASEURL##", getSettings().API_BASE_URL)
         )
