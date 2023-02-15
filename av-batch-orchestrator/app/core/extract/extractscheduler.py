@@ -34,7 +34,8 @@ class ExtractScheduler:
         """
         jobs = []
         for index, file in enumerate(measurement.files):
-            fileName = f"raw/{file}"
+            fileName = f"/raw/{file}"
+            destPath = "/"+measurement.extractedDataStreamPath
             timestamp = time.strftime("%Y%m%d-%H%M%S")
             jobId = f"Ext_{measurement.measurementId}_{timestamp}_{index}"
 
@@ -44,7 +45,7 @@ class ExtractScheduler:
             # Create extraction tasks for the job
             tasks = self.taskBuilder.createExtractionTasks(
                 fileName=fileName,
-                destinationPath=measurement.extractedDataStreamPath,
+                destinationPath=destPath,
                 measurementId=measurement.measurementId,
                 datastreamId=measurement.extractedDataStreamId,
             )
