@@ -9,13 +9,12 @@ trigger:
   batch: false
   branches:
     include:
-      - feature/ADA-2011-ADF-CI-CD
+      - main
 
 pr:
    branches:
      include:
-     - feature/ADA-2011-ADF-CI-CD
-
+     - main
 pool:
   vmImage: 'ubuntu-latest'
 
@@ -29,8 +28,7 @@ variables:
   
   - name: arm_service_connection
     value: "arm_service_connection_${{ parameters.env }}"
-  - name: System.Debug
-    value: true
+
 
 # Installs Node and the npm packages saved in package.json files in the build folder
 stages:
@@ -78,12 +76,12 @@ stages:
           artifact: 'adf-artifact-$(Build.BuildNumber)'
           publishLocation: 'pipeline'
           
-  - stage: Deploy_to_PreProd
-    displayName: Deploy Pre Prod Stage
+  - stage: Deploy_to_Dev
+    displayName: Deploy Stage
     dependsOn: Build_And_Publish_ADF_Artifacts
     jobs: 
       - job: Deploy_PreProd
-        displayName: 'Deployment - PreProd'
+        displayName: 'Deployment'
         steps:
         - task: DownloadPipelineArtifact@2
           displayName: Download Build Artifacts - ADF ARM templates
