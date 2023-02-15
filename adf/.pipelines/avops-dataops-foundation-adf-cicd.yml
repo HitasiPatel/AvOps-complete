@@ -93,10 +93,10 @@ stages:
           inputs:
             deploymentScope: 'Resource Group'
             azureResourceManagerConnection: '$(arm_service_connection)'
-            subscriptionId: '2007549f-8ef5-42c8-849a-e35d4f64470d'
+            subscriptionId: '$(azure_subscription_id)'
             action: 'Create Or Update Resource Group'
             resourceGroupName: 'rg-avdataops-${{ parameters.env }}'
-            location: 'West Europe'
+            location: '$(location)'
             templateLocation: 'Linked artifact'
             csmFile: '$(Pipeline.Workspace)/adf-artifact-$(Build.BuildNumber)/ARMTemplateForFactory.json'
             csmParametersFile: '$(Pipeline.Workspace)/adf-artifact-$(Build.BuildNumber)/ARMTemplateParametersForFactory.json'
