@@ -27,7 +27,8 @@ The three main data zones are Landing, Raw and Derived. Each data zone is an ADL
 
 - Landing Zone is the storage account into which all the measurements from the vehicles are uploaded and validated. Only valid measurements are copied over the Raw Zone and raw datastreams are created for them.
 - Raw Zone is where the raw datastreams are stored. Extraction and other processes run on these datastreams.
-- Derived Zone is where the derived datastreams like extracted, curated and annotated are stored. Annotated datastreams are finally used for the training of the ML models.
+- Derived Zone is where the derived datastreams like extracted, curated and annotated are stored. Annotated datastreams are finally used for the training of the ML models. All the datastreams created via notebooks will be stored as a derived type of datastream
+
 
 
 ## Data Pipelines

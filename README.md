@@ -15,7 +15,6 @@ Below steps will help you to quickly deploy the avops solution in your azure sub
 * [Architecture](docs/architecture.md)
 * [Data Pipelines](docs/data-pipelines.md)
 * [Data Discovery](docs/data-discovery.md)
-* [Technologies used](docs/tech-used.md)
 
 ## Key Concepts
 * [Data Model](docs/data-model.md)
