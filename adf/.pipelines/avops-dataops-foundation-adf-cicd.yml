@@ -93,7 +93,7 @@ stages:
           inputs:
             deploymentScope: 'Resource Group'
             azureResourceManagerConnection: '$(arm_service_connection)'
-            subscriptionId: $(azure_subscription_id)
+            subscriptionId: $(azure_subscription_id_dev)
             action: 'Create Or Update Resource Group'
             resourceGroupName: 'rg-avdataops-${{ parameters.env }}'
             location: $(location)
