@@ -83,3 +83,8 @@ Tiers available for data lifecycle management are hot, cool and archive.
 Hot and cool are the online tiers. Archive is the offline tier.
 
 ![Data Lifecycle](images/data-lifecycle.png)
+
+---
+Next read more on [Data Pipelines](data-pipelines.md)
+
+[Home](../README.md)

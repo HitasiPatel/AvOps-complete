@@ -138,3 +138,9 @@ Usage of batch compute nodes can be maximized by running more than one task simu
 [Task dependencies](https://learn.microsoft.com/en-us/azure/batch/batch-task-dependencies)
 
 [Enable parallel task execution](https://learn.microsoft.com/en-us/azure/batch/batch-parallel-node-tasks)
+
+
+---
+Next read more on [Data Model](data-model.md)
+
+[Home](../README.md)
