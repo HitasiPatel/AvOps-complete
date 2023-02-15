@@ -1,3 +1,10 @@
+parameters:
+- name: env
+  displayName: Environment
+  values:
+  - dev
+  - test
+
 trigger:
   batch: false
   branches:
@@ -19,6 +26,11 @@ variables:
     
   - name: adf_package_file_path
     value: "$(Build.SourcesDirectory)/adf/.pipelines/"
+  
+  - name: arm_service_connection
+    value: "arm_service_connection_${{ parameters.env }}"
+  - name: System.Debug
+    value: true
 
 # Installs Node and the npm packages saved in package.json files in the build folder
 stages:
@@ -82,13 +94,13 @@ stages:
         - task: AzureResourceManagerTemplateDeployment@3
           inputs:
             deploymentScope: 'Resource Group'
-            azureResourceManagerConnection: '$(azure_service_connection_name)'
-            subscriptionId: '$(azure_subscription_id)'
+            azureResourceManagerConnection: '$(arm_service_connection)'
+            subscriptionId: '2007549f-8ef5-42c8-849a-e35d4f64470d'
             action: 'Create Or Update Resource Group'
-            resourceGroupName: '$(resource_group_name)'
-            location: '$(location)'
+            resourceGroupName: 'rg-avdataops-${{ parameters.env }}'
+            location: 'West Europe'
             templateLocation: 'Linked artifact'
             csmFile: '$(Pipeline.Workspace)/adf-artifact-$(Build.BuildNumber)/ARMTemplateForFactory.json'
             csmParametersFile: '$(Pipeline.Workspace)/adf-artifact-$(Build.BuildNumber)/ARMTemplateParametersForFactory.json'
-            overrideParameters: '-factoryName "$(azure_data_factory_name)" -adls_connection_properties_typeProperties_url "https://$(azure_storage_account_name).dfs.core.windows.net/" -databricks_connection_properties_typeProperties_existingClusterId $(azure_databricks_cluster_id) -keyvault_connection_properties_typeProperties_baseUrl "https://$(azure_keyvault_name).vault.azure.net/"'
+            overrideParameters: '-factoryName $(azure_data_factory_name)'
             deploymentMode: 'Incremental'
