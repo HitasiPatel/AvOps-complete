@@ -23,6 +23,16 @@ az ad sp create-for-rbac --name myServicePrincipalName \
     1. subscription - Subscription ID of your Azure subscription
     1. TF_STORAGE_ACCOUNT_KEY - Access Key of your azure storage account that you have configured as your terraform remote backend. 
 
+- To set the secerts follow these steps - 
+    1. On the AzDo project go to pipelines and select `avops-dataops-foundation-iac-cd`. 
+    1. Click on Edit 
+    ![edit_pipeline](./images/edit_pipeline.png)
+    1. Click on Variables. 
+    ![pipeline_variable](./images/variables.png)
+    1. Add the variable name and value and select the box `Keep this value secret`
+    ![add_seceret](./images/add_seceret.png)
+    1. Click on `OK` and the secret will be added. 
+
 ## Pipeline parameters 
 
 1. **env** - The type of environment you are trying to set up. You can add more environments by setting up blob containers in your Azure storage account configured as the terraform backend. This container will be dedicated for the terraform state files for the environment.
