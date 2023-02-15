@@ -22,6 +22,15 @@ This pipeline pushes the MetaData API docker container in to the ACR and then de
 
 4. Select your branch name, fill up the environment name you selected in the core infra deploy and fill up the other required fields name from the azure portal. Finally, hit the blue Run button in the down right corner of the browser.
 
+## Verification of API
+* Go to the azure web app in your resource group.
+* Whitelist your self public IP in the networking section.
+* Check the web app url, if you get 404, you are lucky.
+* Now append a "/docs/" suffix to the url and check, if you see a swagger page, metadata-api is successfully deployed.
+
 ## [Next Steps: Deploy ADF Pipelines](../ADFPipelines/ADFPipelinesDeploy.md)
 
 ## [Troubleshooting](TroubleShooting.md)
+
+1. If you face following issue as mentioned in the image
+
