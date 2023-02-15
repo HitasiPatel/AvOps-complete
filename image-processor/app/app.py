@@ -8,26 +8,34 @@ from cv_bridge import CvBridge
 import logging
 import logging.config
 
+"""Logger variables section"""
 log_file_path = path.join(path.dirname(
     path.abspath(__file__)), 'logging.conf')
 logging.config.fileConfig(log_file_path, disable_existing_loggers=False)
-
 log = logging.getLogger(__name__)
+
+"""The encoding to be configured as per the ros2 standard being used"""
 encoding ='bayer_rggb8'
+
+"""Images will be saved in PNG format"""
 pngExtension ='.png'
+
 bridge = CvBridge()
 
-""" Extracts the images from the rosbag2 file and saves them in the specified path """
+""" Extracts the images from the rosbag2 file and saves them in the specified output path """
 def extractImagesFromRos2File(args):
 
-    """create folder structure"""
+    """Create output folder if it doesn't exist"""
     if(not os.path.exists(args.outputpath)):
         log.info("Output path doesn't exist- creating it - "+args.outputpath)
         os.makedirs(args.outputpath)
+
+    """Count to track and name the images as and when they are extracted"""
     count = 0
     with Reader(args.inputpath) as reader:
         for connection, timestamp, rawdata in reader.messages():
             msg = deserialize_cdr(rawdata, connection.msgtype)
+            """The param msgtype is expected to be of image type"""
             if(connection.msgtype == args.msgtype):
                 cv_img = bridge.imgmsg_to_cv2(msg, )
                 name = os.path.join(args.outputpath,str(count)+pngExtension)
