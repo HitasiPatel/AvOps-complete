@@ -1,8 +1,8 @@
 # Deploy the Core Infrastructure
 
-## [Setting Up the Terraform Backend](../../../core-infrastructure/terraform/root/README.md)
+1. ## [Setting Up the Terraform Backend](../../../core-infrastructure/terraform/root/README.md)
 
-## Setting Up the Infrastructure CD
+2. ## Setting Up the Infrastructure CD
 ### Set the below secrets in azure devops
 1. appId - Service Principal app ID.
 2. password - Service Principal password
