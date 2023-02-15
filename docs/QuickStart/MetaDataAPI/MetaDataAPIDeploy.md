@@ -32,5 +32,5 @@ This pipeline pushes the MetaData API docker container in to the ACR and then de
 
 ## [Troubleshooting](TroubleShooting.md)
 
-1. If you face following issue as mentioned in the image
-
+* If metadata-api is not up, debug the container by going to Monitoring -> Log Stream in the App service, check for errors.
+* Next step is try to deploy the image manually to app service from the acr.
