@@ -74,6 +74,42 @@ variable "appservice_subnet_service_endpoints" {
   default     = ["Microsoft.Web", "Microsoft.Storage", "Microsoft.AzureCosmosDB"]
 }
 
+variable "databricks_host_subnet_name" {
+  description = "Host subnet for databricks"
+  type        = string
+  default     = "databricks-host"
+}
+
+variable "databricks_host_subnet_address_prefix" {
+  description = "Address Prefix for the databricks host subnet"
+  type        = string
+  default     = "10.0.4.0/24"
+}
+
+variable "databricks_host_subnet_service_endpoints" {
+  description = "Service Endpoints for the databricks host subnet"
+  type        = list(string)
+  default     = ["Microsoft.Storage"]
+}
+
+variable "databricks_container_subnet_name" {
+  description = "Container subnet for databricks"
+  type        = string
+  default     = "databricks-container"
+}
+
+variable "databricks_container_subnet_address_prefix" {
+  description = "Address Prefix for the databricks container subnet"
+  type        = string
+  default     = "10.0.5.0/24"
+}
+
+variable "databricks_container_subnet_service_endpoints" {
+  description = "Service Endpoints for the databricks container subnet"
+  type        = list(string)
+  default     = []
+}
+
 # ------------------------------------------------------------------------------------------------------
 # Bastion Host variables
 # ------------------------------------------------------------------------------------------------------
@@ -529,4 +565,20 @@ variable "adf_node_size" {
   description = "The size of the nodes on which the Managed Integration Runtime runs."
   type        = string
   default     = "Standard_D8_v3"
+}
+
+# ------------------------------------------------------------------------------------------------------
+# Data Bricks Variables
+# ------------------------------------------------------------------------------------------------------
+
+variable "databricks_name" {
+  description = "Name of the Databricks"
+  type        = string
+  default     = "avdataops"
+}
+
+variable "databricks_sku" {
+  description = "SKU used for Databricks"
+  type        = string
+  default     = "premium"
 }
