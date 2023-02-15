@@ -100,5 +100,5 @@ stages:
             templateLocation: 'Linked artifact'
             csmFile: '$(Pipeline.Workspace)/adf-artifact-$(Build.BuildNumber)/ARMTemplateForFactory.json'
             csmParametersFile: '$(Pipeline.Workspace)/adf-artifact-$(Build.BuildNumber)/ARMTemplateParametersForFactory.json'
-            overrideParameters: '-factoryName "$(azure_data_factory_name)" -{Raw to Extracted_properties_typeProperties_scope} "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-dev/providers/Microsoft.Storage/storageAccounts/avrawdkknfdev"'
+            overrideParameters: '-factoryName "$(azure_data_factory_name)" -LS_Batch_properties_typeProperties_batchUri "https://batchavdataopsdkknfdev.westeurope.batch.azure.com"'
             deploymentMode: 'Incremental'
