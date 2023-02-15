@@ -64,10 +64,10 @@
 		"MPE_AzureKeyVault_properties_groupId": {
 			"value": "vault"
 		},
-		"web-app-rqpzw-managed-private-endpoint_properties_privateLinkResourceId": {
+		"MPE_WebAPI_properties_privateLinkResourceId": {
 			"value": "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-test/providers/Microsoft.Web/sites/web-app-linuxrqpzw"
 		},
-		"web-app-rqpzw-managed-private-endpoint_properties_groupId": {
+		"MPE_WebAPI_properties_groupId": {
 			"value": "sites"
 		}
 	}

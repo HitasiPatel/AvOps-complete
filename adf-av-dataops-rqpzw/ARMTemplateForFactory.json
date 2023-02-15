@@ -85,11 +85,11 @@
 			"type": "string",
 			"defaultValue": "vault"
 		},
-		"web-app-rqpzw-managed-private-endpoint_properties_privateLinkResourceId": {
+		"MPE_WebAPI_properties_privateLinkResourceId": {
 			"type": "string",
 			"defaultValue": "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-test/providers/Microsoft.Web/sites/web-app-linuxrqpzw"
 		},
-		"web-app-rqpzw-managed-private-endpoint_properties_groupId": {
+		"MPE_WebAPI_properties_groupId": {
 			"type": "string",
 			"defaultValue": "sites"
 		}
@@ -1161,12 +1161,12 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/default/web-app-rqpzw-managed-private-endpoint')]",
+			"name": "[concat(parameters('factoryName'), '/default/MPE_WebAPI')]",
 			"type": "Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"privateLinkResourceId": "[parameters('web-app-rqpzw-managed-private-endpoint_properties_privateLinkResourceId')]",
-				"groupId": "[parameters('web-app-rqpzw-managed-private-endpoint_properties_groupId')]"
+				"privateLinkResourceId": "[parameters('MPE_WebAPI_properties_privateLinkResourceId')]",
+				"groupId": "[parameters('MPE_WebAPI_properties_groupId')]"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"

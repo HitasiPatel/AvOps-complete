@@ -85,11 +85,11 @@
 			"type": "string",
 			"defaultValue": "vault"
 		},
-		"web-app-rqpzw-managed-private-endpoint_properties_privateLinkResourceId": {
+		"MPE_WebAPI_properties_privateLinkResourceId": {
 			"type": "string",
 			"defaultValue": "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-test/providers/Microsoft.Web/sites/web-app-linuxrqpzw"
 		},
-		"web-app-rqpzw-managed-private-endpoint_properties_groupId": {
+		"MPE_WebAPI_properties_groupId": {
 			"type": "string",
 			"defaultValue": "sites"
 		},
@@ -138,11 +138,11 @@
 					"MPE_AzureKeyVault_properties_groupId": {
 						"value": "[parameters('MPE_AzureKeyVault_properties_groupId')]"
 					},
-					"web-app-rqpzw-managed-private-endpoint_properties_privateLinkResourceId": {
-						"value": "[parameters('web-app-rqpzw-managed-private-endpoint_properties_privateLinkResourceId')]"
+					"MPE_WebAPI_properties_privateLinkResourceId": {
+						"value": "[parameters('MPE_WebAPI_properties_privateLinkResourceId')]"
 					},
-					"web-app-rqpzw-managed-private-endpoint_properties_groupId": {
-						"value": "[parameters('web-app-rqpzw-managed-private-endpoint_properties_groupId')]"
+					"MPE_WebAPI_properties_groupId": {
+						"value": "[parameters('MPE_WebAPI_properties_groupId')]"
 					},
 					"LS_BatchStorage_properties_typeProperties_connectionString_secretName": {
 						"value": "[parameters('LS_BatchStorage_properties_typeProperties_connectionString_secretName')]"
