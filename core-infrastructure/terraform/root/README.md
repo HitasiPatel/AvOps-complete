@@ -5,8 +5,9 @@ This folder contains the main Terraform script used to call the component module
 ### Prerequisites
 - Azure subscription with Owner role
 - Bash/Z shell (tested on Codespaces, Mac, Ubuntu, Windows with WSL2)
-- Terraform v1.3.5+ ([download](https://developer.hashicorp.com/terraform/downloads))
-- AZ CLI ([download](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest))
+- Following packages (included with the devcontainer):
+  - Terraform v1.3.5+ ([download](https://developer.hashicorp.com/terraform/downloads))
+  - AZ CLI ([download](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest))
 
 ### Deployment
 
