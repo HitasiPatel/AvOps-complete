@@ -1,5 +1,6 @@
 {
 	"name": "LS_avlandingrqpzwtest",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
 		"annotations": [],
 		"type": "AzureBlobFS",

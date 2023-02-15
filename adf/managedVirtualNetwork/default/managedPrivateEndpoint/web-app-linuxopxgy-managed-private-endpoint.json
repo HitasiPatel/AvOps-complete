@@ -2,10 +2,6 @@
 	"name": "web-app-linuxopxgy-managed-private-endpoint",
 	"properties": {
 		"privateLinkResourceId": "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-dev-cd/providers/Microsoft.Web/sites/web-app-linuxopxgy",
-		"groupId": "sites",
-		"fqdns": [
-			"web-app-linuxopxgy.azurewebsites.net",
-			"web-app-linuxopxgy.scm.azurewebsites.net"
-		]
+		"groupId": "sites"
 	}
 }
