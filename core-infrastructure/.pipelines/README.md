@@ -4,19 +4,7 @@ The IaC CD pipeline enables the automatic deployment of your infrastructure.This
 
 ## Prerequisites 
 
-1. Set up a remote backend on azure - The terraform script uses a remote backend to store the state. Before running this pipeline you need to ensure that a dedicated storage account with appropriate container names is created to be used as the remote backend where the terraform state files will be stored. For more details, refer this [article.](https://learn.microsoft.com/en-us/azure/developer/terraform/store-state-in-azure-storage?tabs=azure-cli)
-Note: Name the blob container in the format - "tfstate-{env}" [supported environments are - dev and test]. 
-
-2. Create a service principal - A service principal with contributor access is needed to deploy our IaC scripts on azure. Refer this [article](https://learn.microsoft.com/en-us/cli/azure/create-an-azure-service-principal-azure-cli) on steps to create a service principal. 
-
-```
-az ad sp create-for-rbac --name myServicePrincipalName \
-                         --role roleName \
-                         --scopes /subscriptions/mySubscriptionID/resourceGroups/myResourceGroupName \
-                         --create-cert
-```
-
-3. Set the required secrets - The CD pipeline uses some secrets that need to be set before running the pipeline - 
+1. Set the required secrets - The CD pipeline uses some secrets that need to be set before running the pipeline - 
     1. appId - Service Principal app ID.
     1. password - Service Principal password
     1. tenant - Service Principal tenant ID
