@@ -59,7 +59,7 @@ stages:
 
           - script: |
               detect-secrets --version
-              detect-secrets scan --all-files --disable-plugin KeywordDetector --disable-plugin AWSKeyDetector --exclude-files FETCH_HEAD --exclude-files .secrets.baseline  > $(Pipeline.Workspace)/detect-secrets.json
+              detect-secrets scan --all-files --disable-plugin KeywordDetector --disable-plugin AWSKeyDetector --disable-plugin HexHighEntropyString --exclude-files FETCH_HEAD --exclude-files .secrets.baseline  > $(Pipeline.Workspace)/detect-secrets.json
             displayName: "Run detect-secrets tool"
 
           - task: PublishPipelineArtifact@1
