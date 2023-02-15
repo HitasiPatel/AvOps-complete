@@ -5,7 +5,7 @@ The IaC CD pipeline enables the automatic deployment of your infrastructure.This
 ## Prerequisites 
 
 1. Set up a remote backend on azure - The terraform script uses a remote backend to store the state. Before running this pipeline you need to ensure that a dedicated storage account with appropriate container names is created to be used as the remote backend where the terraform state files will be stored. For more details, refer this [article.](https://learn.microsoft.com/en-us/azure/developer/terraform/store-state-in-azure-storage?tabs=azure-cli)
-Note: Name the blob container in the format - "tfstate-{env}" [supported environments are - dev and test]. 
+Note: Name the blob container in the format - "tfstate-{env}". 
 
 2. Create a service principal - A service principal with contributor access is needed to deploy our IaC scripts on azure. Refer this [article](https://learn.microsoft.com/en-us/cli/azure/create-an-azure-service-principal-azure-cli) on steps to create a service principal. 
 
@@ -25,7 +25,7 @@ az ad sp create-for-rbac --name myServicePrincipalName \
 
 ## Pipeline parameters 
 
-1. **env** - The type of environment you are trying to set up. The pipeline supports two environments - dev and test. You can add more environments by setting up blob containers in your Azure storage account configured as the terraform backend. 
+1. **env** - The type of environment you are trying to set up. You can add more environments by setting up blob containers in your Azure storage account configured as the terraform backend. This container will be dedicated for the terraform state files for the environment.
 
 ## Pipeline variables 
 
@@ -48,10 +48,10 @@ az ad sp create-for-rbac --name myServicePrincipalName \
 ## Steps to run the pipeline
 
 1. The pipeline has a manual trigger.
-2. After all the prerequisites are set up, in the AzDo project go to pipelines and select "avops-dataops-foundation-iac-cd"
-3. Click on "Run Pipeline" and select the branch you wish to deploy from and the environment you wish to set up.
+2. After all the prerequisites are set up, in the AzDo project go to pipelines and select `avops-dataops-foundation-iac-cd`
+3. Click on `Run Pipeline` and select the branch you wish to deploy from and the environment you wish to set up.
 
 ![infra-cd](./images/infra-cd.png)
 
-4. Click on "Run" and your pipeline will be triggered. 
+4. Click on `Run` and your pipeline will be triggered. 
 
