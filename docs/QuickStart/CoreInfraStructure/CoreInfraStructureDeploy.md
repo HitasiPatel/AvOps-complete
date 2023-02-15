@@ -4,19 +4,19 @@
 
 ## 2. Setting Up the Infrastructure CD
 
-### Set the below secrets in azure devops
+### a. Set the below secrets in azure devops
 1. appId - Service Principal app ID.
 2. password - Service Principal password
 3. tenant - Service Principal tenant ID
 4. subscription - Subscription ID of your Azure subscription
 5. TF_STORAGE_ACCOUNT_KEY - Access Key of your azure storage account that you have configured as your terraform remote backend.
 
-### Update the terraform vars
+### b. Update the terraform vars
 * Update the [terraform vars file](../../../core-infrastructure/terraform/root/terraform.tfvars) with the environment variable name you used in the Step 1 (Setting up Terraform backend)
 
 Note: [Click-Here](https://learn.microsoft.com/en-us/azure/devops/pipelines/process/set-secret-variables?view=azure-devops&tabs=yaml%2Cbash) to know How to setup the secrets in azure devops
 
-### Pipeline steps
+### c. Pipeline steps
 
 1. Go to your Azure devops project (https://dev.azure.com/<ORG_NAME>/<PROJECT_NAME>) in your favorite browser.
 
