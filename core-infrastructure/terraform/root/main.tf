@@ -396,3 +396,89 @@ module "kv_secrets" {
   batch_key_secret         = module.batch.batch_account_primary_access_key
   batch_storage_key_secret = module.batch_storage_account.storage_account_primary_access_key
 }
+
+# ------------------------------------------------------------------------------------------------------
+# Deploy log analytics workspace
+# ------------------------------------------------------------------------------------------------------
+
+module "log_analytics" {
+  source                        = "../modules/logAnalytics"
+  log_analytics_name            = #TODO
+  location                      = var.location
+  resource_group_name           = azurerm_resource_group.deployment_rg.name
+  log_analytics_retention_days  = #TODO
+  log_analytics_sku             = #TODO
+  tags                          = var.tags
+}
+
+# ------------------------------------------------------------------------------------------------------
+# Deploy application insights instance
+# ------------------------------------------------------------------------------------------------------
+
+module "app_insights" {
+  source                        = "../modules/appInsights"
+  app_insights_name             = #TODO
+  location                      = var.location
+  resource_group_name           = azurerm_resource_group.deployment_rg.name
+  app_insights_type             = #TODO
+  workspace_id                  = module.log_analytics.log_analytics_id
+  tags                          = var.tags
+}
+
+# ------------------------------------------------------------------------------------------------------
+# Configure diagnostics settings
+# ------------------------------------------------------------------------------------------------------
+
+module "diag_virtual_network" {
+  source                        = "../modules/diagnosticSettings"
+  diagnostic_settings_name      = "tf_default"
+  target_resource_id            = module.virtual_network.virtual_network_id
+  log_analytics_workspace_id    = module.log_analytics.log_analytics_id
+  resource_logs                 = list(object({ category=null, category_group="allLogs", enabled=bool }))
+  resource_metrics              = list("AllMetrics")
+}
+
+module "diag_batch" {
+  source                        = "../modules/diagnosticSettings"
+  diagnostic_settings_name      = "tf_default"
+  target_resource_id            = module.batch.batch_account_id
+  log_analytics_workspace_id    = module.log_analytics.log_analytics_id
+  resource_logs                 = list(object({ category=null, category_group="allLogs", enabled=bool }))
+  resource_metrics              = list("AllMetrics")
+}
+
+module "diag_batch_storage_account" {
+  source                        = "../modules/diagnosticSettings"
+  diagnostic_settings_name      = "tf_default"
+  target_resource_id            = module.batch_storage_account.storage_account_id
+  log_analytics_workspace_id    = module.log_analytics.log_analytics_id
+  resource_logs                 = list(object({ category=null, category_group="allLogs", enabled=bool }))
+  resource_metrics              = list("AllMetrics")
+}
+
+module "diag_cosmosdb" {
+  source                        = "../modules/diagnosticSettings"
+  diagnostic_settings_name      = "tf_default"
+  target_resource_id            = module.cosmosdb.cosmosdb_account_id
+  log_analytics_workspace_id    = module.log_analytics.log_analytics_id
+  resource_logs                 = list(object({ category=null, category_group="allLogs", enabled=bool }))
+  resource_metrics              = list("AllMetrics")
+}
+
+module "diag_data_factory" {
+  source                        = "../modules/diagnosticSettings"
+  diagnostic_settings_name      = "tf_default"
+  target_resource_id            = module.data_factory.adf_resource_id
+  log_analytics_workspace_id    = module.log_analytics.log_analytics_id
+  resource_logs                 = list(object({ category=null, category_group="allLogs", enabled=bool }))
+  resource_metrics              = list("AllMetrics")
+}
+
+module "diag_key_vault" {
+  source                        = "../modules/diagnosticSettings"
+  diagnostic_settings_name      = "tf_default"
+  target_resource_id            = module.key_vault.key_vault_id
+  log_analytics_workspace_id    = module.log_analytics.log_analytics_id
+  resource_logs                 = list(object({ category=null, category_group="allLogs", enabled=bool }))
+  resource_metrics              = list("AllMetrics")
+}
