@@ -2,9 +2,6 @@ parameters:
 - name: env
   displayName: Environment
   default: dev
-  values:
-  - dev
-  - test
 
 
 trigger:
@@ -29,7 +26,7 @@ variables:
     value: "$(Build.SourcesDirectory)/adf/.pipelines/"
   
   - name: arm_service_connection
-    value: "arm_service_connection_${{ parameters.env }}"
+    value: "arm_service_connection_dev"
 
 
 # Installs Node and the npm packages saved in package.json files in the build folder
@@ -97,10 +94,10 @@ stages:
             azureResourceManagerConnection: '$(arm_service_connection)'
             subscriptionId: '$(azure_subscription_id)'
             action: 'Create Or Update Resource Group'
-            resourceGroupName: 'rg-avdataops-${{ parameters.env }}'
+            resourceGroupName: '$(resource_group_name)'
             location: '$(location)'
             templateLocation: 'Linked artifact'
             csmFile: '$(Pipeline.Workspace)/adf-artifact-$(Build.BuildNumber)/ARMTemplateForFactory.json'
             csmParametersFile: '$(Pipeline.Workspace)/adf-artifact-$(Build.BuildNumber)/ARMTemplateParametersForFactory.json'
-            overrideParameters: '-factoryName "$(azure_data_factory_name)" -LS_Batch_properties_typeProperties_batchUri "https://batchavdataopsdkknfdev.westeurope.batch.azure.com" -MPE_AzureKeyVault_properties_privateLinkResourceId "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-dev/providers/Microsoft.KeyVault/vaults/kv-avdops-dkknf" -MPE_WebAPI_properties_privateLinkResourceId "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-dev/providers/Microsoft.Web/sites/web-app-linuxdkknf" -LS_Batch_properties_typeProperties_accountName "batchavdataopsdkknfdev" -LS_Derivedrqpzw_properties_typeProperties_url "https://avderiveddkknfdev.dfs.core.windows.net/" -LS_KeyVault_test_properties_typeProperties_baseUrl "https://kv-avdops-dkknf.vault.azure.net/" -LS_avlandingrqpzwtest_properties_typeProperties_url "https://avlandingdffnkdev.dfs.core.windows.net/" -LS_avrawrqpzwtest_properties_typeProperties_url "https://avrawdkknfdev.dfs.core.windows.net/"'
+            overrideParameters: '-factoryName "$(azure_data_factory_name)" -LS_Batch_properties_typeProperties_batchUri "https://$(batch_account_name).westeurope.batch.azure.com" -MPE_AzureKeyVault_properties_privateLinkResourceId "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/$(resource_group_name)/providers/Microsoft.KeyVault/vaults/$(keyvault_name)" -MPE_WebAPI_properties_privateLinkResourceId "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/$(resource_group_name)/providers/Microsoft.Web/sites/$(web_app_name)" -LS_Batch_properties_typeProperties_accountName "$(batch_account_name)" -LS_Derivedrqpzw_properties_typeProperties_url "https://$(LS_Derived).dfs.core.windows.net/" -LS_KeyVault_test_properties_typeProperties_baseUrl "https://$(keyvault_name).vault.azure.net/" -LS_avlandingrqpzwtest_properties_typeProperties_url "https://$(LS_AvLanding).dfs.core.windows.net/" -LS_avrawrqpzwtest_properties_typeProperties_url "https://$(LS_AvRaw).dfs.core.windows.net/" -AzureStorageBlobPrivateEp_properties_privateLinkResourceId "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/$(resource_group_name)/providers/Microsoft.Storage/storageAccounts/$(batch_account_name)"'
             deploymentMode: 'Incremental'
