@@ -1,0 +1,10 @@
+{
+	"name": "LS_KeyVault_test",
+	"properties": {
+		"annotations": [],
+		"type": "AzureKeyVault",
+		"typeProperties": {
+			"baseUrl": "https://kv-avdops-rqpzw.vault.azure.net/"
+		}
+	}
+}
