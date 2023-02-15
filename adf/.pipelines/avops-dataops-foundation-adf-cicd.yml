@@ -100,5 +100,5 @@ stages:
             templateLocation: 'Linked artifact'
             csmFile: '$(Pipeline.Workspace)/adf-artifact-$(Build.BuildNumber)/ARMTemplateForFactory.json'
             csmParametersFile: '$(Pipeline.Workspace)/adf-artifact-$(Build.BuildNumber)/ARMTemplateParametersForFactory.json'
-            overrideParameters: '-factoryName $(azure_data_factory_name) -azureKeyVaultName "https://$(azure_keyvault_name).vault.azure.net/"'
+            overrideParameters: '-factoryName $(azure_data_factory_name) -azureKeyVaultName $(azure_keyvault_name)'
             deploymentMode: 'Incremental'
