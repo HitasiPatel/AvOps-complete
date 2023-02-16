@@ -43,23 +43,23 @@
 			"type": "string",
 			"defaultValue": "https://avrawrqpzwtest.dfs.core.windows.net/"
 		},
-		"Raw to Extracted_properties_Pipeline_RawToExtracted_SolutionKit_parameters_dataStreamPath": {
+		"RawToExtractedTrigger_properties_Pipeline_RawToExtracted_SolutionKit_parameters_dataStreamPath": {
 			"type": "string",
 			"defaultValue": "@triggerBody().folderPath"
 		},
-		"Raw to Extracted_properties_Pipeline_RawToExtracted_SolutionKit_parameters_apiBaseUrl": {
+		"RawToExtractedTrigger_properties_Pipeline_RawToExtracted_SolutionKit_parameters_apiBaseUrl": {
 			"type": "string",
 			"defaultValue": "https://web-app-linuxrqpzw.azurewebsites.net/"
 		},
-		"Raw to Extracted_properties_Pipeline_RawToExtracted_SolutionKit_parameters_apiVersion": {
+		"RawToExtractedTrigger_properties_Pipeline_RawToExtracted_SolutionKit_parameters_apiVersion": {
 			"type": "string",
 			"defaultValue": "v1"
 		},
-		"Raw to Extracted_properties_Pipeline_RawToExtracted_SolutionKit_parameters_batchVersion": {
+		"RawToExtractedTrigger_properties_Pipeline_RawToExtracted_SolutionKit_parameters_batchVersion": {
 			"type": "string",
 			"defaultValue": "1.0"
 		},
-		"Raw to Extracted_properties_typeProperties_scope": {
+		"RawToExtractedTrigger_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-test/providers/Microsoft.Storage/storageAccounts/avrawrqpzwtest"
 		},
@@ -168,20 +168,20 @@
 					"LS_Batch_properties_typeProperties_accountName": {
 						"value": "[parameters('LS_Batch_properties_typeProperties_accountName')]"
 					},
-					"Raw to Extracted_properties_Pipeline_RawToExtracted_SolutionKit_parameters_dataStreamPath": {
-						"value": "[parameters('Raw to Extracted_properties_Pipeline_RawToExtracted_SolutionKit_parameters_dataStreamPath')]"
+					"RawToExtractedTrigger_properties_Pipeline_RawToExtracted_SolutionKit_parameters_dataStreamPath": {
+						"value": "[parameters('RawToExtractedTrigger_properties_Pipeline_RawToExtracted_SolutionKit_parameters_dataStreamPath')]"
 					},
-					"Raw to Extracted_properties_Pipeline_RawToExtracted_SolutionKit_parameters_apiBaseUrl": {
-						"value": "[parameters('Raw to Extracted_properties_Pipeline_RawToExtracted_SolutionKit_parameters_apiBaseUrl')]"
+					"RawToExtractedTrigger_properties_Pipeline_RawToExtracted_SolutionKit_parameters_apiBaseUrl": {
+						"value": "[parameters('RawToExtractedTrigger_properties_Pipeline_RawToExtracted_SolutionKit_parameters_apiBaseUrl')]"
 					},
-					"Raw to Extracted_properties_Pipeline_RawToExtracted_SolutionKit_parameters_apiVersion": {
-						"value": "[parameters('Raw to Extracted_properties_Pipeline_RawToExtracted_SolutionKit_parameters_apiVersion')]"
+					"RawToExtractedTrigger_properties_Pipeline_RawToExtracted_SolutionKit_parameters_apiVersion": {
+						"value": "[parameters('RawToExtractedTrigger_properties_Pipeline_RawToExtracted_SolutionKit_parameters_apiVersion')]"
 					},
-					"Raw to Extracted_properties_Pipeline_RawToExtracted_SolutionKit_parameters_batchVersion": {
-						"value": "[parameters('Raw to Extracted_properties_Pipeline_RawToExtracted_SolutionKit_parameters_batchVersion')]"
+					"RawToExtractedTrigger_properties_Pipeline_RawToExtracted_SolutionKit_parameters_batchVersion": {
+						"value": "[parameters('RawToExtractedTrigger_properties_Pipeline_RawToExtracted_SolutionKit_parameters_batchVersion')]"
 					},
-					"Raw to Extracted_properties_typeProperties_scope": {
-						"value": "[parameters('Raw to Extracted_properties_typeProperties_scope')]"
+					"RawToExtractedTrigger_properties_typeProperties_scope": {
+						"value": "[parameters('RawToExtractedTrigger_properties_typeProperties_scope')]"
 					}
 				}
 			},
