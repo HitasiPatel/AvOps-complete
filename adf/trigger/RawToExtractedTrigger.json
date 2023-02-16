@@ -1,5 +1,5 @@
 {
-	"name": "Raw to Extracted",
+	"name": "RawToExtractedTrigger",
 	"properties": {
 		"annotations": [],
 		"runtimeState": "Started",
