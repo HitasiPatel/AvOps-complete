@@ -43,6 +43,11 @@ variable "app_svc_suffix" {
   description = "A random suffix for the app service resource name"
 }
 
+variable "acr_name" {
+  type        = string
+  description = "ACR name"
+}
+
 variable "acr_login_server" {
   type        = string
   description = "URL for ACR"
@@ -60,9 +65,9 @@ variable "app_service_expose_port" {
 }
 
 variable "app_settings" {
-  type = map(string)
+  type        = map(string)
   description = "App settings which includes the env variables"
-  default = {}
+  default     = {}
 }
 
 variable "azure_cosmos_connection_string" {

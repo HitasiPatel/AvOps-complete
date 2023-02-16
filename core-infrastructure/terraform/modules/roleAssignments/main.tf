@@ -49,6 +49,13 @@ resource "azurerm_role_assignment" "batch_blob_data_contributor_role_managed_ide
   principal_id         = var.batch_uami_principal_id
 }
 
+# Batch access to Key Vault
+resource "azurerm_role_assignment" "batch_key_vault_reader_managed_identity" {
+  scope                = var.key_vault_id
+  role_definition_name = "Key Vault Reader"
+  principal_id         = var.batch_uami_principal_id
+}
+
 # Role assignment for keyvault are handled by key vault access policy
 resource "azurerm_key_vault_access_policy" "kv_access_policy_batch" {
   count                   = length(local.kv_access_policies)

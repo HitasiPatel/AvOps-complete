@@ -160,6 +160,7 @@ module "app_service" {
   virtual_network_id             = module.virtual_network.virtual_network_id
   app_service_dns_zone_id        = module.dns_zones.app_service_dns_zone_id
   app_svc_suffix                 = random_string.common_suffix.id
+  acr_name                       = module.container_registry.acr_name
   acr_login_server               = module.container_registry.login_server
   acr_sami_principal_id          = module.container_registry.acr_sami_principal_id
   azure_cosmos_connection_string = module.cosmosdb.cosmosdb_primary_connection_string
@@ -340,7 +341,7 @@ module "data_factory" {
   batch_storage_account_connection_string = module.batch_storage_account.primary_connection_string
   batch_account_endpoint                  = module.batch.batch_account_endpoint
   batch_account_name                      = module.batch.batch_account_name
-  batch_account_exec_pool_name            = module.batch.exec_pool_name
+  batch_account_orch_pool_name            = module.batch.orch_pool_name
   app_service_id                          = module.app_service.app_service_id
   app_service_name                        = module.app_service.app_service_name
   adf_dns_zone_id                         = module.dns_zones.adf_dns_zone_id
