@@ -69,3 +69,22 @@ The structure at the Extracted zone is also hierarchical and is in the similar f
 ```
 
 - We chose this hierarchical structure as it utilizes the hierarchical namespace capability of ADLS Gen 2 and helps us in having scalable and cost effective object storage and improves efficiency of the object search and retrieval. Partitioning by year and vehicle ID makes it easier to search for the relevant images from the corresponding vehicles
+
+
+## Data Lifecycle
+
+The architecture uses [ADLS Gen 2](https://learn.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction) for the storage accounts and they are of the type Standard, storage V2, NFS enabled, inside VNET and with private endpoints enabled.
+The redundancy for the storage account is LRS for landing zone and ZRS for the other zones.
+
+The volume of data in the storage accounts can increase massively and hence [data lifecycle management policies](https://learn.microsoft.com/en-us/azure/storage/blobs/lifecycle-management-overview) are important here to optimise the storage costs.
+Data lifecycle policies are defined to move the data between the tiers and should be moved on based on creation time. This will ensure that the files of the measurement and datastream are moved together.
+
+Tiers available for data lifecycle management are [hot, cool and archive](https://learn.microsoft.com/en-us/azure/storage/blobs/access-tiers-overview).
+Hot and cool are the online tiers. Archive is the offline tier.
+
+![Data Lifecycle](images/data-lifecycle.png)
+
+---
+Next read more on [Data Pipelines](data-pipelines.md)
+
+[Home](../README.md)
