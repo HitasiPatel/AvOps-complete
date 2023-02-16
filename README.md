@@ -26,7 +26,6 @@ Below steps will help you to quickly deploy the avops solution in your azure sub
 * [Prerequisites](#prerequisites)
 * [Installation](#installation)
 * [Run the Application Locally](#run-the-application-locally)
-* [Deployment](#deployment)
 * [Known Issues, Limitations and Workarounds](#issues)
 
 # Getting Started
@@ -42,13 +41,11 @@ The solution uses pre-commit framework for managing and maintaining multilingual
 
 ## Run the Application Locally
 ToDo:
-### Build and Test
-TODO: Describe and show how to build your code and run the tests. 
-## Deployment
-Add additional notes about how to deploy this on a live system.
+
 ## Built With
 - Python - The programming language used
 - Terraform - Infrastructure as Code language
+
 ## Contributing
 ToDo:
 

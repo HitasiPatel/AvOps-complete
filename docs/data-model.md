@@ -27,3 +27,8 @@ We maintain the lineage of the data from the measurement to the derived datastre
 - derived
 - curated
 - annotated
+
+---
+Next read more on [Data Discovery](data-discovery.md)
+
+[Home](../README.md)
