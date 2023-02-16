@@ -2,6 +2,10 @@ parameters:
 - name: env
   displayName: Environment
   default: dev
+  values:
+    - dev
+    - stg
+    - test
 
 
 trigger:
