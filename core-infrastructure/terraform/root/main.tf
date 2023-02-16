@@ -403,11 +403,11 @@ module "kv_secrets" {
 
 module "log_analytics" {
   source                        = "../modules/logAnalytics"
-  log_analytics_name            = #TODO
+  log_analytics_name            = var.loganalytics_name
   location                      = var.location
   resource_group_name           = azurerm_resource_group.deployment_rg.name
-  log_analytics_retention_days  = #TODO
-  log_analytics_sku             = #TODO
+  log_analytics_retention_days  = var.loganalytics_retention_days
+  log_analytics_sku             = var.loganalytics_sku
   tags                          = var.tags
 }
 
@@ -417,10 +417,10 @@ module "log_analytics" {
 
 module "app_insights" {
   source                        = "../modules/appInsights"
-  app_insights_name             = #TODO
+  app_insights_name             = var.appinsights_name
   location                      = var.location
   resource_group_name           = azurerm_resource_group.deployment_rg.name
-  app_insights_type             = #TODO
+  app_insights_type             = var.appinsights_type
   workspace_id                  = module.log_analytics.log_analytics_id
   tags                          = var.tags
 }
