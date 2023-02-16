@@ -11,4 +11,4 @@ Below steps will deploy the ADF objects through an azure devops pipeline.
 
 5. Select your branch name, Environment and other required parameters and hit the blue Run button in the down right corner of the browser
 
-## [TroubleShooting](TrobuleShooting.md)
+## [TroubleShooting](TroubleShooting.md)

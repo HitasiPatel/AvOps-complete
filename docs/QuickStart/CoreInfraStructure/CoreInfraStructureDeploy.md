@@ -32,4 +32,4 @@
 
 ## [Next Steps: Deploy MetaDataAPI](../MetaDataAPI/MetaDataAPIDeploy.md)
 
-## [TrobuleShooting](TroubleShooting.md)
+## [TroubleShooting](TroubleShooting.md)
