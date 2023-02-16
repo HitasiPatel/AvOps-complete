@@ -24,7 +24,7 @@ pool:
 
 variables:
 
-  - ${{ if eq(${{ parameters.env }}, 'stg') }}:
+  - ${{ if eq(parameters.env, 'stg') }}:
       - group: adf-staging
 
   - name: adf_code_path
