@@ -23,6 +23,10 @@ pool:
 
 
 variables:
+
+  - ${{ if eq(${{ parameters.test }}, 'stg') }}:
+      - group: adf-staging
+
   - name: adf_code_path
     value: "$(Build.SourcesDirectory)/adf"
     
