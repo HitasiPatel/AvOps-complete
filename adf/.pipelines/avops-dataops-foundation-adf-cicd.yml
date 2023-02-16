@@ -27,14 +27,14 @@ variables:
   - ${{ if eq(parameters.env, 'stg') }}:
       - group: adf-staging
 
+  - ${{ if eq(parameters.env, 'dev') }}:
+      - group: adf-dev    
+
   - name: adf_code_path
     value: "$(Build.SourcesDirectory)/adf"
     
   - name: adf_package_file_path
     value: "$(Build.SourcesDirectory)/adf/.pipelines/"
-  
-  - name: arm_service_connection
-    value: "arm_service_connection_dev"
 
 
 # Installs Node and the npm packages saved in package.json files in the build folder
