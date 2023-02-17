@@ -7,7 +7,7 @@ We have provided sample data pipelines built using [ADLS Gen 2](https://learn.mi
 ---
 ## Quick Start
 
-Below steps will help you to quickly deploy the avops solution in your azure subscription.
+Below steps will help you to quickly deploy the AVOps solution in your azure subscription.
 
 * [Deploy the Infra](docs/QuickStart/CoreInfraStructure/CoreInfraStructureDeploy.md)
 * [Deploy the MetaData API](docs/QuickStart/MetaDataAPI/MetaDataAPIDeploy.md)
@@ -27,7 +27,7 @@ Below steps will help you to quickly deploy the avops solution in your azure sub
 ## Getting Started
 
 1. Fork/clone this repository
-2. Open VsCode and choose DevContainer (Recommended) or Local Method to get started with the solution
+2. Open VsCode and choose DevContainer (Recommended) or Local Machine to get started with the solution
 
 ### DevContainer
 

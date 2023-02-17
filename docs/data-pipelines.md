@@ -125,9 +125,9 @@ All the container images required for processing in the execution pool will push
 
 5. Orchestrator will exit gracefully.
 
-Note: For all of the above(defined in point 3) tasks there will be a separate container image which will have the corresponding logic defined for a task and will accept certain configurations like where to write the output, which Rosbag file to process, an array of topic types [“sensor_msgs/Image“] etc. When validation will be implemented then all the tasks will depend on the validation task and it will be created as a dependent task to proceed. All of the other tasks can process independently and can run in parallel.
+Note: For all of the above(defined in point 3) tasks there will be a separate container image which will have the corresponding logic defined for a task and will accept certain configurations like where to write the output, which Rosbag file to process, an array of topic types [“sensor_msgs/Image“] etc. When validation is implemented, then all the tasks will depend on the validation task and it will be created as a dependent task to proceed. All of the other tasks can process independently and can run in parallel.
 
-In the solution kit, we currently have only the process CameraTopics Task. Other tasks like the validation task and the sensor data tasks can be added later.
+The solution kit currently restricted to the camera topic, but other tasks like the validation task and the sensor data tasks can be added later.
 
 ### Running tasks concurrently
 Usage of batch compute nodes can be maximized by running more than one task simultaneously on each node. Parallel task execution is configured at the batch pool itself. 
