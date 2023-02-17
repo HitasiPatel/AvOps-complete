@@ -5,14 +5,14 @@ This folder contains the main Terraform script used to call the component module
 ### Prerequisites
 - Azure subscription with Owner role
 - Bash/Z shell (tested on Codespaces, Mac, Ubuntu, Windows with WSL2)
-- Following packages (included with the devcontainer):
-  - Terraform v1.3.5+ ([download](https://developer.hashicorp.com/terraform/downloads))
-  - AZ CLI ([download](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest))
+- Terraform v1.3.5+ ([download](https://developer.hashicorp.com/terraform/downloads))
+- AZ CLI ([download](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest))
+- Docker
 
 ### Pre-Deployment
 
 Prior to running the deployment, the pre-deployment step initializes the following resources necessary to run the main Terraform script:
-- Service Principal with Owner role to authenticate Terraform
+- Service Principal with Owner role to authenticate Terraform (Follow [Azure Doc](https://learn.microsoft.com/en-us/cli/azure/create-an-azure-service-principal-azure-cli) to Create One)
 - Azure Storage Account and Blob Container to store the Terraform backend state
 - Resource Group to store the Storage Account
 
