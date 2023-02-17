@@ -84,8 +84,8 @@ stages:
             displayName: Build Ros base image
             inputs:
               command: "build"
-              tags: "noetic"
               Dockerfile: "**/Dockerfile.ros"
+              arguments: "-t mcr.microsoft.com/avdataops/ros:noetic"
           - script: |
               docker images
           - task: Docker@2
