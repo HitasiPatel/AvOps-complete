@@ -160,7 +160,6 @@ module "app_service" {
   virtual_network_id             = module.virtual_network.virtual_network_id
   app_service_dns_zone_id        = module.dns_zones.app_service_dns_zone_id
   app_svc_suffix                 = random_string.common_suffix.id
-  acr_name                       = module.container_registry.acr_name
   acr_login_server               = module.container_registry.login_server
   acr_sami_principal_id          = module.container_registry.acr_sami_principal_id
   azure_cosmos_connection_string = module.cosmosdb.cosmosdb_primary_connection_string

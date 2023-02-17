@@ -46,15 +46,6 @@ resource "azurerm_resource_group_template_deployment" "app_service_deployment_co
   template_content = file("${path.module}/app-service-deployment-config.json")
 }
 
-resource "null_resource" "enable_app_service_cd" {
-  depends_on = [
-    azurerm_linux_web_app.linux_web_app
-  ]
-  provisioner "local-exec" {
-    command = "chmod +x ${local.app_service_cd_script_path};  ${local.app_service_cd_script_path} ${var.resource_group_name} ${azurerm_linux_web_app.linux_web_app.name} ${var.acr_name}"
-  }
-}
-
 resource "azurerm_private_endpoint" "linux_web_app_endpoint" {
   name                = "${azurerm_linux_web_app.linux_web_app.name}-private-endpoint"
   location            = var.location

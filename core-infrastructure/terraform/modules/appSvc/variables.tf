@@ -43,11 +43,6 @@ variable "app_svc_suffix" {
   description = "A random suffix for the app service resource name"
 }
 
-variable "acr_name" {
-  type        = string
-  description = "ACR name"
-}
-
 variable "acr_login_server" {
   type        = string
   description = "URL for ACR"
