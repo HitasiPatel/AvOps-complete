@@ -84,7 +84,7 @@ stages:
             displayName: Build Ros base image
             inputs:
               command: "build"
-              tags: "latest"
+              tags: "noetic"
               Dockerfile: "**/Dockerfile.ros"
           - task: Docker@2
             displayName: Build main image and Push to ACR
