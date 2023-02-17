@@ -36,8 +36,6 @@ variables:
     value: $(Build.BuildId)
   - name: acr_service_connection
     value: "acr_service_connection_${{ parameters.env }}"
-  # - name: arm_service_connection
-  #   value: "arm_service_connection_${{ parameters.env }}"
 
 stages:
   - stage: "code_quality_checks"
@@ -143,11 +141,3 @@ stages:
               command: "buildAndPush"
               tags: $(tags)
               Dockerfile: "**/Dockerfile"
-
-          # - task: AzureWebAppContainer@1
-          #   displayName: "Azure Web App on Container Deploy"
-          #   inputs:
-          #     azureSubscription: $(arm_service_connection)
-          #     resourceGroupName: rg-avdataops-${{ parameters.env }}
-          #     appName: ${{ parameters.app_service_name }}
-          #     imageName: ${{ parameters.acr_name }}.azurecr.io/$(image_repository):$(tags)
