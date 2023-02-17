@@ -84,7 +84,7 @@ stages:
             displayName: Build Ros base image
             inputs:
               command: "build"
-              Dockerfile: "**/Dockerfile.ros"
+              Dockerfile: "**/image-processor/ros/Dockerfile.ros"
               arguments: "-t mcr.microsoft.com/avdataops/ros:noetic"
           - task: Docker@2
             displayName: Build main image and Push to ACR
@@ -93,4 +93,4 @@ stages:
               repository: $(app_name)
               command: "buildAndPush"
               tags: $(tags)
-              Dockerfile: "**/Dockerfile"
+              Dockerfile: "**/image-processor/Dockerfile"
