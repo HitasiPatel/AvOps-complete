@@ -86,6 +86,8 @@ stages:
               command: "build"
               tags: "noetic"
               Dockerfile: "**/Dockerfile.ros"
+          - script: |
+              docker images
           - task: Docker@2
             displayName: Build main image and Push to ACR
             inputs:
