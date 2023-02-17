@@ -1,41 +1,33 @@
 # AVOps DataOps Solution Starter Kit
 
-This solution kit is to setup a DataOps solution to process data collected at the vehicle for use in Autonomous Vehicle Operations (AVOps).
-We have provided sample data pipelines built using ADLS Gen 2, ADF, Azure Batch, Cosmos DB and App Service to process ROS 2 files.
-You can use this code to get started with your own data pipelines.
+This solution kit is to setup a DataOps solution to process data collected at the vehicle for use in [Autonomous Vehicle Operations (AVOps)](https://www.microsoft.com/en-us/industry/blog/automotive/2023/01/05/microsoft-automotive-mobility-and-transportation-reference-architectures-rapidly-deploy-solutions-to-drive-your-transformation/).
 
+We have provided sample data pipelines built using [ADLS Gen 2](https://learn.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction), [ADF](https://learn.microsoft.com/en-us/azure/data-factory/introduction), [Azure Batch](https://learn.microsoft.com/en-us/azure/batch/batch-technical-overview), [Cosmos DB](https://learn.microsoft.com/en-us/azure/cosmos-db/introduction) and [App Service](https://azure.microsoft.com/en-us/products/app-service/) to process [ROS 2](https://docs.ros.org/en/foxy/index.html) files. You can use this code to get started with your own data pipelines.
+
+---
 ## Quick Start
 
-Below steps will help you to quickly deploy the avops solution in your azure subscription.
+Below steps will help you to quickly deploy the AVOps solution in your azure subscription.
 
 * [Deploy the Infra](docs/QuickStart/CoreInfraStructure/CoreInfraStructureDeploy.md)
 * [Deploy the MetaData API](docs/QuickStart/MetaDataAPI/MetaDataAPIDeploy.md)
 * [Deploy the ADF Pipelines](docs/QuickStart/ADFPipelines/ADFPipelinesDeploy.md)
 
+
 ## Solution Overview
 
 * [Architecture](docs/architecture.md)
+* [Data Model](docs/data-model.md)
 * [Data Pipelines](docs/data-pipelines.md)
 * [Data Discovery](docs/data-discovery.md)
-
-## Key Concepts
-
-* [Data Model](docs/data-model.md)
 * [Continuous Integration and Continuous Deployment](docs/ci-cd.md)
-* [Infrastructure as Code](docs/iac.md)
-* [Observability](docs/observability.md)
 
-## Innerloop
-
-* [DevContainer](#devcontainer)
-* [Local](#local-machine)
-* [Run the Application Locally](#run-the-application-locally)
-* [Known Issues, Limitations and Workarounds](#known-issues-limitations-and-workarounds)
+---
 
 ## Getting Started
 
 1. Fork/clone this repository
-2. Open VsCode and choose DevContainer (Recommended) or Local Method to get started with the solution
+2. Open VsCode and choose DevContainer (Recommended) or Local Machine to get started with the solution
 
 ### DevContainer
 
@@ -71,10 +63,6 @@ The solution uses pre-commit framework for managing and maintaining multilingual
 
 `pre-commit install --hook-type commit-msg`
 
-## Run the Application Locally
-
-Refer the [QuickStart](#getting-started) section
-
 ## Built With
 
 * Python - The programming language used
@@ -82,14 +70,10 @@ Refer the [QuickStart](#getting-started) section
 
 ## Contributing
 
-## Versioning
+To contribute to this solution kit, please pick a work item from the [backlog](https://dev.azure.com/chrysalis-innersource/Mobility%20Service%20Line/_backlogs/backlog/AVOps/Features) on Azure Devops and get started.
 
-We use SemVer for versioning. For the versions available, see the tags on this repository.
 
 ## Acknowledgments
 
 Check the list of the contributors [here](https://chrysalis.microsoft.com/assets/avops-dataops-foundation-data-management-for-autonomous-driving)
 
-## Known Issues, Limitations and Workarounds
-
-ToDo
