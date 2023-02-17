@@ -86,8 +86,6 @@ stages:
               command: "build"
               Dockerfile: "**/Dockerfile.ros"
               arguments: "-t mcr.microsoft.com/avdataops/ros:noetic"
-          - script: |
-              docker images
           - task: Docker@2
             displayName: Build main image and Push to ACR
             inputs:
