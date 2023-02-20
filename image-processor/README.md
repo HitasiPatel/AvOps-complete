@@ -42,5 +42,24 @@ docker build . -f Dockerfile.ros -t mcr.microsoft.com/avdataops/ros:noetic
 # navigate to repo-root/image-processor
 docker build . -t processor:latest
 docker run --rm --mount type=bind,source=/Users/name1/Downloads/download1,target=/raw --mount type=bind,source=/Users/name1/Downloads/output,target=/extracted processor:latest bash -c "source /opt/ros/noetic/setup.bash&&python3 /code/app.py --measurementId mid --dataStreamId did --inputpath <inputpath> --outputpath <outputpath> --msgtype sensor_msgs/msg/Image --apibaseurl https://avops.dataopos.com/v1"
+```
+## Building and deploying Image Processor Manually
+
+Image processor can also be built and deployed using below steps:
+
+* Checkout the Image Processor Code.
+* Open terminal and go to image-process directory.
+* Login to ACR using terminal. 
+* Build the image locally using docker
+* Tag the image to the image-processor acr repository.
+* Push the locally built image to acr.
+
+The sequence of commands are shown below:
 
 ```
+az acr login --name <acrName>.azurecr.io
+docker build --platform linux/amd64 -t image-processor ./
+docker tag image-processor:latest <acrName>.azurecr.io/image-processor
+docker push <acrName>.azurecr.io/image-processor
+```
+* After the image is uploaded, please scale down the execution pool of the batch to zero. This is to ensure that the latest image is used from the next time the nodes are added to that pool.

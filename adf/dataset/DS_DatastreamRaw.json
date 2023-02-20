@@ -5,11 +5,20 @@
 			"referenceName": "LS_avrawrqpzwtest",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"folderPath": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"type": "Json",
 		"typeProperties": {
 			"location": {
-				"type": "AzureBlobFSLocation"
+				"type": "AzureBlobFSLocation",
+				"fileSystem": {
+					"value": "@dataset().folderPath",
+					"type": "Expression"
+				}
 			}
 		},
 		"schema": {}
