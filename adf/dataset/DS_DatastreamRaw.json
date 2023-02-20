@@ -15,7 +15,6 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "datastream.json",
 				"fileSystem": {
 					"value": "@dataset().folderPath",
 					"type": "Expression"
