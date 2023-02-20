@@ -12,6 +12,7 @@ Below steps will help you to quickly deploy the AVOps solution in your azure sub
 * [Deploy the Infra](docs/QuickStart/CoreInfraStructure/CoreInfraStructureDeploy.md)
 * [Deploy the MetaData API](docs/QuickStart/MetaDataAPI/MetaDataAPIDeploy.md)
 * [Deploy the ADF Pipelines](docs/QuickStart/ADFPipelines/ADFPipelinesDeploy.md)
+* [Deploy the Batch Orchestrator](docs/QuickStart/BatchOrchestrator/BatchOrchestrator.md)
 
 
 ## Solution Overview
