@@ -60,9 +60,9 @@ variable "app_service_expose_port" {
 }
 
 variable "app_settings" {
-  type = map(string)
+  type        = map(string)
   description = "App settings which includes the env variables"
-  default = {}
+  default     = {}
 }
 
 variable "azure_cosmos_connection_string" {

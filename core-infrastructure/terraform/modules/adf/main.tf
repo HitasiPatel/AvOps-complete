@@ -76,7 +76,7 @@ resource "azurerm_data_factory_linked_custom_service" "batch_linked_service" {
   type_properties_json = <<JSON
 {
   "batchUri": "https://${var.batch_account_endpoint}",
-  "poolName": "${var.batch_account_exec_pool_name}",
+  "poolName": "${var.batch_account_orch_pool_name}",
   "accountName": "${var.batch_account_name}",
   "linkedServiceName": {
     "referenceName": "${local.batch_storage_link_service_name}",

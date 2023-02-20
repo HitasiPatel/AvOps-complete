@@ -142,11 +142,12 @@ stages:
               repository: $(app_name)
               command: "buildAndPush"
               tags: $(tags)
-              Dockerfile: "**/Dockerfile"
+              Dockerfile: "**/metadata-api/Dockerfile"
 
           - task: AzureWebAppContainer@1
             displayName: "Azure Web App on Container Deploy"
             inputs:
               azureSubscription: $(arm_service_connection)
+              resourceGroupName: rg-avdataops-${{ parameter.env }}
               appName: ${{ parameters.app_service_name }}
               imageName: ${{ parameters.acr_name }}.azurecr.io/$(image_repository):$(tags)

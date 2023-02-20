@@ -81,10 +81,16 @@ stages:
               command: "login"
               containerRegistry: ${{ parameters.acr_service_connection_name }}
           - task: Docker@2
-            displayName: Build and Push to ACR
+            displayName: Build Ros base image
+            inputs:
+              command: "build"
+              Dockerfile: "**/image-processor/ros/Dockerfile.ros"
+              arguments: "-t mcr.microsoft.com/avdataops/ros:noetic"
+          - task: Docker@2
+            displayName: Build main image and Push to ACR
             inputs:
               containerRegistry: ${{ parameters.acr_service_connection_name }}
               repository: $(app_name)
               command: "buildAndPush"
               tags: $(tags)
-              Dockerfile: "**/Dockerfile"
+              Dockerfile: "**/image-processor/Dockerfile"
