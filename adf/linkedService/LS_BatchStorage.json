@@ -7,7 +7,7 @@
 			"connectionString": {
 				"type": "AzureKeyVaultSecret",
 				"store": {
-					"referenceName": "LS_KeyVault_test",
+					"referenceName": "LS_KeyVault",
 					"type": "LinkedServiceReference"
 				},
 				"secretName": "azurebatchstorageconnstring",
