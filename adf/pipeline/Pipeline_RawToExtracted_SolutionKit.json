@@ -162,6 +162,7 @@
 						"storeSettings": {
 							"type": "AzureBlobFSReadSettings",
 							"recursive": true,
+							"wildcardFolderPath": "*",
 							"wildcardFileName": "datastream.json",
 							"enablePartitionDiscovery": false
 						},
@@ -171,13 +172,7 @@
 					},
 					"dataset": {
 						"referenceName": "DS_DatastreamRaw",
-						"type": "DatasetReference",
-						"parameters": {
-							"folderPath": {
-								"value": "@pipeline().parameters.dataStreamPath",
-								"type": "Expression"
-							}
-						}
+						"type": "DatasetReference"
 					}
 				}
 			},
