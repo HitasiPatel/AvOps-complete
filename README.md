@@ -18,6 +18,7 @@ Below steps will help you to quickly deploy the AVOps solution in your azure sub
 
 * [Architecture](docs/architecture.md)
 * [Data Model](docs/data-model.md)
+* [Network Design](docs/network-design.md)
 * [Data Pipelines](docs/data-pipelines.md)
 * [Data Discovery](docs/data-discovery.md)
 * [Continuous Integration and Continuous Deployment](docs/ci-cd.md)
