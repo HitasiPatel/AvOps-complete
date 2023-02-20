@@ -2,7 +2,7 @@
 	"name": "DS_DatastreamRaw",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "LS_avrawrqpzwtest",
+			"referenceName": "LS_Raw",
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {

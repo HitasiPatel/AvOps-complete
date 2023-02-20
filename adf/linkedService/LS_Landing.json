@@ -1,11 +1,11 @@
 {
-	"name": "LS_avrawrqpzwtest",
+	"name": "LS_Landing",
 	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
 		"annotations": [],
 		"type": "AzureBlobFS",
 		"typeProperties": {
-			"url": "https://avrawrqpzwtest.dfs.core.windows.net/"
+			"url": "https://avlandingrqpzwtest.dfs.core.windows.net/"
 		},
 		"connectVia": {
 			"referenceName": "IntegrationRuntime",
