@@ -54,7 +54,7 @@ module "batch_nsg" {
   source              = "../modules/nsg"
   nsg_name            = module.privatelink_subnet.subnet_name
   location            = var.location
-  resource_group_name = var.resource_group_name
+  resource_group_name = azurerm_resource_group.deployment_rg.name
   subnet_id           = module.privatelink_subnet.subnet_id
   tags                = var.tags
 }

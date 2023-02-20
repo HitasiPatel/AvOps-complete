@@ -22,7 +22,8 @@
     1. Click on `OK` and the secret will be added. 
 
 ### b. Update the terraform vars
-* Update the [terraform vars file](../../../core-infrastructure/terraform/root/terraform.tfvars) with the environment variable name you used in the Step 1 (Setting up Terraform backend)
+* Create a new tfvars file for your environment with naming <env>.tfvars
+* Update your tfvars file located at this [path](../../../core-infrastructure/terraform/root/) with the <env> name. You can take reference from test.tfvars in this repository.
 
 * Note: [Click-Here](https://learn.microsoft.com/en-us/azure/devops/pipelines/process/set-secret-variables?view=azure-devops&tabs=yaml%2Cbash) to know How to setup the secrets in azure devops
 

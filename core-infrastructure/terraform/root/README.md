@@ -57,10 +57,10 @@ terraform init \
 # Verify deployment config values in terraform.tfvars file
 
 # Plan terraform deployment
-terraform plan
+terraform plan -var-file="dev.tfvars"
 
 # Execute terraform deployment
-terraform apply -auto-approve
+terraform apply -var-file="dev.tfvars" -auto-approve
 
 # Clear env vars
 unset `env | grep -E 'AVOPS_|ARM_' | egrep -o '^[^=]+'`
