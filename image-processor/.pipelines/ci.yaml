@@ -1,9 +1,9 @@
 # CI - Image Processor
-parameters:
-  - name: acr_service_connection_name
-    displayName: ACR Service Connection name
+parameters:  
+  - name: env
+    displayName: Environment
     type: string
-    default: "acr_service_connection"
+    default: "dev"
 
 trigger:
   branches:
@@ -22,6 +22,8 @@ variables:
     value: "image-processor"
   - name: tags
     value: $(Build.BuildId)
+  - name: acr_service_connection
+    value: "acr_service_connection_${{ parameters.env }}"
 
 stages:
   - stage: "code_quality_checks"
@@ -79,7 +81,7 @@ stages:
             displayName: Login to ACR
             inputs:
               command: "login"
-              containerRegistry: ${{ parameters.acr_service_connection_name }}
+              containerRegistry: $(acr_service_connection)
           - task: Docker@2
             displayName: Build Ros base image
             inputs:
@@ -89,7 +91,7 @@ stages:
           - task: Docker@2
             displayName: Build main image and Push to ACR
             inputs:
-              containerRegistry: ${{ parameters.acr_service_connection_name }}
+              containerRegistry: $(acr_service_connection)
               repository: $(app_name)
               command: "buildAndPush"
               tags: $(tags)

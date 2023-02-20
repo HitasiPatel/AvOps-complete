@@ -3,13 +3,11 @@ parameters:
   - name: acr_name
     displayName: ACR name
     type: string
-    default: "acravdataopsdkknf"
 
   - name: app_service_name
     displayName: App Service name
     type: string
-    default: "web-app-linuxdkknf"
-
+  
   - name: env
     displayName: Environment
     type: string
@@ -144,10 +142,38 @@ stages:
               tags: $(tags)
               Dockerfile: "**/metadata-api/Dockerfile"
 
-          - task: AzureWebAppContainer@1
-            displayName: "Azure Web App on Container Deploy"
+          - task: AzureCLI@2
+            displayName: Stop App Service Instance
             inputs:
               azureSubscription: $(arm_service_connection)
-              resourceGroupName: rg-avdataops-${{ parameters.env }}
-              appName: ${{ parameters.app_service_name }}
-              imageName: ${{ parameters.acr_name }}.azurecr.io/$(image_repository):$(tags)
+              scriptType: bash
+              scriptLocation: inlineScript
+              inlineScript: "az webapp stop -g rg-avdataops-${{ parameters.env }} -n ${{ parameters.app_service_name }}"
+              addSpnToEnvironment: true
+
+          - task: AzureCLI@2
+            displayName: Set new image details in App Service Instance config
+            inputs:
+              azureSubscription: $(arm_service_connection)
+              scriptType: bash
+              scriptLocation: inlineScript
+              inlineScript: "az webapp config container set -n ${{ parameters.app_service_name }} -g rg-avdataops-${{ parameters.env }} -r https://${{ parameters.acr_name }}.azurecr.io -i ${{ parameters.acr_name }}.azurecr.io/$(image_repository):$(tags)"
+              addSpnToEnvironment: true
+          
+          - task: AzureCLI@2
+            displayName: Enable App Service to pull from ACR via MI
+            inputs:
+              azureSubscription: $(arm_service_connection)
+              scriptType: bash
+              scriptLocation: inlineScript
+              inlineScript: "az resource update --ids /subscriptions/$(az account show --query id -o tsv)/resourceGroups/rg-avdataops-${{ parameters.env }}/providers/Microsoft.Web/sites/${{ parameters.app_service_name }}/config/web --set properties.acrUseManagedIdentityCreds=true"
+              addSpnToEnvironment: true
+
+          - task: AzureCLI@2
+            displayName: Start App Service Instance
+            inputs:
+              azureSubscription: $(arm_service_connection)
+              scriptType: bash
+              scriptLocation: inlineScript
+              inlineScript: "az webapp start -g rg-avdataops-${{ parameters.env }} -n ${{ parameters.app_service_name }}"
+              addSpnToEnvironment: true

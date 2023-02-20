@@ -20,8 +20,8 @@ resource "azurerm_linux_web_app" "linux_web_app" {
   app_settings = merge(local.app_settings, var.app_settings)
 
   site_config {
-    container_registry_use_managed_identity       = true
-    container_registry_managed_identity_client_id = var.acr_sami_principal_id
+    # CI/CD will set this flag appropriately
+    container_registry_use_managed_identity       = false
 
     application_stack {
       docker_image     = "${var.acr_login_server}/${local.app_name}"

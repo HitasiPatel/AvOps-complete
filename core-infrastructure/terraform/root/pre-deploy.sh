@@ -54,9 +54,9 @@ then
   exit 1;
 fi
 
-if [ ${#ENV} -gt 3 ]
+if [ ${#ENV} -gt 4 ]
 then
-  echo "Please provide an environment name that <= 3 characters. "
+  echo "Please provide an environment name that <= 4 characters. "
   exit 1;
 fi
 
