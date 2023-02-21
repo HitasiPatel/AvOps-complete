@@ -172,7 +172,13 @@
 					},
 					"dataset": {
 						"referenceName": "DS_DatastreamRaw",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"folderPath": {
+								"value": "@pipeline().parameters.dataStreamPath",
+								"type": "Expression"
+							}
+						}
 					}
 				}
 			},
