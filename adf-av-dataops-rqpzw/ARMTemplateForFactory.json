@@ -23,23 +23,15 @@
 			"type": "string",
 			"defaultValue": "azurebatchstorageconnstring"
 		},
-		"LS_Derivedrqpzw_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://avderivedrqpzwtest.dfs.core.windows.net/"
-		},
-		"LS_KeyVault_test_properties_typeProperties_baseUrl": {
+		"LS_KeyVault_properties_typeProperties_baseUrl": {
 			"type": "string",
 			"defaultValue": "https://kv-avdops-rqpzw.vault.azure.net/"
 		},
-		"LS_Landingopxgy_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://avlandingopxgytest.dfs.core.windows.net/"
-		},
-		"LS_avlandingrqpzwtest_properties_typeProperties_url": {
+		"LS_Landing_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://avlandingrqpzwtest.dfs.core.windows.net/"
 		},
-		"LS_avrawrqpzwtest_properties_typeProperties_url": {
+		"LS_Raw_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://avrawrqpzwtest.dfs.core.windows.net/"
 		},
@@ -676,7 +668,12 @@
 							"dataset": {
 								"referenceName": "DS_DatastreamRaw",
 								"type": "DatasetReference",
-								"parameters": {}
+								"parameters": {
+									"folderPath": {
+										"value": "@pipeline().parameters.dataStreamPath",
+										"type": "Expression"
+									}
+								}
 							}
 						}
 					},
@@ -807,20 +804,29 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "LS_avrawrqpzwtest",
+					"referenceName": "LS_Raw",
 					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"folderPath": {
+						"type": "string"
+					}
 				},
 				"annotations": [],
 				"type": "Json",
 				"typeProperties": {
 					"location": {
-						"type": "AzureBlobFSLocation"
+						"type": "AzureBlobFSLocation",
+						"fileSystem": {
+							"value": "@dataset().folderPath",
+							"type": "Expression"
+						}
 					}
 				},
 				"schema": {}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/LS_avrawrqpzwtest')]"
+				"[concat(variables('factoryId'), '/linkedServices/LS_Raw')]"
 			]
 		},
 		{
@@ -829,7 +835,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "LS_avlandingrqpzwtest",
+					"referenceName": "LS_Landing",
 					"type": "LinkedServiceReference"
 				},
 				"parameters": {
@@ -865,7 +871,7 @@
 				"schema": {}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/LS_avlandingrqpzwtest')]"
+				"[concat(variables('factoryId'), '/linkedServices/LS_Landing')]"
 			]
 		},
 		{
@@ -874,7 +880,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "LS_avlandingrqpzwtest",
+					"referenceName": "LS_Landing",
 					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
@@ -887,7 +893,7 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/LS_avlandingrqpzwtest')]"
+				"[concat(variables('factoryId'), '/linkedServices/LS_Landing')]"
 			]
 		},
 		{
@@ -896,7 +902,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "LS_avlandingrqpzwtest",
+					"referenceName": "LS_Landing",
 					"type": "LinkedServiceReference"
 				},
 				"parameters": {
@@ -917,7 +923,7 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/LS_avlandingrqpzwtest')]"
+				"[concat(variables('factoryId'), '/linkedServices/LS_Landing')]"
 			]
 		},
 		{
@@ -957,7 +963,7 @@
 					"connectionString": {
 						"type": "AzureKeyVaultSecret",
 						"store": {
-							"referenceName": "LS_KeyVault_test",
+							"referenceName": "LS_KeyVault",
 							"type": "LinkedServiceReference"
 						},
 						"secretName": "[parameters('LS_BatchStorage_properties_typeProperties_connectionString_secretName')]",
@@ -973,50 +979,31 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/integrationRuntimes/IntegrationRuntime')]",
-				"[concat(variables('factoryId'), '/linkedServices/LS_KeyVault_test')]"
+				"[concat(variables('factoryId'), '/linkedServices/LS_KeyVault')]"
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/LS_Derivedrqpzw')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobFS",
-				"typeProperties": {
-					"url": "[parameters('LS_Derivedrqpzw_properties_typeProperties_url')]"
-				},
-				"connectVia": {
-					"referenceName": "IntegrationRuntime",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/IntegrationRuntime')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/LS_KeyVault_test')]",
+			"name": "[concat(parameters('factoryName'), '/LS_KeyVault')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
 				"type": "AzureKeyVault",
 				"typeProperties": {
-					"baseUrl": "[parameters('LS_KeyVault_test_properties_typeProperties_baseUrl')]"
+					"baseUrl": "[parameters('LS_KeyVault_properties_typeProperties_baseUrl')]"
 				}
 			},
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/LS_Landingopxgy')]",
+			"name": "[concat(parameters('factoryName'), '/LS_Landing')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
 				"type": "AzureBlobFS",
 				"typeProperties": {
-					"url": "[parameters('LS_Landingopxgy_properties_typeProperties_url')]"
+					"url": "[parameters('LS_Landing_properties_typeProperties_url')]"
 				},
 				"connectVia": {
 					"referenceName": "IntegrationRuntime",
@@ -1028,33 +1015,14 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/LS_avlandingrqpzwtest')]",
+			"name": "[concat(parameters('factoryName'), '/LS_Raw')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
 				"type": "AzureBlobFS",
 				"typeProperties": {
-					"url": "[parameters('LS_avlandingrqpzwtest_properties_typeProperties_url')]"
-				},
-				"connectVia": {
-					"referenceName": "IntegrationRuntime",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/IntegrationRuntime')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/LS_avrawrqpzwtest')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobFS",
-				"typeProperties": {
-					"url": "[parameters('LS_avrawrqpzwtest_properties_typeProperties_url')]"
+					"url": "[parameters('LS_Raw_properties_typeProperties_url')]"
 				},
 				"connectVia": {
 					"referenceName": "IntegrationRuntime",

@@ -23,23 +23,15 @@
 			"type": "string",
 			"defaultValue": "azurebatchstorageconnstring"
 		},
-		"LS_Derivedrqpzw_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://avderivedrqpzwtest.dfs.core.windows.net/"
-		},
-		"LS_KeyVault_test_properties_typeProperties_baseUrl": {
+		"LS_KeyVault_properties_typeProperties_baseUrl": {
 			"type": "string",
 			"defaultValue": "https://kv-avdops-rqpzw.vault.azure.net/"
 		},
-		"LS_Landingopxgy_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://avlandingopxgytest.dfs.core.windows.net/"
-		},
-		"LS_avlandingrqpzwtest_properties_typeProperties_url": {
+		"LS_Landing_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://avlandingrqpzwtest.dfs.core.windows.net/"
 		},
-		"LS_avrawrqpzwtest_properties_typeProperties_url": {
+		"LS_Raw_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://avrawrqpzwtest.dfs.core.windows.net/"
 		},
@@ -120,8 +112,8 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
-					"LS_KeyVault_test_properties_typeProperties_baseUrl": {
-						"value": "[parameters('LS_KeyVault_test_properties_typeProperties_baseUrl')]"
+					"LS_KeyVault_properties_typeProperties_baseUrl": {
+						"value": "[parameters('LS_KeyVault_properties_typeProperties_baseUrl')]"
 					},
 					"AzureStorageBlobPrivateEp_properties_privateLinkResourceId": {
 						"value": "[parameters('AzureStorageBlobPrivateEp_properties_privateLinkResourceId')]"
@@ -147,17 +139,11 @@
 					"LS_BatchStorage_properties_typeProperties_connectionString_secretName": {
 						"value": "[parameters('LS_BatchStorage_properties_typeProperties_connectionString_secretName')]"
 					},
-					"LS_Derivedrqpzw_properties_typeProperties_url": {
-						"value": "[parameters('LS_Derivedrqpzw_properties_typeProperties_url')]"
+					"LS_Landing_properties_typeProperties_url": {
+						"value": "[parameters('LS_Landing_properties_typeProperties_url')]"
 					},
-					"LS_Landingopxgy_properties_typeProperties_url": {
-						"value": "[parameters('LS_Landingopxgy_properties_typeProperties_url')]"
-					},
-					"LS_avlandingrqpzwtest_properties_typeProperties_url": {
-						"value": "[parameters('LS_avlandingrqpzwtest_properties_typeProperties_url')]"
-					},
-					"LS_avrawrqpzwtest_properties_typeProperties_url": {
-						"value": "[parameters('LS_avrawrqpzwtest_properties_typeProperties_url')]"
+					"LS_Raw_properties_typeProperties_url": {
+						"value": "[parameters('LS_Raw_properties_typeProperties_url')]"
 					},
 					"LS_Batch_properties_typeProperties_batchUri": {
 						"value": "[parameters('LS_Batch_properties_typeProperties_batchUri')]"

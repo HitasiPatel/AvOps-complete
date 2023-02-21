@@ -17,19 +17,13 @@
 		"LS_BatchStorage_properties_typeProperties_connectionString_secretName": {
 			"value": "azurebatchstorageconnstring"
 		},
-		"LS_Derivedrqpzw_properties_typeProperties_url": {
-			"value": "https://avderivedrqpzwtest.dfs.core.windows.net/"
-		},
-		"LS_KeyVault_test_properties_typeProperties_baseUrl": {
+		"LS_KeyVault_properties_typeProperties_baseUrl": {
 			"value": "https://kv-avdops-rqpzw.vault.azure.net/"
 		},
-		"LS_Landingopxgy_properties_typeProperties_url": {
-			"value": "https://avlandingopxgytest.dfs.core.windows.net/"
-		},
-		"LS_avlandingrqpzwtest_properties_typeProperties_url": {
+		"LS_Landing_properties_typeProperties_url": {
 			"value": "https://avlandingrqpzwtest.dfs.core.windows.net/"
 		},
-		"LS_avrawrqpzwtest_properties_typeProperties_url": {
+		"LS_Raw_properties_typeProperties_url": {
 			"value": "https://avrawrqpzwtest.dfs.core.windows.net/"
 		},
 		"RawToExtractedTrigger_properties_Pipeline_RawToExtracted_SolutionKit_parameters_dataStreamPath": {
