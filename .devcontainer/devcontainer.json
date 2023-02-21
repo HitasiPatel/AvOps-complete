@@ -20,7 +20,8 @@
 				"streetsidesoftware.code-spell-checker",
 				"eamodio.gitlens",
 				"yzhang.markdown-all-in-one",
-				"davidanson.vscode-markdownlint"
+				"davidanson.vscode-markdownlint",
+				"redhat.fabric8-analytics"
 			]
 		}
 	}

@@ -2,14 +2,23 @@
 	"name": "DS_DatastreamRaw",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "LS_avrawrqpzwtest",
+			"referenceName": "LS_Raw",
 			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"folderPath": {
+				"type": "string"
+			}
 		},
 		"annotations": [],
 		"type": "Json",
 		"typeProperties": {
 			"location": {
-				"type": "AzureBlobFSLocation"
+				"type": "AzureBlobFSLocation",
+				"fileSystem": {
+					"value": "@dataset().folderPath",
+					"type": "Expression"
+				}
 			}
 		},
 		"schema": {}

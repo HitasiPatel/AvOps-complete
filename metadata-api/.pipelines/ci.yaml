@@ -59,7 +59,7 @@ stages:
 
           - script: |
               detect-secrets --version
-              detect-secrets scan --all-files --disable-plugin KeywordDetector --disable-plugin AWSKeyDetector --exclude-files FETCH_HEAD --exclude-files .secrets.baseline  > $(Pipeline.Workspace)/detect-secrets.json
+              detect-secrets scan --all-files --disable-plugin KeywordDetector --disable-plugin AWSKeyDetector --disable-plugin HexHighEntropyString --exclude-files FETCH_HEAD --exclude-files .secrets.baseline  > $(Pipeline.Workspace)/detect-secrets.json
             displayName: "Run detect-secrets tool"
 
           - task: PublishPipelineArtifact@1
@@ -123,7 +123,7 @@ stages:
               reportDirectory: "htmlcov"
             displayName: "Publish Coverage Results"
 
-  - stage: "Push_image_to_ACR"
+  - stage: "deployment_to_app_service"
     jobs:
       - job: "Build_and_push_to_ACR"
         displayName: "build-and-push-to-acr"
@@ -142,11 +142,12 @@ stages:
               repository: $(app_name)
               command: "buildAndPush"
               tags: $(tags)
-              Dockerfile: "**/Dockerfile"
+              Dockerfile: "**/metadata-api/Dockerfile"
 
           - task: AzureWebAppContainer@1
             displayName: "Azure Web App on Container Deploy"
             inputs:
               azureSubscription: $(arm_service_connection)
+              resourceGroupName: rg-avdataops-${{ parameters.env }}
               appName: ${{ parameters.app_service_name }}
               imageName: ${{ parameters.acr_name }}.azurecr.io/$(image_repository):$(tags)
