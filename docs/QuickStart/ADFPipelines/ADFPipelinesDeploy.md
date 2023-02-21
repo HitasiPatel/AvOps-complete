@@ -17,7 +17,7 @@
     7. resource_group_name : Name of the resource group used
     8. web_app_name : Name of the web app deployed
     9. location : the resource location (eg: West Europe)
-    10. LS_AvLanding,LS_AVRaw,LS_Derived : Name of the respective linked services
+    10. LS_AvLanding,LS_AVRaw : Name of the respective linked services
 
 Below steps will deploy the ADF objects through an azure devops pipeline.
 
