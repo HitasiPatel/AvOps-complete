@@ -12,12 +12,13 @@
     2. azure_service_connection_name : The ARM Service connection name, we have in the previous step
     3. azure_subscription_id : The subscription_id foe the environment
     4. batch_account_name : Name of the storage account to be used in ADF
-    5. batch_private_ep : Name of the private endpoint to be created for linking batch account to adf
-    6. keyvault_name : Name of the keyvault used
-    7. resource_group_name : Name of the resource group used
-    8. web_app_name : Name of the web app deployed
-    9. location : the resource location (eg: West Europe)
-    10. LS_AvLanding,LS_AVRaw : Name of the respective linked services
+    5. batch_account_url : Link to the batch storage account
+    6. batch_private_ep : Name of the private endpoint to be created for linking batch account to adf
+    7. keyvault_name : Name of the keyvault used
+    8. resource_group_name : Name of the resource group used
+    9. web_app_name : Name of the web app deployed
+    10. location : the resource location (eg: West Europe)
+    11. LS_AvLanding,LS_AVRaw : Name of the respective linked services
 
 Below steps will deploy the ADF objects through an azure devops pipeline.
 
