@@ -1,0 +1,110 @@
+parameters:
+- name: env
+  displayName: Environment
+  default: dev
+  values:
+    - dev
+    - stg
+
+
+trigger:
+  batch: false
+  branches:
+    include:
+      - main
+
+pr:
+   branches:
+     include:
+     - main
+pool:
+  vmImage: 'ubuntu-latest'
+
+
+variables:
+
+  - ${{ if eq(parameters.env, 'stg') }}:
+      - group: adf-staging
+
+  - ${{ if eq(parameters.env, 'dev') }}:
+      - group: adf-dev    
+
+  - name: adf_code_path
+    value: "$(Build.SourcesDirectory)/adf"
+    
+  - name: adf_package_file_path
+    value: "$(Build.SourcesDirectory)/adf/.pipelines/"
+
+
+# Installs Node and the npm packages saved in package.json files in the build folder
+stages:
+  - stage: Build_And_Publish_ADF_Artifacts
+    
+    jobs:
+    - job: Build_Adf_Arm_Templates
+      displayName: 'Generate ADF Artifacts'
+      steps:
+
+      - task: NodeTool@0
+        inputs:
+          versionSpec: '14.x'
+        displayName: 'Install Node.js'
+
+      - task: Npm@1
+        inputs:
+          command: 'install'
+          workingDir: '$(adf_package_file_path)'
+          verbose: true
+        displayName: 'Install npm package'
+
+
+      - task: Npm@1
+        inputs:
+          command: 'custom'
+          workingDir: '$(adf_package_file_path)'
+
+          customCommand: 'run build validate $(adf_code_path) /subscriptions/$(azure_subscription_id)/resourceGroups/$(resource_group_name)/providers/Microsoft.DataFactory/factories/$(azure_data_factory_name)'
+        displayName: 'Validate'
+
+      - task: Npm@1
+        inputs:
+          command: 'custom'
+          workingDir: '$(adf_package_file_path)'
+
+          customCommand: 'run build export $(adf_code_path) /subscriptions/$(azure_subscription_id)/resourceGroups/$(resource_group_name)/providers/Microsoft.DataFactory/factories/$(azure_data_factory_name) "ArmTemplate"'
+
+        displayName: 'Validate and Generate ARM template'
+
+
+      - task: PublishPipelineArtifact@1
+        inputs:
+          targetPath: '$(adf_code_path)/.pipelines/ArmTemplate'
+          artifact: 'adf-artifact-$(Build.BuildNumber)'
+          publishLocation: 'pipeline'
+          
+  - stage: Deploy_to_Dev
+    displayName: Deploy Stage
+    dependsOn: Build_And_Publish_ADF_Artifacts
+    jobs: 
+      - job: Deploy_PreProd
+        displayName: 'Deployment'
+        steps:
+        - task: DownloadPipelineArtifact@2
+          displayName: Download Build Artifacts - ADF ARM templates
+          inputs: 
+            artifactName: 'adf-artifact-$(Build.BuildNumber)'
+            targetPath: '$(Pipeline.Workspace)/adf-artifact-$(Build.BuildNumber)'
+        
+        - task: AzureResourceManagerTemplateDeployment@3
+          inputs:
+            deploymentScope: 'Resource Group'
+            azureResourceManagerConnection: '$(azure_service_connection_name)'
+            subscriptionId: '$(azure_subscription_id)'
+            action: 'Create Or Update Resource Group'
+            resourceGroupName: '$(resource_group_name)'
+            location: '$(location)'
+            templateLocation: 'Linked artifact'
+            csmFile: '$(Pipeline.Workspace)/adf-artifact-$(Build.BuildNumber)/ARMTemplateForFactory.json'
+            csmParametersFile: '$(Pipeline.Workspace)/adf-artifact-$(Build.BuildNumber)/ARMTemplateParametersForFactory.json'
+            overrideParameters: '-factoryName "$(azure_data_factory_name)" -LS_Batch_properties_typeProperties_batchUri "$(batch_account_url)" -MPE_AzureKeyVault_properties_privateLinkResourceId "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/$(resource_group_name)/providers/Microsoft.KeyVault/vaults/$(keyvault_name)" -MPE_WebAPI_properties_privateLinkResourceId "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/$(resource_group_name)/providers/Microsoft.Web/sites/$(web_app_name)" -LS_Batch_properties_typeProperties_accountName "$(batch_account_name)" -LS_KeyVault_properties_typeProperties_baseUrl "https://$(keyvault_name).vault.azure.net/" -LS_Landing_properties_typeProperties_url "https://$(LS_AvLanding).dfs.core.windows.net/" -LS_Raw_properties_typeProperties_url "https://$(LS_AvRaw).dfs.core.windows.net/" -RawToExtractedTrigger_properties_Pipeline_RawToExtracted_SolutionKit_parameters_apiBaseUrl "https://$(web_app_name).azurewebsites.net/" -RawToExtractedTrigger_properties_typeProperties_scope "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/$(resource_group_name)/providers/Microsoft.Storage/storageAccounts/$(LS_AvRaw)" -AzureStorageBlobPrivateEp_properties_privateLinkResourceId "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/$(resource_group_name)/providers/Microsoft.Storage/storageAccounts/$(batch_private_ep)" -AzureStorageBlobPrivateEp_properties_fqdns "["$(batch_private_ep).blob.core.windows.net"]"' 
+            deploymentMode: 'Incremental'
