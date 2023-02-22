@@ -1,5 +1,11 @@
 # Deploy the Core Infrastructure
 
+## 0. Setting up your Azure Devops deployment 
+* The solution kit uses Azure Devops for running CI/CD pipelines. To deploy this solution in your azure devops instance, you have to do following steps.
+    * Clone [this](https://dev.azure.com/chrysalis-innersource/Mobility%20Service%20Line/_git/avops-dataops-foundation) repository in your azure devops instance (https://dev.azure.com/<ORG_NAME>/<PROJECT_NAME>).
+        * You would require to generate git credentials to clone this repository in your azure devops instance.
+    * Import pipelines from [this project](https://dev.azure.com/chrysalis-innersource/Mobility%20Service%20Line/_build), by following azure [docs](https://learn.microsoft.com/en-us/azure/devops/pipelines/get-started/clone-import-pipeline?view=azure-devops&tabs=yaml).
+
 ## 1. [Setting Up the Terraform Backend](../../../core-infrastructure/terraform/root/README.md)
 
 ## 2. Setting Up the Infrastructure CD
