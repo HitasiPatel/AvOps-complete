@@ -25,7 +25,7 @@ resource "azurerm_linux_web_app" "linux_web_app" {
 
     application_stack {
       docker_image     = "${var.acr_login_server}/${local.app_name}"
-      docker_image_tag = "latest"
+      docker_image_tag = "${local.app_image_tag}"
     }
   }
 
