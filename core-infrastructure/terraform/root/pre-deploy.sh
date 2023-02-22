@@ -64,7 +64,7 @@ export AVOPS_TF_RG_LOCATION=$LOCATION
 export AVOPS_ENV_NAME=$ENV
 
 # Create service principal
-export AVOPS_SP_NAME="avdataops-tf-sp"
+export AVOPS_SP_NAME="avdataops-tf-sp$RANDOM"
 export AVOPS_SP_CLIENT_ID=`az ad sp list --display-name $AVOPS_SP_NAME -o tsv --query [0].appId`
 if [ ! $AVOPS_SP_CLIENT_ID ]
 then
