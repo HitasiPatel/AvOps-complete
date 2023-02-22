@@ -4,29 +4,24 @@ This folder contains the main Terraform script used to call the component module
 
 ### Prerequisites
 - Azure subscription with Owner role
-- The following are included with the repo's [devcontainer](#dev-container-setup)
-  - Bash/Z shell (tested on Codespaces, Mac, Ubuntu, Windows with WSL2)
-  - Terraform v1.3.5+ ([download](https://developer.hashicorp.com/terraform/downloads))
-  - AZ CLI ([download](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest))
 
 ### Dev-Container Setup
 
-Using a devcontainer is the easiest way to evaluate the Dataops Solution Kit as all of the pre-requisites are already installed.
+Using a devcontainer is the *easiest* way to evaluate the Dataops Solution Kit, as all of the following tools necessary for the core infrastructure deployment are already installed.
+  - Bash/Z shell
+  - [Terraform v1.3.5+](https://developer.hashicorp.com/terraform/downloads)
+  - [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)
 
 To get started with creating a devcontainer, follow these steps:
-1. To install the devcontainer pre-requisites, go through the devcontainer [installation guide](https://code.visualstudio.com/docs/devcontainers/containers#_installation)
+1. Go through the devcontainer [installation guide](https://code.visualstudio.com/docs/devcontainers/containers#_installation)
 2. Open this current repository, as cloned in your local machine, within a devcontainer. Refer to these [steps](https://code.visualstudio.com/docs/devcontainers/containers#_quick-start-open-an-existing-folder-in-a-container) to do so.
 
 ### Pre-Deployment
 
-Prior to running the deployment, the pre-deployment step initializes the following resources necessary to run the main Terraform script:
+The pre-deployment step creates the following resources necessary to run the main Terraform script:
 - Service Principal with Owner role to authenticate Terraform
 - Azure Storage Account and Blob Container to store the Terraform backend state
 - Resource Group to store the Storage Account
-
-Then, the main Terraform script sets up the AV DataOps components, all within a resource group of location and environment tag specified in the respective `<env>.tfvars` configuration files.
-
-Prepare for the main deployment by running the pre-deploy steps.
 
 ```bash
 
@@ -41,8 +36,7 @@ az account set --subscription "{Subscription Id or Name}"
 
 # Run pre-deployment step
 # OPTIONAL args: ./pre-deploy.sh -l <Azure region> -e <environment> -h
-# Example: ./pre-deploy.sh -l westeurope -e dev
-./pre-deploy.sh
+./pre-deploy.sh -l westeurope -e dev
 
 ```
 
