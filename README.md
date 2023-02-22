@@ -5,6 +5,7 @@ This solution kit is to setup a DataOps solution to process data collected at th
 We have provided sample data pipelines built using [ADLS Gen 2](https://learn.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction), [ADF](https://learn.microsoft.com/en-us/azure/data-factory/introduction), [Azure Batch](https://learn.microsoft.com/en-us/azure/batch/batch-technical-overview), [Cosmos DB](https://learn.microsoft.com/en-us/azure/cosmos-db/introduction) and [App Service](https://azure.microsoft.com/en-us/products/app-service/) to process [ROS 2](https://docs.ros.org/en/foxy/index.html) files. You can use this code to get started with your own data pipelines.
 
 ---
+
 ## Quick Start
 
 Below steps will help you to quickly deploy the AVOps solution in your azure subscription.
@@ -13,7 +14,6 @@ Below steps will help you to quickly deploy the AVOps solution in your azure sub
 * [Deploy the MetaData API](docs/QuickStart/MetaDataAPI/MetaDataAPIDeploy.md)
 * [Deploy the ADF Pipelines](docs/QuickStart/ADFPipelines/ADFPipelinesDeploy.md)
 * [Deploy the Batch Orchestrator](docs/QuickStart/BatchOrchestrator/BatchOrchestrator.md)
-
 
 ## Solution Overview
 
@@ -26,21 +26,26 @@ Below steps will help you to quickly deploy the AVOps solution in your azure sub
 
 ---
 
+## Delete the Solution
+
+[Refer this section](docs/QuickStart/CoreInfraStructure/CoreInfraStructureDeploy.md#clean-up)
+
 ## Getting Started
 
 1. Fork/clone this repository
 2. Open VsCode and choose DevContainer (Recommended) or Local Machine to get started with the solution
 
-### DevContainer
+### DevContainer (Preferred)
 
 #### DevContainer Prerequisites
 
-* VsCode
-* Docker
+* Azure subscription with Owner role
+* [Docker](https://docs.docker.com/desktop/install/mac-install/)
+* [VsCode](https://code.visualstudio.com/download)
 
 A Development Container (or Dev Container for short) allows you to use a container as a full-featured development environment. More about the dev container [here](https://containers.dev/), we highly recommend using .devcontainer for better and efficient developer experience.
 
-The solution includes `.devcontainer` file [here](.devcontainer/devcontainer.json), which included all the pre-requisites necessary for getting started with the solution. Open VsCode and open the solution folder in container. 
+The solution includes `.devcontainer` file [here](.devcontainer/devcontainer.json), which included all the pre-requisites necessary for getting started with the solution. Open VsCode and open the solution folder in container.
 
 ![VsCode DevContainer](https://code.visualstudio.com/assets/docs/devcontainers/tutorial/dev-containers-commands.png)
 
@@ -52,8 +57,9 @@ There are also `.devcontainer` file in the respective modules, open devcontainer
 
 #### Local Prerequisites
 
-* VsCode
-* Docker
+* Azure subscription with Owner role
+* [Docker](https://docs.docker.com/desktop/install/mac-install/)
+* [VsCode](https://code.visualstudio.com/download)
 * Python
 * AZ CLI
 * Git
@@ -74,8 +80,6 @@ The solution uses pre-commit framework for managing and maintaining multilingual
 
 To contribute to this solution kit, please pick a work item from the [backlog](https://dev.azure.com/chrysalis-innersource/Mobility%20Service%20Line/_backlogs/backlog/AVOps/Features) on Azure Devops and get started.
 
-
 ## Acknowledgments
 
 Check the list of the contributors [here](https://chrysalis.microsoft.com/assets/avops-dataops-foundation-data-management-for-autonomous-driving)
-
