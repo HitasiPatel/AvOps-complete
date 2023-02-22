@@ -1,25 +1,12 @@
 # Root Template
 
-This folder contains the main Terraform script used to call the component modules to create the necessary infrastructure. 
+This folder contains the main Terraform script used to call the component modules to create the necessary infrastructure.
 
-### Prerequisites
-- Azure subscription with Owner role
+## Pre-Deployment
 
-### Dev-Container Setup
+Prior to running the deployment, the pre-deployment step initializes the following resources necessary to run the main Terraform script:
 
-Using a devcontainer is the *easiest* way to evaluate the Dataops Solution Kit, as all of the following tools necessary for the core infrastructure deployment are already installed.
-  - Bash/Z shell
-  - [Terraform v1.3.5+](https://developer.hashicorp.com/terraform/downloads)
-  - [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)
-
-To get started with creating a devcontainer, follow these steps:
-1. Go through the devcontainer [installation guide](https://code.visualstudio.com/docs/devcontainers/containers#_installation)
-2. Open this current repository, as cloned in your local machine, within a devcontainer. Refer to these [steps](https://code.visualstudio.com/docs/devcontainers/containers#_quick-start-open-an-existing-folder-in-a-container) to do so.
-
-### Pre-Deployment
-
-The pre-deployment step creates the following resources necessary to run the main Terraform script:
-- Service Principal with Owner role to authenticate Terraform
+- Service Principal with Owner role to authenticate Terraform (Follow [Azure Doc](https://learn.microsoft.com/en-us/cli/azure/create-an-azure-service-principal-azure-cli) to Create One)
 - Azure Storage Account and Blob Container to store the Terraform backend state
 - Resource Group to store the Storage Account
 
@@ -34,16 +21,24 @@ az login --tenant '{Tenant}'
 # change the active subscription using the subscription name
 az account set --subscription "{Subscription Id or Name}"
 
+cd core-infrastructure/terraform/root/
 # Run pre-deployment step
 # OPTIONAL args: ./pre-deploy.sh -l <Azure region> -e <environment> -h
-# By default, region is "westeurope" and environment is "dev"
-./pre-deploy.sh -l westeurope -e dev
+# Example: ./pre-deploy.sh -l westeurope -e dev
+./pre-deploy.sh -l <<Localtion>> -e <<dev>>
 
 ```
 
-### Run deployment script locally
+Note:
 
-Running the main deployment locally is **optional** and **not recommended**. The recommended way to run the main deployment script is to run via the CI/CD pipeline. Refer to the [pipeline documentation](../../.pipelines/README.md) to run the deployment script through the pipeline.
+- Use a shorter envireonment name, because the same is suffixed to the resource group created by this pre deployment script, longer environment name could impact resources with name length restrictions. i.e dev or tst
+- remember to use the same name in the azure devops pipeline when releasing the code using CD pipeline.
+
+___
+
+### Deploy IaC from the local machine (Optional & not recommended)
+
+Running the main deployment locally <span style="color:red">is *optional* and **not** recommended</span>. The recommended way to run the main deployment script is to run via the CI/CD pipeline. Refer to the [pipeline documentation](../../.pipelines/README.md) to run the deployment script through the pipeline.
 
 If you opt to run the deployment script *locally*, continue below. Repeat these steps to rerun the terraform deployment.
 
@@ -71,6 +66,8 @@ unset `env | grep -E 'AVOPS_|ARM_' | egrep -o '^[^=]+'`
 
 ```
 
+___
+
 ### Cleanup
 
 ```bash
@@ -89,7 +86,9 @@ unset `env | grep -E 'AVOPS_|ARM_' | egrep -o '^[^=]+'`
 
 ```
 
-### Accessing resources within private network 
+___
+
+### Accessing resources within private network
 
 By design, the components will be deployed within a virtual network and interact with one another using private endpoints. To connect to any of these resources within the private network for debugging or any additional configuration, you will require a Bastion host attached to the same network.
 

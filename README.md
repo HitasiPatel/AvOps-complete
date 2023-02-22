@@ -16,7 +16,6 @@ Below steps will help you to quickly deploy the AVOps solution in your azure sub
 * [Deploy the Image Processor](docs/QuickStart/ImageProcessor/ImageProcessorDeploy.md)
 * [Deploy the Batch Orchestrator](docs/QuickStart/BatchOrchestrator/BatchOrchestrator.md)
 
-
 ## Solution Overview
 
 * [Architecture](docs/architecture.md)
@@ -30,21 +29,26 @@ Below steps will help you to quickly deploy the AVOps solution in your azure sub
 
 ---
 
+## Delete the Solution
+
+[Refer this section](docs/QuickStart/CoreInfraStructure/CoreInfraStructureDeploy.md#clean-up)
+
 ## Getting Started
 
 1. Fork/clone this repository
 2. Open VsCode and choose DevContainer (Recommended) or Local Machine to get started with the solution
 
-### DevContainer
+### DevContainer (Preferred)
 
 #### DevContainer Prerequisites
 
-* VsCode
-* Docker
+* Azure subscription with Owner role
+* [Docker](https://docs.docker.com/desktop/install/mac-install/)
+* [VsCode](https://code.visualstudio.com/download)
 
 A Development Container (or Dev Container for short) allows you to use a container as a full-featured development environment. More about the dev container [here](https://containers.dev/), we highly recommend using .devcontainer for better and efficient developer experience.
 
-The solution includes `.devcontainer` file [here](.devcontainer/devcontainer.json), which included all the pre-requisites necessary for getting started with the solution. Open VsCode and open the solution folder in container. 
+The solution includes `.devcontainer` file [here](.devcontainer/devcontainer.json), which included all the pre-requisites necessary for getting started with the solution. Open VsCode and open the solution folder in container.
 
 ![VsCode DevContainer](https://code.visualstudio.com/assets/docs/devcontainers/tutorial/dev-containers-commands.png)
 
@@ -56,8 +60,9 @@ There are also `.devcontainer` file in the respective modules, open devcontainer
 
 #### Local Prerequisites
 
-* VsCode
-* Docker
+* Azure subscription with Owner role
+* [Docker](https://docs.docker.com/desktop/install/mac-install/)
+* [VsCode](https://code.visualstudio.com/download)
 * Python
 * AZ CLI
 * Git
@@ -86,7 +91,6 @@ This solution kit is a simplified version of a production ready Data Ops platfor
 ## Contributing
 
 To contribute to this solution kit, please pick a work item from the [backlog](https://dev.azure.com/chrysalis-innersource/Mobility%20Service%20Line/_backlogs/backlog/AVOps/Features) on Azure Devops and get started.
-
 
 ## Acknowledgments
 
