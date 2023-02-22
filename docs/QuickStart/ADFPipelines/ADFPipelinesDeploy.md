@@ -1,11 +1,12 @@
-# ADF Pipelines Creation in a particular RG
+# ADF Pipelines Creation in a particular RG (Manual Steps, Recommended is the ADF CD Pipeline)
+
 Below steps will help you create the ADF pipelines in the required Resource group
 
 1. Go to portal.azure.com and select the right subscription and right resource group
 
 2. Go to the resources under the desired resource group and click on the Azure Data Factory
 
-3. An ADF Studio shall open
+3. Click on the "Launch Studio" to open the ADF studio
 
 4. Prior to the Datasets we need to check the Linked Services are there (which are created by IAC)
 
@@ -38,7 +39,7 @@ Below steps will help you create the ADF pipelines in the required Resource grou
    ![Json Code replace](images/ReplaceDSCode.png)
 
  
-6. Be careful to replace the Linked Service of test RG to the Linked Service of your resource group. 
+6. Be careful with the json formatting while pasting 
 
 7. It will not save in case any resource names are different/inaccurate
 
@@ -87,5 +88,7 @@ Below steps will deploy the ADF objects through an azure devops pipeline.
 4. Click the blue colored Run Pipeline Option on the top right of the browser page.
 
 5. Select your branch name, environment and other required parameters and hit the blue Run button in the down right corner of the browser
+
+6. For each environment we have Variable Groups, make sure they are rightly filled.
 
 ## [TroubleShooting](TroubleShooting.md)
