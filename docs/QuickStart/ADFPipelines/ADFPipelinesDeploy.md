@@ -90,5 +90,6 @@ Below steps will deploy the ADF objects through an azure devops pipeline.
 5. Select your branch name, environment and other required parameters and hit the blue Run button in the down right corner of the browser
 
 6. For each environment we have Variable Groups, make sure they are rightly filled.
+   ![variable group](images/variableGroup.png)
 
 ## [TroubleShooting](TroubleShooting.md)
