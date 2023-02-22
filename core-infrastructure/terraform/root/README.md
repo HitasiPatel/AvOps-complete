@@ -36,7 +36,7 @@ az account set --subscription "{Subscription Id or Name}"
 
 # Run pre-deployment step
 # OPTIONAL args: ./pre-deploy.sh -l <Azure region> -e <environment> -h
-# By default, region is "westeurope" and env is "dev"
+# By default, region is "westeurope" and environment is "dev"
 ./pre-deploy.sh -l westeurope -e dev
 
 ```
