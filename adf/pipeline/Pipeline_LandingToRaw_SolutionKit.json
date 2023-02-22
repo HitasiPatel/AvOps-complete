@@ -280,6 +280,10 @@
 									"linkedServices": [],
 									"datasets": []
 								}
+							},
+							"linkedServiceName": {
+								"referenceName": "LS_Batch",
+								"type": "LinkedServiceReference"
 							}
 						},
 						{
