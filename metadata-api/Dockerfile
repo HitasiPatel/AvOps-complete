@@ -16,7 +16,7 @@ RUN python -m pylint app --output-format=parseable --output=pylint.log --fail-un
 RUN python -m pytest --cov-report xml --cov=app app/tests/ --junit-xml unit_tests.xml
 
 
-FROM python:3.10 AS release
+FROM mcr.microsoft.com/azure-functions/python:4-python3.10 AS release
 WORKDIR /code
 COPY --from=dependencies /code/requirements.txt ./
 # Install app dependencies

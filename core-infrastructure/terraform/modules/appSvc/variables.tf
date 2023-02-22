@@ -43,14 +43,14 @@ variable "app_svc_suffix" {
   description = "A random suffix for the app service resource name"
 }
 
+variable "acr_name" {
+  type        = string
+  description = "ACR name"
+}
+
 variable "acr_login_server" {
   type        = string
   description = "URL for ACR"
-}
-
-variable "acr_sami_principal_id" {
-  type        = string
-  description = "ACR System Assigned Managed identity principal ID"
 }
 
 variable "app_service_expose_port" {

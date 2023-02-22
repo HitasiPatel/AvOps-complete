@@ -1,13 +1,13 @@
 # avops-dataops-foundation-metadata-api-ci
 
-This pipeline automates the integration and deployment of the metadata API to Azure App Service.
+This pipeline automates the integration the metadata API to Azure Container Registry..
 
 ## Prerequisites
 
 1. Run the **avops-dataops-foundation-iac-cd** and set up your environment on Azure. Refer this [document](../../core-infrastructure/.pipelines/README.md) on steps to run the pipeline. 
 1. Create service connections - 
-    - **ARM Service connection** - This is needed to deploy the docket image to App Service. Name the service connection "arm_service_connection_{env}", this is the format in which it is referred in the pipeline. 
-    - **Docker Registry** - This service connection is needed to login to the Axure Container Registry and push the metadata-api docker image to the registry. Name the service connection "acr_service_connection_{env}", this is the format in which it is referred in the pipeline. 
+    - **Azure Resource Manager** - This is needed to deploy the docker image to App Service. Name the service connection `arm_service_connection_{env}`, this is the format in which it is referred in the pipeline. 
+    - **Docker Registry** - This service connection is needed to login to the Axure Container Registry and push the metadata-api docker image to the registry. Name the service connection `acr_service_connection_{env}`, this is the format in which it is referred in the pipeline. 
 Refer this [article](https://learn.microsoft.com/en-us/azure/devops/pipelines/library/service-endpoints?view=azure-devops&tabs=yaml) for more details and steps to create a service connection.
 
 ## Pipeline parameters
@@ -15,8 +15,8 @@ Refer this [article](https://learn.microsoft.com/en-us/azure/devops/pipelines/li
 The pipeline takes the following inputs on running it via manual trigger. When the pipeline is triggered on merge to the main, it picks up the default values. You can change these default values based on your environment.
 
 1. **acr_name** - Name of the Azure Container Registry.
-1. **app_service_name** - Name of the Azure App Service. 
-1. **env** - Type of the environment you wish to deploy to. Default value is `dev`.
+2. **app_service_name** - Name of the Azure App Service.
+3. **env** - Type of the environment you wish to deploy to. Default value is `dev`.
 
 ## Pipeline Variables 
 
@@ -37,7 +37,7 @@ The pipeline takes the following inputs on running it via manual trigger. When t
 2. **Push_image_to_ACR** - 
     - **Login to ACR** - Login to the Azure Container Registry with the help of the *acr_service_connection* created in the previous steps.
     - **Build and Push to ACR** - Build the Docker image and push to the Azure Container Registry. 
-    - **Deploy to Azure App Service** - Using the *arm_service_connection* the image is then deployed to Azure App Service.
+    - Remaining steps - Using the *arm_service_connection*, update the image details on the Azure App Service instance.
 
 ## Steps to run the pipeline 
 
