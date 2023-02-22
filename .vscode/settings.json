@@ -1,0 +1,9 @@
+{
+	"editor.insertSpaces": false,
+	"prettier.semi": true,
+	"prettier.printWidth": 92,
+	"prettier.singleQuote": true,
+	"prettier.useTabs": true,
+	//  - auto: Uses operating system specific end of line character.
+	"files.eol": "auto"
+}
