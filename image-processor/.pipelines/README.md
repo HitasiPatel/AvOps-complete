@@ -6,7 +6,7 @@ This pipeline automates the integration of the image processor code.
 
 1. Run the **avops-dataops-foundation-iac-cd** and set up your environment on Azure. Refer this [document](../../core-infrastructure/.pipelines/README.md) on steps to run the pipeline. 
 1. Create service connection - 
-    - **Docker Registry** - This service connection is needed to login to the Axure Container Registry and push the image-processor docker image to the registry. Name the service connection `acr_service_connection_{env}`, this is the format in which it is referred in the pipeline. 
+    - **Docker Registry** - This service connection is needed to login to the Azure Container Registry and push the image-processor docker image to the registry. Name the service connection `acr_service_connection_{env}`, this is the format in which it is referred in the pipeline. 
 Refer this [article](https://learn.microsoft.com/en-us/azure/devops/pipelines/library/service-endpoints?view=azure-devops&tabs=yaml) for more details and steps to create a service connection.
 
 ## Pipeline parameters
