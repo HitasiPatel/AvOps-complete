@@ -30,7 +30,7 @@ This pipeline pushes the MetaData API docker container in to the ACR and then de
 * Check the web app url, if you get 404, you are lucky.
 * Now append a "/docs/" suffix to the url and check, if you see a swagger page, metadata-api is successfully deployed.
 
-## [Next Steps: Deploy ADF Pipelines](../ADFPipelines/ADFPipelinesDeploy.md)
+## [Next Steps: Run Image Processor Pipeline](../ImageProcessor/ImageProcessor.md)
 
 ## Troubleshooting
 

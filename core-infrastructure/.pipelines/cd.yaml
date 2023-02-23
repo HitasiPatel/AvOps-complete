@@ -12,8 +12,6 @@ variables:
     value: "./core-infrastructure/terraform/root"
   - name: TF_RG_NAME
     value: "rg-tfstate"
-  - name: TF_STORAGE_ACCOUNT
-    value: "avopsdemotfstate"
   - name: TF_CONTAINER_NAME
     value: "tfstate-${{ parameters.env }}"
 
@@ -41,6 +39,7 @@ stages:
               export ARM_CLIENT_SECRET=$(password)
               export ARM_SUBSCRIPTION_ID=$(subscription)
               export ARM_TENANT_ID=$(tenant)
+              export TF_STORAGE_ACCOUNT=$(az storage account list -g $(TF_RG_NAME) --query [0].name -o tsv)
               terraform init \
               -backend-config="resource_group_name=$(TF_RG_NAME)" \
               -backend-config="storage_account_name=$(TF_STORAGE_ACCOUNT)" \
