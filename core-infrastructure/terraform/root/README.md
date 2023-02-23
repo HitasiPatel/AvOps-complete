@@ -1,6 +1,6 @@
 # Root Template
 
-This folder contains the main Terraform script used to call the component modules to create the necessary infrastructure. 
+This folder contains the main Terraform script used to call the component modules to create the necessary infrastructure.
 
 ### Prerequisites
 - Azure subscription with Owner role
@@ -41,9 +41,13 @@ az account set --subscription "{Subscription Id or Name}"
 
 ```
 
-### Run deployment script locally
+### Run deployment script locally (Optional)
 
-Running the main deployment locally is **optional** and **not recommended**. The recommended way to run the main deployment script is to run via the CI/CD pipeline. Refer to the [pipeline documentation](../../.pipelines/README.md) to run the deployment script through the pipeline.
+Running the main deployment locally is<span style="color:red"> **optional** and **not recommended**</span>. The recommended way to run the main deployment script is to run via the CI/CD pipeline. Refer to the [pipeline documentation](../../.pipelines/README.md) to run the deployment script through the pipeline.
+
+#### Note
+- Use a shorter environment name, because the same is suffixed to the resource group created by this pre-deployment script, longer environment name could impact resources with name length restrictions. i.e dev or test
+- remember to use the same name in the azure devops pipeline when releasing the code using CD pipeline.
 
 If you opt to run the deployment script *locally*, continue below. Repeat these steps to rerun the terraform deployment.
 
@@ -89,7 +93,7 @@ unset `env | grep -E 'AVOPS_|ARM_' | egrep -o '^[^=]+'`
 
 ```
 
-### Accessing resources within private network 
+### Accessing resources within private network
 
 By design, the components will be deployed within a virtual network and interact with one another using private endpoints. To connect to any of these resources within the private network for debugging or any additional configuration, you will require a Bastion host attached to the same network.
 
