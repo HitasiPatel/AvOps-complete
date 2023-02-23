@@ -34,7 +34,6 @@ az login --tenant '{Tenant}'
 # change the active subscription using the subscription name
 az account set --subscription "{Subscription Id or Name}"
 
-cd core-infrastructure/terraform/root/
 # Run pre-deployment step
 # OPTIONAL args: ./pre-deploy.sh -l <Azure region> -e <environment> -h
 # By default, region is "westeurope" and environment is "dev"
