@@ -75,8 +75,6 @@ unset `env | grep -E 'AVOPS_|ARM_' | egrep -o '^[^=]+'`
 
 ```
 
-___
-
 ### Cleanup
 
 ```bash
@@ -94,8 +92,6 @@ terraform destroy
 unset `env | grep -E 'AVOPS_|ARM_' | egrep -o '^[^=]+'`
 
 ```
-
-___
 
 ### Accessing resources within private network
 
