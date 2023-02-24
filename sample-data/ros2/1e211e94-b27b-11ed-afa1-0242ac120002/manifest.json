@@ -7,7 +7,7 @@
     },
     "vehicle": {
         "id": "KA01LB1234",
-        "name": "Duster",
+        "name": "TestCar",
         "platform": "SUV",
         "transmission": "MANUAL",
         "fuel": "PETROL",
