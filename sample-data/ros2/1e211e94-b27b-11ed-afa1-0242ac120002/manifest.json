@@ -1,0 +1,70 @@
+{
+    "id": "1e211e94-b27b-11ed-afa1-0242ac120002",
+    "metadata": {
+        "additionalProp1": "string",
+        "additionalProp2": "string",
+        "additionalProp3": "string"
+    },
+    "vehicle": {
+        "id": "KA01LB1234",
+        "name": "Duster",
+        "platform": "SUV",
+        "transmission": "MANUAL",
+        "fuel": "PETROL",
+        "make": "HYUNDAI",
+        "model": "Seltos",
+        "year": 2022,
+        "isActive": true,
+        "isDeleted": false,
+        "metadata": {
+            "height": "",
+            "length": ""
+        }
+    },
+    "driver": {
+        "id": "john.doe",
+        "firstName": "John",
+        "lastName": "Doe",
+        "email": "john.doe@gmail.com",
+        "phone": "9999999999",
+        "licenseNumber": "ABC123",
+        "licenseFrontImageUrl": "https://blob/license_front_photo.jpg",
+        "licenseBackImageUrl": "https://blob/license_back_photo.jpg",
+        "driverPhotoUrl": "https://blob/photo.jpg",
+        "address": "XYZ, Bangalore, Karnataka 560012",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                77.594566,
+                12.971599
+            ]
+        },
+        "isActive": true
+    },
+    "createdAt": 1663916425,
+    "description": "string",
+    "task": {
+        "id": "123e4567-e89b-12d3-a456-426614174000",
+        "title": "task title",
+        "description": "description of the task",
+        "state": "UNASSIGNED",
+        "conditions": [
+            {
+                "name": "area",
+                "value": "Koramangala"
+            }
+        ],
+        "isActive": true,
+        "isDeleted": false,
+        "driverId": "john.vue",
+        "vehicleId": "KA01LB1234",
+        "startedAt": 1663916435,
+        "completedAt": 1663916505,
+        "status": "TODO",
+        "metadata": {
+            "height": "",
+            "length": ""
+        }
+    }
+    ,"files" : []
+}
