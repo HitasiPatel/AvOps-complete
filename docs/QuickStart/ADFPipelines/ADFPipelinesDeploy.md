@@ -32,6 +32,16 @@ Below steps will deploy the ADF objects through an azure devops pipeline.
 
 5. Select your branch name, environment and other required parameters and hit the blue Run button in the down right corner of the browser
 
+   ![img](images/runPipeline.png)
+
+6. Once the deployment completes, Go to the ADF studio, Go to the Monitor Section and On The Managed Private Endpoints section.
+
+   ![img](images/MPEcheckApproval.png)
+
+   Go ahead and approve the MPEs by going to the link which takes you to the azure portal's networking tab of the respective resource
+
+   ![img](images/approvalLink.png)
+
 ## [TroubleShooting](TroubleShooting.md)
 
 
