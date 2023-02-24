@@ -42,6 +42,25 @@ Below steps will deploy the ADF objects through an azure devops pipeline.
 
    ![img](images/approvalLink.png)
 
+7. Check the api Base URL Pipeline Parameter, You need to update for both the pipelines
+
+   ![img](images/apiBaseUrl.png)
+
+   You can find the right base URL from webapp in azure portal
+
+   ![img](images/apiBaseUrlFromPortal.png)
+
+8. Go to Keyvault and add access policies for ADF. 
+
+   ![img](images/accessPolicyForADFApplication.png)
+
+9. Make sure to run the image-processor CD Pipeline so that the batch  is able to access the image from the ACR.  
+
+   [Deploy the Image Processor](docs/QuickStart/ImageProcessor/ImageProcessorDeploy.md)
+
+10. Now you are good to   run the pipelines
+
+
 ## [TroubleShooting](TroubleShooting.md)
 
 
