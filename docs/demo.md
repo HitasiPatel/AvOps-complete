@@ -41,7 +41,11 @@
 
 10. The next pipeline is the "Raw to Extracted Pipeline which kicks off once the "datastream.json" arrives in the raw container.
 
-11. Once your pipeline run is comepleted, for both the Landing to Raw and Raw to Extracted, please make sure to scale down the batch orchestrator pool node to 0 , again to save costs
+11. Once the Raw to Extracted Pipeline completes, you can view the extracted images in the extracted container of the derived storage account.
+
+     ![img](images/extractedImages.png)
+
+12. Once your pipeline run is comepleted, for both the Landing to Raw and Raw to Extracted, please make sure to scale down the batch orchestrator pool node to 0 , again to save costs
 
 ### To note:
 
@@ -52,5 +56,10 @@ We have 3 storage accounts
 2. The Raw Storage Account which is an ADLS Gen 2 Storage Account, has another set of containers called raw, error etc
 
 3. The Derived Storage Account which is an ADLS Gen 2 Storage Account, has another set of containers called extracted, derived, synchronized, curated, annotated. We use the "extracted" container in this solution kit.
+
+
+## Video Recording Of a Sample Run :
+
+[Link To Demo Video](https://microsoftapc-my.sharepoint.com/:v:/g/personal/pbhimjyani_microsoft_com/EaW7ntPo6IVOlcdMVPfiZV4BxmE-lnfgFrMUWiKIgCJghg?e=UoMoqR)
 
 
