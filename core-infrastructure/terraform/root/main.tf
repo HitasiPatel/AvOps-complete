@@ -391,8 +391,8 @@ module "kv_secrets" {
   depends_on = [
     module.role_assignments
   ]
-  source                   = "../modules/kvSecrets"
-  key_vault_id             = module.key_vault.key_vault_id
-  batch_key_secret         = module.batch.batch_account_primary_access_key
-  batch_storage_key_secret = module.batch_storage_account.storage_account_primary_access_key
+  source                           = "../modules/kvSecrets"
+  key_vault_id                     = module.key_vault.key_vault_id
+  batch_key_secret                 = module.batch.batch_account_primary_access_key
+  batch_storage_conn_string_secret = module.batch_storage_account.primary_connection_string
 }
