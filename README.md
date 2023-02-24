@@ -26,6 +26,9 @@ Below steps will help you to quickly deploy the AVOps solution in your azure sub
 * [Continuous Integration and Continuous Deployment](docs/ci-cd.md)
 * [Productionisation Recommendations](#productionisation-recommendations)
 
+## Demo/Walkthrough of the Solution Kit pipelines 
+
+* [Demo Doc for Running a Sample Pipeline](docs/demo.md)
 
 ---
 
