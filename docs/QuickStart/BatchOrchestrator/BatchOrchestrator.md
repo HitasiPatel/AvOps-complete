@@ -3,7 +3,7 @@
 2. Checkout the code and create a file named `.env` under `av-batch-orchestrator\app` folder.
 3. There is a file named `env.template` under the root directory of the batch orchestrartor. Copy contents of this file into the `.env` file.
 4. Fill in the values for all the properties in `.env` file.
-5. We need SAS keys to connect to the srorage accounts. Here are the steps to a generate SAS key:
+5. We need SAS keys to connect to the storage accounts. Here are the steps to generate a SAS key:
     * Open Azure Portal and access the storage account.
     * Click `Shared access signature` option under left side menu.
     * Select allowed resource types and set the expiry date as needed.
@@ -23,4 +23,4 @@
     ![Batch pool application](images/app-step2.png)
 10. For detailed instructions read [this documentation](https://learn.microsoft.com/en-us/azure/batch/batch-application-packages)
 
-11. Important note: Orchestration and execution poools have number of nodes set to zero by default, to save on costs. When solution has to be used, scale both the pools to appropriate size on Azure Portal. One node per each pool should be good enough for the test data provided in this solution kit.
+11. Important note: Orchestration and execution pools have number of nodes set to zero by default, to save on costs. When solution has to be used, scale both the pools to appropriate size on Azure Portal. One node per each pool should be good enough for the test data provided in this solution kit.
