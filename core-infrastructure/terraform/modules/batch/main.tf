@@ -80,7 +80,7 @@ resource "azurerm_batch_pool" "orch_pool" {
   }
 
   fixed_scale {
-    target_dedicated_nodes    = 1
+    target_dedicated_nodes    = 0
     target_low_priority_nodes = 0
   }
 
