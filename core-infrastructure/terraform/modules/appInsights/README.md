@@ -1,0 +1,1 @@
+This module is for creating an Azure App Insights resource.

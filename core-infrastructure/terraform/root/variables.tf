@@ -581,3 +581,41 @@ variable "databricks_sku" {
   type        = string
   default     = "premium"
 }
+
+# ------------------------------------------------------------------------------------------------------
+# Log Analytics Variables
+# ------------------------------------------------------------------------------------------------------
+
+variable "loganalytics_name" {
+  description = "Name of the loganalytics workspace"
+  type        = string
+  default     = "avdataops"
+}
+
+variable "loganalytics_retention_days" {
+  description = "Number of days for log retention"
+  type        = number
+  default     = 30
+}
+
+variable "loganalytics_sku" {
+  description = "SKU of the loganalytics workspace"
+  type        = string
+  default     = "Free"
+}
+
+# ------------------------------------------------------------------------------------------------------
+# App Insights Variables
+# ------------------------------------------------------------------------------------------------------
+
+variable "appinsights_name" {
+  description = "Name of the application insights"
+  type        = string
+  default     = "avdataops"
+}
+
+variable "appinsights_type" {
+  description = "Type of the application insights"
+  type        = string
+  default     = "web"
+}

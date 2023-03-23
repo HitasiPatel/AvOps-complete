@@ -1,0 +1,1 @@
+This module is for creating Log Analytics Workspace.
