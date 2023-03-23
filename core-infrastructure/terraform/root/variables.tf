@@ -602,7 +602,7 @@ variable "loganalytics_retention_days" {
 variable "loganalytics_sku" {
   description = "SKU of the loganalytics workspace"
   type        = string
-  default     = "Standard"
+  default     = "Free"
 }
 
 # ------------------------------------------------------------------------------------------------------
