@@ -4,3 +4,7 @@ Azure Devops Pipelines are used to automate the process of Continuous Integratio
 
 - [avops-dataops-foundation-iac-cd](./../core-infrastructure/.pipelines/README.md)
 - [avops-dataops-foundation-metadata-api-ci](./../metadata-api/.pipelines/README.md)
+
+---
+
+[Home](../README.md)

@@ -12,8 +12,6 @@ variables:
     value: "./core-infrastructure/terraform/root"
   - name: TF_RG_NAME
     value: "rg-tfstate"
-  - name: TF_STORAGE_ACCOUNT
-    value: "avopsdemotfstate"
   - name: TF_CONTAINER_NAME
     value: "tfstate-${{ parameters.env }}"
 
@@ -41,12 +39,13 @@ stages:
               export ARM_CLIENT_SECRET=$(password)
               export ARM_SUBSCRIPTION_ID=$(subscription)
               export ARM_TENANT_ID=$(tenant)
+              export TF_STORAGE_ACCOUNT=$(az storage account list -g $(TF_RG_NAME) --query [0].name -o tsv)
               terraform init \
               -backend-config="resource_group_name=$(TF_RG_NAME)" \
               -backend-config="storage_account_name=$(TF_STORAGE_ACCOUNT)" \
               -backend-config="container_name=$(TF_CONTAINER_NAME)" \
               -backend-config="access_key=$(eval $(TF_STORAGE_ACCOUNT_KEY))"
               terraform validate
-              terraform plan
-              terraform apply -auto-approve
+              terraform plan -var-file=${{parameters.env}}.tfvars
+              terraform apply -var-file=${{parameters.env}}.tfvars -auto-approve
             displayName: "Terraform plan and apply"

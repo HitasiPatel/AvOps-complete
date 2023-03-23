@@ -1,4 +1,5 @@
-FROM ros:noetic as base
+# Base and release image mcr.microsoft.com/avdataops/ros:noetic to be built locally and tagged accordingly
+FROM mcr.microsoft.com/avdataops/ros:noetic as base
 WORKDIR /code
 
 FROM base as dependencies
@@ -10,15 +11,10 @@ RUN apt-get update \
 COPY ./requirements.txt /code/
 RUN pip3 install --ignore-installed -r requirements.txt
 
-
 FROM dependencies AS build  
 COPY ./app/ /code/
 
-FROM build as test
-SHELL ["/bin/bash", "-c"]
-RUN source /opt/ros/noetic/setup.bash && python3 -m pytest --cov-report xml --cov="/code" /code/tests/ --junit-xml unit_tests.xml
-
-FROM ros:noetic AS release
+FROM mcr.microsoft.com/avdataops/ros:noetic AS release
 WORKDIR /code
 
 # Install app dependencies

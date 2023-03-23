@@ -4,24 +4,13 @@ variable "key_vault_id" {
   default     = "keyvault"
 }
 
-variable "azure_batch_key_name" {
-  description = "Name of Batch account key secret"
+variable "azure_batch_storage_conn_string_name" {
+  description = "Name of the Batch storage account connection string secret"
   type        = string
-  default     = "azurebatchkey"
+  default     = "azurebatchstorageconnstring"
 }
 
-variable "batch_key_secret" {
-  description = "Azure batch key"
-  type        = string
-}
-
-variable "azure_batch_storage_key_name" {
-  description = "Name of the Batch storage account key secret"
-  type        = string
-  default     = "azurebatchstoragekey"
-}
-
-variable "batch_storage_key_secret" {
-  description = "Batch Storage account key"
+variable "batch_storage_conn_string_secret" {
+  description = "Batch Storage conn string"
   type        = string
 }

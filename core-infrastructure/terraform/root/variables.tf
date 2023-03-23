@@ -285,7 +285,6 @@ variable "adls_storage_account_container_config" {
     }
     "avderived:ZRS" = {
       "extracted"    = { "cool" : "30" }
-      "synchronized" = { "cool" : "30" }
       "derived"      = { "cool" : "30" }
       "curated"      = { "cool" : "90" }
       "annotated"    = {}

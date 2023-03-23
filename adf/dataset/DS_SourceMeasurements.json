@@ -2,7 +2,7 @@
 	"name": "DS_SourceMeasurements",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "LS_avlandingrqpzwtest",
+			"referenceName": "LS_Landing",
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {

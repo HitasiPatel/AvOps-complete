@@ -72,8 +72,8 @@ variable "batch_account_name" {
   type        = string
 }
 
-variable "batch_account_exec_pool_name" {
-  description = "Batch Account exection pool name"
+variable "batch_account_orch_pool_name" {
+  description = "Batch Account orchestration pool name"
   type        = string
 }
 

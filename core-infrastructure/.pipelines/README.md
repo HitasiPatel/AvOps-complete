@@ -1,25 +1,40 @@
 # avops-dataops-foundation-iac-cd
 
-The IaC CD pipeline enables the automatic deployment of your infrastructure.This pipeline supports the deployment of terraform scripts. 
+The IaC CD pipeline enables the automatic deployment of your infrastructure. This pipeline supports the deployment of terraform scripts. 
 
-## Prerequisites 
+## Pipeline setup
 
-1. Set the required secrets - The CD pipeline uses some secrets that need to be set before running the pipeline - 
-    1. appId - Service Principal app ID.
-    1. password - Service Principal password
-    1. tenant - Service Principal tenant ID
-    1. subscription - Subscription ID of your Azure subscription
-    1. TF_STORAGE_ACCOUNT_KEY - Access Key of your azure storage account that you have configured as your terraform remote backend. 
+Once you have run the pre-deployment section in the [terraform setup guide](../terraform/root/README.md), access the deployment variables.
 
-- To set the secerts follow these steps - 
-    1. On the AzDo project go to pipelines and select `avops-dataops-foundation-iac-cd`. 
-    1. Click on Edit 
-    ![edit_pipeline](./images/edit_pipeline.png)
-    1. Click on Variables. 
-    ![pipeline_variable](./images/variables.png)
-    1. Add the variable name and value and select the box `Keep this value secret`
-    ![add_seceret](./images/add_seceret.png)
-    1. Click on `OK` and the secret will be added. 
+```bash
+
+# load the deployment variables
+source .avdataops-tf.env
+
+# list out the deployment variables
+env | grep ARM
+
+```
+
+Now, create each of the following variables as a secret in Azure DevOps. To get the secret value, refer to the output from the command above, match the corresponding deployment variable and note down the value.
+
+| Secret Name | Deployment Variable | Description | 
+| ------------- | ------------- | ------------- |
+| appId  | `ARM_CLIENT_ID` | Service Principal app ID | 
+| password | `ARM_CLIENT_SECRET` | Service Principal password |
+| tenant | `ARM_TENANT_ID` | Service Principal tenant ID |
+| subscription | `ARM_SUBSCRIPTION_ID` | Subscription ID of your Azure subscription |
+| TF_STORAGE_ACCOUNT_KEY | `ARM_ACCESS_KEY` | Access Key of Azure storage account used for the Terraform backend |
+
+To set the secerts follow these steps - 
+1. On the AzDo project go to pipelines and select `avops-dataops-foundation-iac-cd`. 
+2. Click on Edit 
+  - ![edit_pipeline](./images/edit_pipeline.png)
+3. Click on Variables. 
+  - ![pipeline_variable](./images/variables.png)
+4. Add the variable name and value and select the box `Keep this value secret`
+  - ![add_seceret](./images/add_seceret.png)
+5. Click on `OK` and the secret will be added. 
 
 ## Pipeline parameters 
 
@@ -29,7 +44,6 @@ The IaC CD pipeline enables the automatic deployment of your infrastructure.This
 
 1. src_dir - this variable defines the path of the root directory where the main terraform file is present
 2. TF_RG_NAME - this variable defines the resource group where the terraform backend storage account is present.
-3. TF_STORAGE_ACCOUNT - Name of the storage account which is used as a terraform remote backend
 4. TF_CONTAINER_NAME - Storage container name where the state files will be stored.
 
 ## Pipeline Stages 
@@ -52,4 +66,3 @@ The IaC CD pipeline enables the automatic deployment of your infrastructure.This
 ![infra-cd](./images/infra-cd.png)
 
 4. Click on `Run` and your pipeline will be triggered. 
-

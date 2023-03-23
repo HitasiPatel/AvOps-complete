@@ -1,7 +1,7 @@
 {
-	"name": "MPE_WebAPI",
-	"properties": {
-		"privateLinkResourceId": "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-test/providers/Microsoft.Web/sites/web-app-linuxrqpzw",
-		"groupId": "sites"
-	}
+    "name": "MPE_WebAPI",
+    "properties": {
+        "privateLinkResourceId": "/subscriptions/2007549f-8ef5-42c8-849a-e35d4f64470d/resourceGroups/rg-avdataops-test/providers/Microsoft.Web/sites/web-app-linuxrqpzw",
+        "groupId": "sites"
+    }
 }

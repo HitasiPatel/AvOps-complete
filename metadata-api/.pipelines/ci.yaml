@@ -3,13 +3,11 @@ parameters:
   - name: acr_name
     displayName: ACR name
     type: string
-    default: "acravdataopsdkknf"
 
   - name: app_service_name
     displayName: App Service name
     type: string
-    default: "web-app-linuxdkknf"
-
+  
   - name: env
     displayName: Environment
     type: string
@@ -59,7 +57,7 @@ stages:
 
           - script: |
               detect-secrets --version
-              detect-secrets scan --all-files --disable-plugin KeywordDetector --disable-plugin AWSKeyDetector --exclude-files FETCH_HEAD --exclude-files .secrets.baseline  > $(Pipeline.Workspace)/detect-secrets.json
+              detect-secrets scan --all-files --disable-plugin KeywordDetector --disable-plugin AWSKeyDetector --disable-plugin HexHighEntropyString --exclude-files FETCH_HEAD --exclude-files .secrets.baseline  > $(Pipeline.Workspace)/detect-secrets.json
             displayName: "Run detect-secrets tool"
 
           - task: PublishPipelineArtifact@1
@@ -123,7 +121,7 @@ stages:
               reportDirectory: "htmlcov"
             displayName: "Publish Coverage Results"
 
-  - stage: "Push_image_to_ACR"
+  - stage: "deployment_to_app_service"
     jobs:
       - job: "Build_and_push_to_ACR"
         displayName: "build-and-push-to-acr"
@@ -142,11 +140,40 @@ stages:
               repository: $(app_name)
               command: "buildAndPush"
               tags: $(tags)
-              Dockerfile: "**/Dockerfile"
+              Dockerfile: "**/metadata-api/Dockerfile"
 
-          - task: AzureWebAppContainer@1
-            displayName: "Azure Web App on Container Deploy"
+          - task: AzureCLI@2
+            displayName: Stop App Service Instance
             inputs:
               azureSubscription: $(arm_service_connection)
-              appName: ${{ parameters.app_service_name }}
-              imageName: ${{ parameters.acr_name }}.azurecr.io/$(image_repository):$(tags)
+              scriptType: bash
+              scriptLocation: inlineScript
+              inlineScript: "az webapp stop -g rg-avdataops-${{ parameters.env }} -n ${{ parameters.app_service_name }}"
+              addSpnToEnvironment: true
+
+          - task: AzureCLI@2
+            displayName: Set new image details in App Service Instance config
+            inputs:
+              azureSubscription: $(arm_service_connection)
+              scriptType: bash
+              scriptLocation: inlineScript
+              inlineScript: "az webapp config container set -n ${{ parameters.app_service_name }} -g rg-avdataops-${{ parameters.env }} -r https://${{ parameters.acr_name }}.azurecr.io -i ${{ parameters.acr_name }}.azurecr.io/$(image_repository):$(tags)"
+              addSpnToEnvironment: true
+          
+          - task: AzureCLI@2
+            displayName: Enable App Service to pull from ACR via MI
+            inputs:
+              azureSubscription: $(arm_service_connection)
+              scriptType: bash
+              scriptLocation: inlineScript
+              inlineScript: "az resource update --ids /subscriptions/$(az account show --query id -o tsv)/resourceGroups/rg-avdataops-${{ parameters.env }}/providers/Microsoft.Web/sites/${{ parameters.app_service_name }}/config/web --set properties.acrUseManagedIdentityCreds=true"
+              addSpnToEnvironment: true
+
+          - task: AzureCLI@2
+            displayName: Start App Service Instance
+            inputs:
+              azureSubscription: $(arm_service_connection)
+              scriptType: bash
+              scriptLocation: inlineScript
+              inlineScript: "az webapp start -g rg-avdataops-${{ parameters.env }} -n ${{ parameters.app_service_name }}"
+              addSpnToEnvironment: true

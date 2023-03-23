@@ -54,9 +54,9 @@ then
   exit 1;
 fi
 
-if [ ${#ENV} -gt 3 ]
+if [ ${#ENV} -gt 4 ]
 then
-  echo "Please provide an environment name that <= 3 characters. "
+  echo "Please provide an environment name that <= 4 characters. "
   exit 1;
 fi
 
@@ -64,12 +64,12 @@ export AVOPS_TF_RG_LOCATION=$LOCATION
 export AVOPS_ENV_NAME=$ENV
 
 # Create service principal
-export AVOPS_SP_NAME="avdataops-tf-sp"
+export AVOPS_SP_NAME="avdataops-tf-sp-$RANDOM"
 export AVOPS_SP_CLIENT_ID=`az ad sp list --display-name $AVOPS_SP_NAME -o tsv --query [0].appId`
 if [ ! $AVOPS_SP_CLIENT_ID ]
 then
   echo "Creating new service principal"
-  export AVOPS_SP_CLIENT_ID=`az ad sp create-for-rbac -n $AVOPS_SP_NAME --role="Owner" --scopes="/subscriptions/$AVOPS_AZ_SUBSCRIPTION_ID" --query appId -o tsv`
+  export AVOPS_SP_CLIENT_ID=`az ad sp create-for-rbac -n $AVOPS_SP_NAME --role="Owner" --scopes="/subscriptions/$AVOPS_AZ_SUBSCRIPTION_ID" --query appId -o tsv 2> /dev/null`
 fi
 
 export AVOPS_SP_CLIENT_SECRET="az ad sp credential reset --id $AVOPS_SP_CLIENT_ID --query password -o tsv 2> /dev/null"
