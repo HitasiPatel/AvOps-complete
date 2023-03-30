@@ -1,0 +1,90 @@
+parameters:
+- name: env
+  displayName: Environment
+  type: string
+  default: "dev"
+
+trigger: none
+
+variables:
+    - template
+  - name: src_dir
+    value: "./av-batch-orchestrator/"
+  - name: AZURE_RESOURCE_GROUP
+    value: "rg-tfstate"
+  - name: app_name
+    value: "orchestratorapp"
+  - name: image_repository
+
+stages:
+    -stage: "Create a Zip of Orchestrator App "
+    jobs:
+        -job: "Create a Zip of Orchestrator App "
+            steps:
+             - script:  zip -r app.zip app
+
+    -stage: "Az Login"
+        jobs:
+            -job: "Az Login "
+                steps:
+                - script:            
+                    az login --service-principal --username $(appId) --password $(password) --tenant $(tenant)
+                    az account set -s $AZURE_SUBSCRIPTION_ID
+    -stage: "Create Batch Application"
+        jobs:
+            -job: "Create Batch Application "
+                steps:
+                - script:               
+                    az batch application package create --application-name ${app_name} --name ${env_AZ_BATCH_ACCOUNT_NAME} --resource-group ${AZURE_RESOURCE_GROUP} --package-file app.zip --version-name ${env_ORCHESTRATOR_APP_VERSION}
+    -stage: "Make the Orchestrator App Version Default"
+        jobs:
+            -job: "Make the Orchestrator App Version Default "
+                steps:
+                - script:                           
+                    az batch application set --application-name ${app_name} --name ${env_AZ_BATCH_ACCOUNT_NAME} --resource-group ${AZURE_RESOURCE_GROUP} --default-version ${env_ORCHESTRATOR_APP_VERSION}
+                    
+        -stage: "Link the Batch Application With Batch Pool"
+        jobs:
+            -job: "Link the Batch Application With Batch Pool"
+                steps:
+                - script:
+                    az batch application set --application-name ${app_name} --name ${env_AZ_BATCH_ACCOUNT_NAME} --resource-group ${AZURE_RESOURCE_GROUP} --default-version ${env_ORCHESTRATOR_APP_VERSION}
+                    
+        -stage: "Before Restart Check if there are Active Jobs"
+        jobs:
+            -job: "Before Restart Check if there are Active Jobs"
+                steps: |
+                    activeJobs=$(az batch job list --account-name ${env_AZ_BATCH_ACCOUNT_NAME} --account-endpoint ${env_AZ_BATCH_ACCOUNT_URL} --filter "state eq 'active'" --query "[].id" -o tsv)
+                    for job in $activeJobs
+                    do
+                        tasks=$(az batch task list --job-id $job --account-name ${env_AZ_BATCH_ACCOUNT_NAME} --account-endpoint ${env_AZ_BATCH_ACCOUNT_URL} --filter "state eq 'active'" --query "[].id" -o tsv)
+                        if [ "$tasks" != "" ]; then
+                            echo "Active tasks found, Nodes will not be re-started."
+                            # exit if there are active tasks.
+                            exit 1
+                        fi
+                    done
+
+        -stage: "Restart Orchestrator Pool Nodes"
+        jobs:
+            -job: "Restart Orchestrator Pool Nodes"
+                steps: |             
+                    nodes=$(az batch node list --pool-id ${env_AZ_BATCH_ORCHESTRATOR_POOL_ID} --account-name ${env_AZ_BATCH_ACCOUNT_NAME} --account-endpoint ${env_AZ_BATCH_ACCOUNT_URL} --query "[].id" -o tsv)
+                    for id in $nodes
+                    do
+                        echo "Rebooting node: $id"
+                        az batch node reboot --node-id $id --pool-id ${env_AZ_BATCH_ORCHESTRATOR_POOL_ID}  --account-name ${env_AZ_BATCH_ACCOUNT_NAME} --account-endpoint ${env_AZ_BATCH_ACCOUNT_URL}
+                    done
+        
+        -stage: "Remove Execution Pool Nodes"
+        jobs:
+            -job: "Remove Execution Pool Nodes"
+                steps: |             
+                    echo "Delete the execution pool nodes, so that latest version of processor images gets pulled."
+                    nodes=$(az batch node list --pool-id ${env_AZ_BATCH_EXECUTION_POOL_ID} --account-name ${env_AZ_BATCH_ACCOUNT_NAME} --account-endpoint ${env_AZ_BATCH_ACCOUNT_URL} --query "[].id" -o tsv)
+                    for id in $nodes
+                    do
+                        echo "Delete node: $id"
+                        az batch node delete --node-list $id --pool-id ${env_AZ_BATCH_EXECUTION_POOL_ID}  --account-name ${env_AZ_BATCH_ACCOUNT_NAME} --account-endpoint ${env_AZ_BATCH_ACCOUNT_URL}
+                    done
+
