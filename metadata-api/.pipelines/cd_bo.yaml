@@ -7,14 +7,12 @@ parameters:
 trigger: none
 
 variables:
-    - template
   - name: src_dir
     value: "./av-batch-orchestrator/"
   - name: AZURE_RESOURCE_GROUP
     value: "rg-tfstate"
   - name: app_name
     value: "orchestratorapp"
-  - name: image_repository
 
 stages:
     -stage: "Create a Zip of Orchestrator App "
