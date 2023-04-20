@@ -24,7 +24,7 @@ variables:
     value: "acr_service_connection_${{ parameters.env }}" 
 
 stages: 
-  - stage: "Transfer image from GHCR to ACR" 
+  - stage: "TransferimagefromGHCRtoACR" 
     jobs: 
     - job: "imgpullacr" 
       pool: 
