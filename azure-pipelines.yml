@@ -21,10 +21,10 @@ variables:
   - name: tags 
     value: $(Build.BuildId) 
   - name: acr_service_connection 
-    value: "acr_service_connection_stg" 
+    value: "acr_service_connection_${{ parameters.env }}" 
 
 stages: 
-  - stage: "Transfer-image-from-GHCR-ACR" 
+  - stage: "Transfer image from GHCR to ACR" 
     jobs: 
     - job: "imgpullacr" 
       pool: 
