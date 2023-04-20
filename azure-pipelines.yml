@@ -2,7 +2,7 @@ parameters:
 - name: env 
   displayName: Environment
   type: string 
-  default: "dev" 
+  default: "stg" 
 
 schedules: 
 - cron: '0 0 * * 0'
