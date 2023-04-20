@@ -24,7 +24,7 @@ variables:
     value: "acr_service_connection_stg" 
 
 stages: 
-  - stage: "Transfer image from GHCR to ACR" 
+  - stage: "Transfer-image-from-GHCR-ACR" 
     jobs: 
     - job: "imgpullacr" 
       pool: 
