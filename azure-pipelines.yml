@@ -4,13 +4,6 @@ parameters:
   type: string 
   default: "stg" 
 
-schedules: 
-- cron: '0 0 * * 0'
-  displayName: Weekly midnight build 
-  branches: 
-   include: 
-   - main 
-
 variables: 
   - name: ghcr_image 
     value: "ghcr.io/foxglove/studio:latest" 
