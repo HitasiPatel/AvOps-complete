@@ -17,7 +17,11 @@ variables:
   - name: app_name 
     value: "studio" 
   - name: image_repository 
-    value: "foxglove"  
+    value: "foxglove"
+  - name: azureSubscription 
+    value: "Solution Kit AVOps Demo"  
+  - name: appName
+    value: "avopsfoxglovestudio"
   - name: tags 
     value: $(Build.BuildId) 
   - name: acr_service_connection 
@@ -48,3 +52,9 @@ stages:
             containerRegistry: $(acr_service_connection) 
             repository: $(app_name) 
             tags: $(tags)
+        - task: AzureWebAppContainer@1
+          displayName: 'Azure Web App on Container Deploy'
+          inputs:
+           azureSubscription: $(azureSubscription)
+           appName: $(appName)
+           imageName: acravdataopshiniv.azurecr.io/$(app_name):$(Build.BuildId)
